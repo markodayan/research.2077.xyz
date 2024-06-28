@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 interface Props {
   content: any;
 }
@@ -6,8 +7,9 @@ interface Props {
 const { content } = Astro.props;
 ---
 
-<article class='md:w-full md:prose body'>
+<article class='p-6 md:w-full md:prose body'>
   <a href='/' title='Back to research'>&larr; Back to Research</a>
+  
   <p class='text-slate text-sm md:text-base'>
     Published on {content.pubDate} by {content.author}
   </p>
