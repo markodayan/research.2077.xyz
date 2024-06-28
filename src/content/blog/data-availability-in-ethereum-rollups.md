@@ -4,7 +4,7 @@ pubDate: 05/12/2023
 author: Emmanuel Awosika
 tags:
   - Defi
-imgUrl: '../../assets/Article Covers_EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'
+imgUrl: '../../assets/Data Availability Or- How Rollups Learned To Stop Worrying And Love Ethereum.webp'
 description: What event has represented the biggest existential threat to Ethereum in the network’s history?
 layout: '../../layouts/BlogPost.astro'
 ---

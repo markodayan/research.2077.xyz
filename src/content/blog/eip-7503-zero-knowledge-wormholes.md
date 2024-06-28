@@ -1,10 +1,10 @@
 ---
-title: data-availability-in-ethereum-rollups
+title: eip-7503-zero-knowledge-wormholes
 pubDate: 05/12/2023
 author: Emmanuel Awosika
 tags:
   - Defi
-imgUrl: '../../assets/Article Covers_EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'
+imgUrl: '../../assets/EIPs For Nerds  5- EIP-7503 (Zero-Knowledge Wormholes).webp'
 description: What event has represented the biggest existential threat to Ethereum in the network’s history?
 layout: '../../layouts/BlogPost.astro'
 ---
