@@ -51,3 +51,14 @@ const { tag, blogposts } = Astro.props;
     <BlogList posts={blogposts} />
   </main>
 </Layout>
+
+<style is:global>
+  .brutal-card {
+    border: 1px solid gray !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: none !important;
+    filter: none !important;
+    padding: 0 !important;
+  }
+</style>
