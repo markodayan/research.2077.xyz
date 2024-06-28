@@ -1,0 +1,29 @@
+---
+interface Props {
+  content: any;
+}
+
+const { content } = Astro.props;
+---
+
+<article class='md:w-full md:prose body'>
+  <a href='/' title='Back to research'>&larr; Back to Research</a>
+  <p class='text-slate text-sm md:text-base'>
+    Published on {content.pubDate} by {content.author}
+  </p>
+  <slot />
+  <p class='text-slate'>Written by {content.author}</p>
+  <a href='/' title='Back to research'>&larr; Back to research</a>
+</article>
+
+<style>
+  p {
+    font-size: 1.2rem;
+  }
+
+  .body {
+    margin-block: 8rem;
+    max-width: 100ch !important;
+    font-size: clamp(1rem, 0.913rem + 0.4348vi, 1.25rem) !important;
+  }
+</style>

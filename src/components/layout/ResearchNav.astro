@@ -1,0 +1,75 @@
+---
+const tags = ['Defi', 'Governance', 'Infrastructure', 'Applications', 'Protocol RD'];
+---
+
+
+<nav class="researchNav">
+  {
+    tags.map((tag) => {
+      return (
+        <a class="nav-link carousel-cell" href={`/blog/tags/${tag.toLowerCase()}/`}>
+          <img src="/design.svg" alt="" />
+          {tag}
+        </a>
+      );
+    })
+  }
+</nav>
+
+
+<style lang="scss">
+  .researchNav {
+    margin-block: 1.2rem;
+    margin-block-end: 4rem;
+    padding-block: 1.2rem;
+    border-top: 1.2px solid var(--semantic-green-default-normal);
+    border-bottom: 1.2px solid var(--semantic-green-default-normal);
+    display: flex;
+    column-gap: 2rem;
+    height: 60px;
+    align-items: center;
+    overflow-x: auto;
+    width: 100%;
+    white-space: nowrap;
+    scrollbar-width: none;
+
+    a {
+      display: flex;
+      align-items: center;
+      column-gap: 0.2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background-color: var(--semantic-green-light-hover);
+      color: var(--leather-dark-hover);
+      min-width: fit-content;
+      padding-inline: 0.4rem;
+      padding-block: 0.2rem;
+      border-radius: 0.5rem;
+
+      &:hover {
+        background-color: var(--semantic-green-dark-active);
+      }
+    }
+
+    .nav-arrow {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+      margin: 0 0.5rem;
+      font-size: 1.25rem;
+      color: var(--semantic-green-default-normal);
+
+      &:hover {
+        color: var(--semantic-green-dark-active);
+      }
+
+      &.active {
+        color: var(--semantic-green-dark-active);
+      }
+    }
+  }
+</style>

@@ -1,0 +1,46 @@
+---
+import Layout from '@layouts/Default.astro';
+import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
+import MobileSocials from '@components/home/MobileSocials.astro';
+import { Pill } from '@eliancodes/brutal-ui';
+import { Button } from '@eliancodes/brutal-ui';
+import { Card } from '@eliancodes/brutal-ui';
+
+const builtWith = [
+  { name: 'Astro', url: 'https://astro.build/' },
+  { name: 'UnoCSS', url: 'https://uno.antfu.me/' },
+  {
+    name: 'Content Collections',
+    url: 'https://docs.astro.build/en/guides/content-collections/',
+  },
+  { name: 'RSS', url: 'https://docs.astro.build/en/guides/rss/' },
+  {
+    name: 'Sitemap',
+    url: 'https://docs.astro.build/en/guides/integrations-guide/sitemap/',
+  },
+  { name: 'Vercel', url: 'https://vercel.com' },
+  { name: 'TypeScript', url: 'https://www.typescriptlang.org/' },
+];
+---
+
+<Layout
+  title='Home'
+  pageTitle='Research | 2077 Collective'
+  description='2077 Collective deep dive into technical ethereum concepts'
+>
+  <main class='p-6'>
+    <MobileSocials />
+    <RecentBlogPosts />
+  </main>
+</Layout>
+
+<style is:global>
+  .brutal-card {
+    border: 1px solid gray !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: none !important;
+    filter: none !important;
+    padding: 0 !important;
+  }
+</style>
