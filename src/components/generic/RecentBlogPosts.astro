@@ -32,9 +32,6 @@ const posts = await getCollection('blog').then((posts) =>
       <div class='hidden'>
         <Button href='/blog/'>view all research &rarr;</Button>
       </div>
-      <div class='block md:hidden'>
-        <Button href='/blog/'>to blog</Button>
-      </div>
     </div>
     <BlogList posts={posts} />
 </section>

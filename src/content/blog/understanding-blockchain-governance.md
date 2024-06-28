@@ -3,9 +3,9 @@ title: understanding-blockchain-governance
 pubDate: 06/28/2024
 author: Fikunmi
 tags:
-  - Defi
+  - Governance
 imgUrl: '../../assets/Understanding Blockchain Governance.webp'
-description: ''
+description: 'Governance in the blockchain'
 layout: '../../layouts/BlogPost.astro'
 ---
 The way most of us (including yours truly) think of blockchain governance is naive. We think governance is about deciding what forks the protocol undergoes or on-chain governance, but this is a gross reduction/oversimplification of governance. The formal processes that we often conflate with governance are a very small part of the actual process.

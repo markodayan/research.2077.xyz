@@ -5,9 +5,10 @@ author: Arbnom
 tags:
   - Defi
 imgUrl: '../../assets/Monthly Stablecoin Report  1.webp'
-description: ''
+description: 'This months stablecoin report'
 layout: '../../layouts/BlogPost.astro'
 ---
+
 Hey hey, stablecoinjoyers! Welcome to the very first post of the monthly stablecoin report! As you may be familiar from the weekly stablecoin report, we categorize stablecoins into three groups and blockchains into four. The groups of stablecoins are named "leagues" and the chains are named "tiers." Let's begin this month's stablecoin report. In this report, you will find:
 
 * Total review of the stablecoin market and a breakdown by projects.

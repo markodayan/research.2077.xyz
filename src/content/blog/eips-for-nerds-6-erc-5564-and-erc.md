@@ -5,7 +5,7 @@ author: Ethereum2077, Koray Akpinar
 tags:
   - Defi
 imgUrl: '../../assets/EIPs For Nerds  6- ERC-5564 & ERC-6538- Stealth Addresses.webp'
-description: ''
+description: 'Introducing stealth addresses to enhance user privacy'
 layout: '../../layouts/BlogPost.astro'
 ---
 In response to the growing demand for transaction privacy on public ledgers, Ethereum has seen the proposal of ERC-5564 and ERC-6538, which aim to introduce _stealth addresses_to enhance user privacy.

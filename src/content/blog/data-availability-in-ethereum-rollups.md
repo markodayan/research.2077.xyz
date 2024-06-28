@@ -5,7 +5,7 @@ author: Emmanuel Awosika
 tags:
   - Defi
 imgUrl: '../../assets/Data Availability Or- How Rollups Learned To Stop Worrying And Love Ethereum.webp'
-description: ''
+description: 'Data availability is a crucial part of building on the blockchain'
 layout: '../../layouts/BlogPost.astro'
 ---
 
