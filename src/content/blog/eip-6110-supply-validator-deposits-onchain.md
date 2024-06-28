@@ -1,11 +1,11 @@
 ---
 title: eip-6110-supply-validator-deposits-onchain
-pubDate: 05/12/2023
+pubDate: 06/28/2024
 author: Emmanuel Awosika
 tags:
   - Defi
 imgUrl: '../../assets/EIPs For Nerds  4- EIP-6110 (Supply Validator Deposits On-Chain).webp'
-description: What event has represented the biggest existential threat to Ethereum in the network’s history?
+description: ''
 layout: '../../layouts/BlogPost.astro'
 ---
 The Beacon Chain has undergone a lot of changes since the Merge: a testament to an idea I described in the last article—with a complex, evolving protocol like the Beacon Chain, the work is never done and developers will _always_have something to fix. For context, the EIPs For Nerds series has covered two proposals that fix key issues : security of delegated staking ([EIP-7002](https://ethereum2077.substack.com/p/eip-7002-execution-layer-exits)) and unchecked validator set growth ([EIP-7251](https://ethereum2077.substack.com/p/eip-7251-increase-max-effective-balance)).

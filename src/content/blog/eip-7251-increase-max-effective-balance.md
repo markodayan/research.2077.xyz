@@ -1,11 +1,11 @@
 ---
-title: data-availability-in-ethereum-rollups
-pubDate: 05/12/2023
+title: eip-7251-increase-max-effective-balance
+pubDate: 06/28/2024
 author: Emmanuel Awosika
 tags:
   - Defi
 imgUrl: '../../assets/EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'
-description: What event has represented the biggest existential threat to Ethereum in the network’s history?
+description: ''
 layout: '../../layouts/BlogPost.astro'
 ---
 Being a rational optimist isn't just about working to solve problems; it also involves (a) acknowledging you might create _new_problems—which will only show up later—in the process of solving an existing problem, and (b) dealing with the despair that comes from seeing how your previous problem-solving actions led to _another_problem in the present. As a [TED Talk](https://penguinrandomhousehighereducation.com/2018/05/21/steven-pinker-progress-ted-talk/)once put it, the art of progress is essentially creating new problems to solve:

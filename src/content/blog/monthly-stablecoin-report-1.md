@@ -1,11 +1,11 @@
 ---
-title: data-availability-in-ethereum-rollups
-pubDate: 05/12/2023
-author: Emmanuel Awosika
+title: monthly-stablecoin-report-1
+pubDate: 06/28/2024
+author: Arbnom
 tags:
   - Defi
-imgUrl: '../../assets/EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'
-description: What event has represented the biggest existential threat to Ethereum in the network’s history?
+imgUrl: '../../assets/Monthly Stablecoin Report  1.webp'
+description: ''
 layout: '../../layouts/BlogPost.astro'
 ---
 Hey hey, stablecoinjoyers! Welcome to the very first post of the monthly stablecoin report! As you may be familiar from the weekly stablecoin report, we categorize stablecoins into three groups and blockchains into four. The groups of stablecoins are named "leagues" and the chains are named "tiers." Let's begin this month's stablecoin report. In this report, you will find:

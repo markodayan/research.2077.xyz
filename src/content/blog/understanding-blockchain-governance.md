@@ -1,11 +1,11 @@
 ---
-title: data-availability-in-ethereum-rollups
-pubDate: 05/12/2023
-author: Emmanuel Awosika
+title: understanding-blockchain-governance
+pubDate: 06/28/2024
+author: Fikunmi
 tags:
   - Defi
-imgUrl: '../../assets/EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'
-description: What event has represented the biggest existential threat to Ethereum in the network’s history?
+imgUrl: '../../assets/Understanding Blockchain Governance.webp'
+description: ''
 layout: '../../layouts/BlogPost.astro'
 ---
 The way most of us (including yours truly) think of blockchain governance is naive. We think governance is about deciding what forks the protocol undergoes or on-chain governance, but this is a gross reduction/oversimplification of governance. The formal processes that we often conflate with governance are a very small part of the actual process.

@@ -1,11 +1,11 @@
 ---
-title: data-availability-in-ethereum-rollups
-pubDate: 05/12/2023
-author: Emmanuel Awosika
+title: weekly-stable-report-2
+pubDate: 06/28/2024
+author: Arbnom
 tags:
   - Defi
-imgUrl: '../../assets/EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'
-description: What event has represented the biggest existential threat to Ethereum in the network’s history?
+imgUrl: '../../assets/Weekly Stablecoin Report  2-08.webp'
+description: ''
 layout: '../../layouts/BlogPost.astro'
 ---
 Hey hey stablecoinjoyers, we have awesome news! Starting now, your favorite weekly stablecoin report will be a part of Ethereum 2077. Are you ready for the very second post of our weekly stablecoin reports? In this report you will find:
