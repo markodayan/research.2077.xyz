@@ -5,6 +5,7 @@ author: Emmanuel Awosika
 tags:
   - Defi
 imgUrl: '../../assets/EIPs For Nerds  2- EIP-7002 (Execution Layer Triggerable Exits).webp'
+description: ''
 layout: '../../layouts/BlogPost.astro'
 ---
 Ethereum's transition from Proof of Work (Pow) to Proof of Stake (PoS), a.k.a., The Merge, was a key moment in the network's history. Besides giving Ethereum a much-needed rebrand by reducing its carbon footprint, Proof of Stake was crucial to a key long-term goal: reducing the barrier to participating in Ethereum's consensus. The Merge replaced computational resources (mining power) with financial capital as the basis of Ethereum's economic security—opening up the opportunity for anyone to profitably and easily run a validator node by staking 32 ETH on the Beacon Chain.

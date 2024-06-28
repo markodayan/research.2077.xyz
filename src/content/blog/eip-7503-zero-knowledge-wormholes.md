@@ -5,6 +5,7 @@ author: Emmanuel Awosika
 tags:
   - Defi
 imgUrl: '../../assets/EIPs For Nerds  5- EIP-7503 (Zero-Knowledge Wormholes).webp'
+description: ''
 layout: '../../layouts/BlogPost.astro'
 ---
 [EIP-7503: Zero-Knowledge Wormholes](https://eips.ethereum.org/EIPS/eip-7503)is an Ethereum Improvement Proposal (EIP) that introduces a mechanism for making privacy-preserving transfers on Ethereum. While we've seen many efforts to make on-chain transfers private, including cryptocurrency mixers like Tornado Cash, EIP-7503 is a protocol-layer solution that makes Ethereum _private by default_.

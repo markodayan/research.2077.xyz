@@ -5,6 +5,7 @@ author: Emmanuel Awosika
 tags:
   - Defi
 imgUrl: '../../assets/Verkle Trees For The Rest Of Us- Part I.webp'
+description: ''
 layout: '../../layouts/BlogPost.astro'
 ---
 So, you must have heard folks in the Ethereum community talk about "The Verge" upgrade—which comes after The Merge and The Surge in Vitalik's roadmap—and you know it has to do with something called "Verkle trees". But you're still in doubt and want answers to the following questions:
