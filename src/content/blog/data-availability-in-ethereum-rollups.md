@@ -1,11 +1,10 @@
 ---
 title: data-availability-in-ethereum-rollups
-pubDate: 05/12/2023
+pubDate: 06/28/2024
 author: Emmanuel Awosika
 tags:
   - Defi
 imgUrl: '../../assets/Data Availability Or- How Rollups Learned To Stop Worrying And Love Ethereum.webp'
-description: What event has represented the biggest existential threat to Ethereum in the network’s history?
 layout: '../../layouts/BlogPost.astro'
 ---
 

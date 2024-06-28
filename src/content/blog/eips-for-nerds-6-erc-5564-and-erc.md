@@ -1,11 +1,10 @@
 ---
 title: eips-for-nerds-6-erc-5564-and-erc
-pubDate: 05/12/2023
-author: Emmanuel Awosika
+pubDate: 06/28/2024
+author: Ethereum2077, Koray Akpinar
 tags:
   - Defi
-imgUrl: '../../assets/EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'
-description: What event has represented the biggest existential threat to Ethereum in the network’s history?
+imgUrl: '../../assets/EIPs For Nerds  6- ERC-5564 & ERC-6538- Stealth Addresses.webp'
 layout: '../../layouts/BlogPost.astro'
 ---
 In response to the growing demand for transaction privacy on public ledgers, Ethereum has seen the proposal of ERC-5564 and ERC-6538, which aim to introduce _stealth addresses_to enhance user privacy.

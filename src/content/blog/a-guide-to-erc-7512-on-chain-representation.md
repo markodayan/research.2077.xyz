@@ -5,7 +5,6 @@ author: Emmanuel Awosika
 tags:
   - Defi
 imgUrl: '../../assets/EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'
-description: What event has represented the biggest existential threat to Ethereum in the network’s history?
 layout: '../../layouts/BlogPost.astro'
 ---
 Imagine this scenario: you're playing \_Who Wants To Be A Millionaire?\_and a million-dollar question comes up: "What event has represented the biggest existential threat to Ethereum in the network's history?"

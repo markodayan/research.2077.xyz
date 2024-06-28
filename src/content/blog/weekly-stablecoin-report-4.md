@@ -1,11 +1,10 @@
 ---
-title: data-availability-in-ethereum-rollups
-pubDate: 05/12/2023
-author: Emmanuel Awosika
+title: weekly-stable-report-4
+pubDate: 06/28/2024
+author: Arbnom
 tags:
   - Defi
-imgUrl: '../../assets/EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'
-description: What event has represented the biggest existential threat to Ethereum in the network’s history?
+imgUrl: '../../assets/Weekly Stablecoin Report  4.webp'
 layout: '../../layouts/BlogPost.astro'
 ---
 Hey hey, stablecoinjoyers! Here is a quick update: From now on, our reviews will include stablecoins with market caps between $30 million and $100 million, as well as blockchains that have total stablecoin market caps between $30 million and $100 million. With this improvement, stablecoins are categorized into three groups and blockchains are four. To prevent misunderstandings, the groups of stablecoins are named "league" and the chains are named "tier." I hope you enjoy this improvement. Let's begin the third post of our weekly stablecoin reports. In this report, you will find:

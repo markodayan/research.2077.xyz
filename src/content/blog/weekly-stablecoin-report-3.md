@@ -1,11 +1,10 @@
 ---
-title: data-availability-in-ethereum-rollups
-pubDate: 05/12/2023
-author: Emmanuel Awosika
+title: weekly-stable-report-3
+pubDate: 06/28/2024
+author: Arbnom
 tags:
   - Defi
-imgUrl: '../../assets/EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'
-description: What event has represented the biggest existential threat to Ethereum in the network’s history?
+imgUrl: '../../assets/Weekly Stablecoin Report  2-09.webp'
 layout: '../../layouts/BlogPost.astro'
 ---
 Hey hey stablecoinjoyers! Here is a quick update: from now on I am not using screenshots taken from DefiLlama for graphs. Even though the main source is still DefiLlama, I will create my own graphs with the data retrieved by DefiLlama API. I hope you enjoy this improvement. Let's begin the third post of our weekly stablecoin reports. In this report, you will find:

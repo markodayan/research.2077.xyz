@@ -1,11 +1,10 @@
 ---
 title: verkle-trees-for-the-rest-of-us-part-1
-pubDate: 05/12/2023
+pubDate: 06/28/2024
 author: Emmanuel Awosika
 tags:
   - Defi
-imgUrl: '../../assets/EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'
-description: What event has represented the biggest existential threat to Ethereum in the network’s history?
+imgUrl: '../../assets/Verkle Trees For The Rest Of Us- Part I.webp'
 layout: '../../layouts/BlogPost.astro'
 ---
 So, you must have heard folks in the Ethereum community talk about "The Verge" upgrade—which comes after The Merge and The Surge in Vitalik's roadmap—and you know it has to do with something called "Verkle trees". But you're still in doubt and want answers to the following questions:
