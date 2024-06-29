@@ -1,15 +1,15 @@
 ---
-title: EIPs for nerds-6-ERC-5564 & ERC-6538 stealth addresses
+title: EIPs for nerds-6-ERC-5564 and ERC-6538 stealth addresses
 pubDate: 06/28/2024
 author: Ethereum2077, Koray Akpinar
 authorTwitterHandle: 2077Collective, korayakpinarr
 tags:
   - Defi
-imgUrl: '../../assets/EIPsForNerds6-ERC-5564&ERC-6538-StealthAddresses.webp'
+imgUrl: '../../assets/EIPsForNerds6-ERC-5564-ERC-6538-StealthAddresses.webp'
 description: 'Introducing stealth addresses to enhance user privacy'
 layout: '../../layouts/BlogPost.astro'
 ---
-![image](../../assets/EIPsForNerds6-ERC-5564&ERC-6538-StealthAddresses.webp)
+![image](../../assets/EIPsForNerds6-ERC-5564-ERC-6538-StealthAddresses.webp)
 
 In response to the growing demand for transaction privacy on public ledgers, Ethereum has seen the proposal of ERC-5564 and ERC-6538, which aim to introduce _stealth addresses_to enhance user privacy.
 
