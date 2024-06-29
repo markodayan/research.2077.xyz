@@ -5,10 +5,12 @@ author: Arbnom
 authorTwitterHandle: arbnom
 tags:
   - Defi
-imgUrl: '../../assets/Weekly Stablecoin Report  2-09.webp'
+imgUrl: '../../assets/WeeklyStablecoinReport2-09.webp'
 description: 'This week’s stablecoin report'
 layout: '../../layouts/BlogPost.astro'
 ---
+![image](../../assets/WeeklyStablecoinReport2-09.webp)
+
 Hey hey stablecoinjoyers! Here is a quick update: from now on I am not using screenshots taken from DefiLlama for graphs. Even though the main source is still DefiLlama, I will create my own graphs with the data retrieved by DefiLlama API. I hope you enjoy this improvement. Let's begin the third post of our weekly stablecoin reports. In this report, you will find:
 
 * Total review of the stablecoin market and a breakdown by projects.

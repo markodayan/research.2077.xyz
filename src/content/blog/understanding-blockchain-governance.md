@@ -5,10 +5,12 @@ author: Fikunmi
 authorTwitterHandle: eawosikaa
 tags:
   - Governance
-imgUrl: '../../assets/Understanding Blockchain Governance.webp'
+imgUrl: '../../assets/UnderstandingBlockchainGovernance.webp'
 description: 'Governance in the blockchain'
 layout: '../../layouts/BlogPost.astro'
 ---
+![image](../../assets/UnderstandingBlockchainGovernance.webp)
+
 The way most of us (including yours truly) think of blockchain governance is naive. We think governance is about deciding what forks the protocol undergoes or on-chain governance, but this is a gross reduction/oversimplification of governance. The formal processes that we often conflate with governance are a very small part of the actual process.
 
 Most blockchain governance happens on Twitter in the form of never-ending waves of psyops from stakeholders looking to coerce (subtly or aggressively) everyone else or at least the majority, to accept their vision as the future of blockchains. It's not immediately obvious that tweeting "eth is the future of the internet" or "restaking is bad" is propaganda and that's why I've written this article—to help you develop a complete mental framework of what blockchain governance is.

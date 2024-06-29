@@ -5,10 +5,12 @@ author: Ethereum2077, Koray Akpinar
 authorTwitterHandle: 2077Collective, korayakpinarr
 tags:
   - Defi
-imgUrl: '../../assets/EIPs For Nerds  6- ERC-5564 & ERC-6538- Stealth Addresses.webp'
+imgUrl: '../../assets/EIPsForNerds6-ERC-5564&ERC-6538-StealthAddresses.webp'
 description: 'Introducing stealth addresses to enhance user privacy'
 layout: '../../layouts/BlogPost.astro'
 ---
+![image](../../assets/EIPsForNerds6-ERC-5564&ERC-6538-StealthAddresses.webp)
+
 In response to the growing demand for transaction privacy on public ledgers, Ethereum has seen the proposal of ERC-5564 and ERC-6538, which aim to introduce _stealth addresses_to enhance user privacy.
 
 Officially proposed on August 13, 2022, for ERC-5564, and January 24, 2023, for ERC-6538, these enhancements represent pivotal steps toward securing private transactions without altering Ethereum's core protocol. ERC-5564, known as the Stealth Address Protocol (SAP), and ERC-6538, titled Stealth Meta-Address Registry, can be explored in detail through their respective proposals, available at [ERC-5564](https://eips.ethereum.org/EIPS/eip-5564#motivation)and [ERC-6538](https://eips.ethereum.org/EIPS/eip-6538).

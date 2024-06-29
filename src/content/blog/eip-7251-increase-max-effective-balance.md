@@ -5,10 +5,12 @@ author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - Defi
-imgUrl: '../../assets/EIPs For Nerds  3- EIP-7251 (Increase MAX_EFFECTIVE_BALANCE).webp'
+imgUrl: '../../assets/EIPsForNerds3-EIP-7251(IncreaseMAX_EFFECTIVE_BALANCE).webp'
 description: 'Beyond Proof of Stake in the Ethereum ecosystem'
 layout: '../../layouts/BlogPost.astro'
 ---
+![image](../../assets/EIPsForNerds3-EIP-7251(IncreaseMAX_EFFECTIVE_BALANCE).webp)
+
 Being a rational optimist isn't just about working to solve problems; it also involves (a) acknowledging you might create _new_problems—which will only show up later—in the process of solving an existing problem, and (b) dealing with the despair that comes from seeing how your previous problem-solving actions led to _another_problem in the present. As a [TED Talk](https://penguinrandomhousehighereducation.com/2018/05/21/steven-pinker-progress-ted-talk/)once put it, the art of progress is essentially creating new problems to solve:
 
 > _"Progress does not mean that everything becomes better for everyone everywhere all the time. That would be a miracle, and progress is not a miracle but problem-solving. Problems are inevitable and solutions create new problems which have to be solved in their turn." — Steve Pinker_

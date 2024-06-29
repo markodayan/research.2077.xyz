@@ -5,10 +5,12 @@ author: Arbnom
 authorTwitterHandle: arbnom
 tags:
   - Defi
-imgUrl: '../../assets/Weekly Stablecoin Report  5.webp'
+imgUrl: '../../assets/WeeklyStablecoinReport5.webp'
 description: 'This week’s stablecoin report'
 layout: '../../layouts/BlogPost.astro'
 ---
+![image](../../assets/WeeklyStablecoinReport5.webp)
+
 Hey hey, stablecoinjoyers! As you may remember from [previous reports](https://ethereum2077.substack.com/s/stablecoin-reports), we categorize stablecoins into three groups and blockchains into four. The groups of stablecoins are named "leagues" and the chains are named "tiers." Let's begin this week's stablecoin report. In this report, you will find:
 
 * Total review of the stablecoin market and a breakdown by projects.

@@ -5,10 +5,11 @@ author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - Defi
-imgUrl: '../../assets/Data Availability Or- How Rollups Learned To Stop Worrying And Love Ethereum.webp'
+imgUrl: '../../assets/DataAvailabilityOr-HowRollupsLearnedToStopWorryingAndLoveEthereum.webp'
 description: 'Data availability is a crucial part of building on the blockchain'
 layout: '../../layouts/BlogPost.astro'
 ---
+![image](../../assets/DataAvailabilityOr-HowRollupsLearnedToStopWorryingAndLoveEthereum.webp)
 
 Data availability is a crucial part of the conversation around blockchain scaling: Layer 2 (L2) rollups are the preferred scaling solution for Ethereum today because availability of the L2 state is enforced by the L1 network. Even so, data availability is poorly understood—particularly in the context of rollups and other flavors of off-chain scaling.
 

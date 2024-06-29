@@ -5,10 +5,12 @@ author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - Defi
-imgUrl: '../../assets/EIPs For Nerds  5- EIP-7503 (Zero-Knowledge Wormholes).webp'
+imgUrl: '../../assets/EIPsForNerds5-EIP-7503(Zero-KnowledgeWormholes).webp'
 description: 'Making privacy-preserving transfers on Ethereum'
 layout: '../../layouts/BlogPost.astro'
 ---
+![image](../../assets/EIPsForNerds5-EIP-7503(Zero-KnowledgeWormholes).webp)
+
 [EIP-7503: Zero-Knowledge Wormholes](https://eips.ethereum.org/EIPS/eip-7503)is an Ethereum Improvement Proposal (EIP) that introduces a mechanism for making privacy-preserving transfers on Ethereum. While we've seen many efforts to make on-chain transfers private, including cryptocurrency mixers like Tornado Cash, EIP-7503 is a protocol-layer solution that makes Ethereum _private by default_.
 
 This is an important consideration: application-layer approaches to privacy like Tornado Cash are "opt-in", which often has negative implications for users. Privacy-focused applications are also more susceptible to censorship; for example, many users (especially US citizens) have been unable to interact with Tornado Cash after the Office of Foreign Assets Control (OFAC) [blacklisted the protocol's contract addresses in 2022](https://www.coindesk.com/policy/2022/08/08/crypto-mixing-service-tornado-cash-blacklisted-by-us-treasury/).
