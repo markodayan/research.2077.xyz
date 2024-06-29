@@ -1,5 +1,5 @@
 ---
-title: Understanding Bblockchain Governance
+title: Understanding Blockchain Governance
 pubDate: 06/28/2024
 author: Fikunmi
 authorTwitterHandle: eawosikaa
