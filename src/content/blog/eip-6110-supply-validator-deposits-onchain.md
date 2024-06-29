@@ -5,10 +5,11 @@ author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - Defi
-imgUrl: '../../assets/EIPs For Nerds  4- EIP-6110 (Supply Validator Deposits On-Chain).webp'
+imgUrl: '../../assets/EIPsForNerds4-EIP-6110(SupplyValidatorDepositsOn-Chain).webp'
 description: 'Sending ETH from Ethereum execution layer to the consensus layer'
 layout: '../../layouts/BlogPost.astro'
 ---
+![image](../../assets/EIPsForNerds4-EIP-6110(SupplyValidatorDepositsOn-Chain).webp)
 The Beacon Chain has undergone a lot of changes since the Merge: a testament to an idea I described in the last article—with a complex, evolving protocol like the Beacon Chain, the work is never done and developers will _always_have something to fix. For context, the EIPs For Nerds series has covered two proposals that fix key issues : security of delegated staking ([EIP-7002](https://ethereum2077.substack.com/p/eip-7002-execution-layer-exits)) and unchecked validator set growth ([EIP-7251](https://ethereum2077.substack.com/p/eip-7251-increase-max-effective-balance)).
 
 Keeping up with the theme of discussing upgrades to Ethereum's consensus layer, the next article in the EIPs For Nerds series focuses on EIP-6110. [EIP-6110: Supply Validator Deposits On-Chain](https://eips.ethereum.org/EIPS/eip-6110)is an Ethereum Improvement Proposal (EIP) that reforms the Beacon Chain's validator deposit mechanism and fixes a laundry list of issues currently affecting the security and efficiency of Ethereum's Proof of Stake protocol. These issues, which I'll go into later, stem from the reliance of deposit processing on the **Eth1-Eth2 bridge**.
