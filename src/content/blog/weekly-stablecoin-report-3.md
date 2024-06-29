@@ -4,7 +4,7 @@ pubDate: 06/28/2024
 author: Arbnom
 authorTwitterHandle: arbnom
 tags:
-  - Defi
+  - DeFi
 imgUrl: '../../assets/WeeklyStablecoinReport2-09.webp'
 description: 'This week’s stablecoin report'
 layout: '../../layouts/BlogPost.astro'

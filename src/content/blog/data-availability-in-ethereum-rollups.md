@@ -4,7 +4,7 @@ pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - Defi
+  - DeFi
 imgUrl: '../../assets/DataAvailabilityOr-HowRollupsLearnedToStopWorryingAndLoveEthereum.webp'
 description: 'Data availability is a crucial part of building on the blockchain'
 layout: '../../layouts/BlogPost.astro'

@@ -4,7 +4,7 @@ pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - Defi
+  - DeFi
 imgUrl: '../../assets/EIPsForNerds1-ERC-7512(On-ChainRepresentationForSecurityAudits).webp'
 description: 'What event has represented the biggest existential threat to Ethereum in the network`s history?'
 layout: '../../layouts/BlogPost.astro'

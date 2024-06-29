@@ -4,7 +4,7 @@ pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - Defi
+  - DeFi
 imgUrl: '../../assets/VerkleTreesForTheRestOfUs-PartI.webp'
 description: 'Much ado about Verkle trees'
 layout: '../../layouts/BlogPost.astro'

@@ -4,7 +4,7 @@ pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - Defi
+  - DeFi
 imgUrl: '../../assets/EIPsForNerds3-EIP-7251(IncreaseMAX_EFFECTIVE_BALANCE).webp'
 description: 'Beyond Proof of Stake in the Ethereum ecosystem'
 layout: '../../layouts/BlogPost.astro'

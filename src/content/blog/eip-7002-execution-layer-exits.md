@@ -4,7 +4,7 @@ pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - Defi
+  - DeFi
 imgUrl: '../../assets/EIPsForNerds2-EIP-7002(ExecutionLayerTriggerableExits).webp'
 description: 'The Proof of Stake model was crucial to a key long-term goal in EThereum'
 layout: '../../layouts/BlogPost.astro'
