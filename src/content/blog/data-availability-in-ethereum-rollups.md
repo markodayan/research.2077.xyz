@@ -1,5 +1,5 @@
 ---
-title: data-availability-in-ethereum-rollups
+title: Data availability in Ethereum rollups
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa

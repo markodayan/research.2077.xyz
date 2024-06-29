@@ -1,5 +1,5 @@
 ---
-title: eip-6110-supply-validator-deposits-onchain
+title: EIP-6110 supply validator deposits onchain
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa

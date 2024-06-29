@@ -1,5 +1,5 @@
 ---
-title: eip-7251-increase-max-effective-balance
+title: EIP-7251 increase max effective balance
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa

@@ -1,5 +1,5 @@
 ---
-title: eip-7002-execution-layer-exits
+title: EIP-7002 execution layer exits
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa

@@ -1,5 +1,5 @@
 ---
-title: eips-for-nerds-6-erc-5564-and-erc
+title: EIPs for nerds-6-ERC-5564 & ERC-6538 stealth addresses
 pubDate: 06/28/2024
 author: Ethereum2077, Koray Akpinar
 authorTwitterHandle: 2077Collective, korayakpinarr

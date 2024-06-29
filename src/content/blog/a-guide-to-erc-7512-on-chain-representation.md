@@ -1,5 +1,5 @@
 ---
-title: a-guide-to-erc-7512-on-chain-representation
+title: A guide to ERC-7512 on-chain representation
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa

@@ -1,5 +1,5 @@
 ---
-title: weekly-stable-report-5
+title: Weekly stable report-5
 pubDate: 06/28/2024
 author: Arbnom
 authorTwitterHandle: arbnom

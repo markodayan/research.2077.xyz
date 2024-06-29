@@ -1,5 +1,5 @@
 ---
-title: verkle-trees-for-the-rest-of-us-part-1
+title: Verkle trees for the rest of us part-1
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
