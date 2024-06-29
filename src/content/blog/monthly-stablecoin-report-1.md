@@ -2,6 +2,7 @@
 title: monthly-stablecoin-report-1
 pubDate: 06/28/2024
 author: Arbnom
+authorTwitterHandle: arbnom
 tags:
   - Defi
 imgUrl: '../../assets/Monthly Stablecoin Report  1.webp'

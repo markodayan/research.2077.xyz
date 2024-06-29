@@ -2,16 +2,20 @@
 import { Image } from 'astro:assets';
 interface Props {
   content: any;
+  imgSrc: ImageMetadata;
+  imgAlt: string;
 }
 
-const { content } = Astro.props;
+const { content, imgSrc, imgAlt } = Astro.props;
 ---
 
 <article class='p-6 md:w-full md:prose body'>
   <a href='/' title='Back to research'>&larr; Back to Research</a>
   
   <p class='text-slate text-sm md:text-base'>
-    Published on {content.pubDate} by {content.author}
+    Published on {content.pubDate} by <a href={`https://twitter.com/${content.authorTwitterHandle}`} target="_blank">
+  {content.author}
+  </a>
   </p>
   <slot />
   <p class='text-slate'>Written by {content.author}</p>
@@ -25,6 +29,7 @@ const { content } = Astro.props;
 
   .body {
     margin-block: 8rem;
+    max-width: 88ch;
     font-size: clamp(1rem, 0.913rem + 0.4348vi, 1.25rem) !important;
   }
 </style>

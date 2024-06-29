@@ -2,6 +2,7 @@
 title: eip-7002-execution-layer-exits
 pubDate: 06/28/2024
 author: Emmanuel Awosika
+authorTwitterHandle: eawosikaa
 tags:
   - Defi
 imgUrl: '../../assets/EIPs For Nerds  2- EIP-7002 (Execution Layer Triggerable Exits).webp'

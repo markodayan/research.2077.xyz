@@ -2,6 +2,7 @@
 title: eip-6110-supply-validator-deposits-onchain
 pubDate: 06/28/2024
 author: Emmanuel Awosika
+authorTwitterHandle: eawosikaa
 tags:
   - Defi
 imgUrl: '../../assets/EIPs For Nerds  4- EIP-6110 (Supply Validator Deposits On-Chain).webp'

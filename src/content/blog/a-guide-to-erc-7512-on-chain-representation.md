@@ -2,6 +2,7 @@
 title: a-guide-to-erc-7512-on-chain-representation
 pubDate: 06/28/2024
 author: Emmanuel Awosika
+authorTwitterHandle: eawosikaa
 tags:
   - Defi
 imgUrl: '../../assets/EIPs For Nerds  1- ERC-7512 (On-Chain Representation For Security Audits).webp'

@@ -2,6 +2,7 @@
 title: eip-7503-zero-knowledge-wormholes
 pubDate: 06/28/2024
 author: Emmanuel Awosika
+authorTwitterHandle: eawosikaa
 tags:
   - Defi
 imgUrl: '../../assets/EIPs For Nerds  5- EIP-7503 (Zero-Knowledge Wormholes).webp'

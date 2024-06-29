@@ -2,6 +2,7 @@
 title: eip-7251-increase-max-effective-balance
 pubDate: 06/28/2024
 author: Emmanuel Awosika
+authorTwitterHandle: eawosikaa
 tags:
   - Defi
 imgUrl: '../../assets/EIPs For Nerds  3- EIP-7251 (Increase MAX_EFFECTIVE_BALANCE).webp'

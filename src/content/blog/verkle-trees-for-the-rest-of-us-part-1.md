@@ -2,6 +2,7 @@
 title: verkle-trees-for-the-rest-of-us-part-1
 pubDate: 06/28/2024
 author: Emmanuel Awosika
+authorTwitterHandle: eawosikaa
 tags:
   - Defi
 imgUrl: '../../assets/Verkle Trees For The Rest Of Us- Part I.webp'

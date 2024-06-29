@@ -2,6 +2,7 @@
 title: weekly-stable-report-2
 pubDate: 06/28/2024
 author: Arbnom
+authorTwitterHandle: arbnom
 tags:
   - Defi
 imgUrl: '../../assets/Weekly Stablecoin Report  2-08.webp'
