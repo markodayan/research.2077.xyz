@@ -1,26 +1,33 @@
+---
+import MobileNav from "../layout/MobileNav.astro";
+---
 
 <header>
   <nav class="navigation">
     <div class="navigation_links">
       <div>
         <a href="/" class="logo">
-          <img src="/logo.svg" alt="">
+          <img src="/logo.svg" alt="" />
         </a>
       </div>
       <ul class="navigation_list">
         <li>
-          <a class="linkText" href="/blog">Blog</a>
-        </li>
-        <li>
-          <a class="linkText" href="/blog">Research</a>
+          <a class="linkText" href="/blog">All Research</a>
         </li>
       </ul>
     </div>
-    <ul class="navigation_social">
-      <li>
-        <a href="https://discord.com/invite/n2MCt83TBZ"  class="button-primary">Join Community</a>
-      </li>
-    </ul>
+    <div class="navigation_links">
+      <div class="menu">
+        <MobileNav />
+      </div>
+      <ul class="navigation_social">
+        <li>
+          <a href="https://discord.com/invite/n2MCt83TBZ" class="button-primary"
+            >Join Community</a
+          >
+        </li>
+      </ul>
+    </div>
   </nav>
 </header>
 
@@ -28,23 +35,23 @@
 <div class="navigation_mobile"><MobileMenu text="Join" /></div> -->
 
 <style lang="scss" is:global>
-
   header {
-    border-bottom: .5px solid rgb(229, 227, 227);
+    border-bottom: 0.5px solid rgb(229, 227, 227);
     padding-inline: 1.5rem;
 
-    ul,li {
+    ul,
+    li {
       list-style-type: none;
     }
 
     a {
-      font-family: "avenir-medium", sans-serif;
+      font-family: "avenir-heavy", sans-serif;
       font-size: 1.2rem;
-
     }
 
     .navigation {
       display: flex;
+      column-gap: 1.2rem;
       align-items: center;
       justify-content: center;
       margin-inline: var(--space-body);
@@ -59,11 +66,42 @@
         display: none;
         align-items: center;
         column-gap: 1.6rem;
+
+        a {
+          font-size: 1.4rem;
+          font-weight: 800;
+        }
       }
       &_social {
         display: none;
         align-items: center;
         column-gap: 1.2rem;
+
+        a {
+          filter: drop-shadow(5px 5px 0 rgb(0 0 0 / 1));
+          background-color: #8bf797;
+          display: inline-block;
+          padding: 0.5rem 1rem;
+          border: 2px solid black;
+          transition: all;
+          transition-duration: 0.5s;
+          animation: ease-in-out;
+          font-family: "Sanchez", serif;
+
+          &:hover {
+            background-color: #45734a;
+            color: #fff;
+          }
+        }
+      }
+      .menu {
+        span {
+          text-transform: uppercase;
+          font-size: 1.2rem;
+          font-family: "avenir-black";
+          letter-spacing: -1.2px;
+          cursor: pointer;
+        }
       }
     }
 

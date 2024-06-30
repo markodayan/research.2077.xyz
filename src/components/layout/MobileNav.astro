@@ -1,0 +1,98 @@
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    window.openNav = function() {
+      document.getElementById("myNav").style.width = "100%";
+    }
+
+    window.closeNav = function() {
+      document.getElementById("myNav").style.width = "0%";
+    }
+  });
+</script>
+
+<div id="myNav" class="overlay">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+  <div class="overlay-content">
+    <a class="linkText" href="/blog">All Research</a>
+      <ul class="navigation_social">
+        <li>
+          <a href="https://discord.com/invite/n2MCt83TBZ" class="button-primary"
+            >Join Community</a
+          >
+        </li>
+      </ul>
+  </div>
+</div>
+
+<span class="menu" onclick="openNav()">menu</span>
+
+<style>
+  .overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    background-color: #090909;
+    background-color: #090909;
+    overflow-x: hidden;
+    transition: 0.5s;
+  }
+
+  .overlay-content {
+    position: relative;
+    top: 25%; 
+    width: 100%;
+    margin-top: 1.4rem;
+    margin-inline-start: 1.2rem;
+
+    .navigation_social {
+      display: block !important;
+      margin-block-start: 4rem;
+
+      a {
+        color: #000 !important;
+        filter: drop-shadow(5px 5px 0 rgb(255, 255, 255));
+
+        &:hover {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
+  
+  .overlay a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: clamp(1.125rem, 1.0815rem + 0.2174vi, 1.25rem);
+    color: #fff;
+    display: inline-block;
+    transition: 0.3s;
+  }
+
+  .overlay .closebtn {
+    position: absolute;
+    top: 1.2rem;
+    right: 3rem;
+    font-size: 3.5rem;
+  }
+
+  @media screen and (max-height: 450px) {
+    .overlay a {
+      font-size: 1.4rem;
+    }
+    .overlay .closebtn {
+      font-size: 2.4rem;
+      top: 1rem;
+      right: 2rem;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+      .menu {
+      display: none;}
+    }
+</style>
