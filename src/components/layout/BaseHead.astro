@@ -11,7 +11,7 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 if (Astro.props.ogImage === undefined) {
-  Astro.props.ogImage = new URL('../../assets/EIPsForNerds7-EIP-7657(SyncCommitteeSlashings).webp', Astro.url);
+  Astro.props.ogImage = new URL(`${Astro.url.origin}/assets/EIPsForNerds7-EIP-7657(SyncCommitteeSlashings).webp`);
 }
 
 const { title, description, ogImage } = Astro.props;
