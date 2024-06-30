@@ -1,5 +1,5 @@
 ---
-title: EIP-7002 execution layer exits
+title: "EIPs for Nerds #2: EIP-7002(Execution Layer Exits)"
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa

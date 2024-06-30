@@ -1,5 +1,5 @@
 ---
-title: Data availability in Ethereum rollups
+title: "Data Availability Or: How Rollups Learned To Stop Worrying And Love Ethereum"
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa

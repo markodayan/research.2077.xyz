@@ -1,5 +1,5 @@
 ---
-const tags = ['Defi', 'Governance', 'Infrastructure', 'Applications', 'Protocol R \& D'];
+const tags = ['DeFi', 'Governance', 'Infrastructure', 'Applications', 'Protocol R \& D'];
 ---
 
 
@@ -8,7 +8,6 @@ const tags = ['Defi', 'Governance', 'Infrastructure', 'Applications', 'Protocol 
     tags.map((tag) => {
       return (
         <a class="nav-link carousel-cell" href={`/blog/tags/${tag.toLowerCase()}/`}>
-          <img src="/design.svg" alt="" />
           {tag}
         </a>
       );
@@ -37,8 +36,8 @@ const tags = ['Defi', 'Governance', 'Infrastructure', 'Applications', 'Protocol 
       display: flex;
       align-items: center;
       column-gap: 0.2rem;
-      font-size: 0.85rem;
-      font-weight: 600;
+      font-size: 1rem;
+      font-weight: 700;
       background-color: var(--semantic-green-light-hover);
       color: var(--leather-dark-hover);
       min-width: fit-content;

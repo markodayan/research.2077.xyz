@@ -1,5 +1,5 @@
 ---
-title: EIP-7251 increase max effective balance
+title: "EIPs for Nerds #3: EIP-7251(Increase Max Effective Balance)"
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa

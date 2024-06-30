@@ -1,5 +1,5 @@
 ---
-title: EIP-7503 zero knowledge wormholes
+title: "EIPs for Nerds #5: EIP-7503 (Zero-Knowledge Wormholes)"
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa

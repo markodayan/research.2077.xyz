@@ -1,5 +1,5 @@
 ---
-title: Weekly stablecoin report-3
+title: "Weekly stablecoin report #3"
 pubDate: 06/28/2024
 author: Arbnom
 authorTwitterHandle: arbnom
