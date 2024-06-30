@@ -13,10 +13,10 @@ interface Props {
 
 const { title, pubDate, imgAlt, imgSrc, description } = Astro.props;
 
-const formattedDate = new Intl.DateTimeFormat("en-US", {
+const formattedDate = new Intl.DateTimeFormat("en-GB", {
   year: "numeric",
-  month: "long",
-  day: "numeric"
+  month: "2-digit",
+  day: "2-digit",
 }).format(new Date(pubDate));
 ---
 

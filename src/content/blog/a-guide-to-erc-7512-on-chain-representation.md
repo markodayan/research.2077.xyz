@@ -1,12 +1,13 @@
 ---
-title: A guide to ERC-7512 on-chain representation
-pubDate: 06/28/2024
+title: "EIPs For Nerds #1: ERC-7512 (On-Chain Representation For Security Audits)"
+pubDate: 05/12/2023
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - DeFi
 imgUrl: '../../assets/EIPsForNerds1-ERC-7512(On-ChainRepresentationForSecurityAudits).webp'
-description: 'What event has represented the biggest existential threat to Ethereum in the network`s history?'
+image: ./images/article.svg
+description: '"Decentralize X and put it on the blockchain" has never sounded so good.'
 layout: '../../layouts/BlogPost.astro'
 ---
 ![image](../../assets/EIPsForNerds1-ERC-7512(On-ChainRepresentationForSecurityAudits).webp)
@@ -50,6 +51,8 @@ It's possible to decentralize storage of audit information by storing audit data
 
 Putting audit reports on-chain won't exactly solve DeFi's security problem (and this is a subtle but crucial consideration related to this ERC), but it \_can_solve the aforementioned problems— and, in the process, increase transparency and bolster user confidence in the safety of various smart contracts. In the next sections, I'll dive into the technical details of ERC-7512 before touching on the importance of this proposal to the Ethereum ecosystem.
 
+![image](./images/eip1.webp)
+
 This section provides a high-level overview of ERC-7512's technical details; note that (a) The ERC is in the draft stage, and so details may change (I'll encourage tracking changes to the EIP via the EIP website or [Ethereum Magicians forum](https://ethereum-magicians.org/t/erc-7512-onchain-audit-representation/15683/1)) (b) The overview has a simple scope—for more technically-inclined readers interested in more details, the ERC document provides more comprehensive technical specs for ERC-7512.
 
 For a quick overview: ERC-7512 is a standard for creating on-chain, verifiable representations of audit reports that external contracts can parse to extract specific information about a contract's audit procedure, such as the auditors that contributed to the audit and the list of ERC standards supported. ERC-7512 doesn't declare a particular interface or function for extracting audit data and instead allows developers to implement bespoke schemes for retrieving information from on-chain audits.
@@ -73,6 +76,8 @@ Unlike the status quo, where the audit report sits off-chain and the code is on-
 So, how might this work in practice?
 
 The authors of ERC-7512 have (fortunately) provided an example to demonstrate one application of the standard: verifying ERC compatibility before integrating tokens with a bridge. Here's a diagram representing the interaction between the "user" (responsible for providing signed audit for verification), "bridge operator" (responsible for verifying token contract audit), and "verifier" (a smart contract that verifies the signature extracted from the hash of the signed audit and checks specific security-related information from the audit report):
+
+![image](./images/eip1-2.webp)
 
 - The `user `in the diagram is bridging tokens for the first time and passes the audit report to the `bridge operator`. The `bridge operator`is assumed to have registered a list of public keys associated with "trusted" auditors in the verifier contract. The `verifier `is a contract that checks whether a new token is eligible for bridging (per rules defined by the bridge operator)
 - The `verifier`contract checks that (a) the audit is signed by a trusted auditor and (b) the audited contract implements the required ERC(s) (ERC-1115 in this example); this can be done by checking the `ercs `section of the audit summary digest. If the audit check passes, the `bridge operator`can now proceed to (manually) provide permission to bridge the new token.
@@ -119,9 +124,13 @@ The trick is to (a) separate a dapp's state and logic into separate contracts: a
 
 While proxy patterns used to be simpler (one proxy contract and one implementation contract at any point in time), newer patterns—especially the [Diamond Pattern](https://medium.com/@MarqyMarq/how-to-implement-the-diamond-standard-69e87dae44e6)—allow contracts to point to any number of implementation contracts. Here's a handy graphic showing the interaction between contracts in in a proxy pattern (you can [read the article](https://blog.openzeppelin.com/proxy-patterns)for a more comprehensive introduction to proxy upgrades):
 
+![image](./images/eip1-3.webp)
+
 If I haven't lost you with developer-speak, then perhaps you already see the problem: if the audited contract is a proxy, an ERC-7512-style on-chain audit won't exactly assure external verifiers of the contract's safety since the actual code executed when users call the proxy's functions—and which will be the source of any serious vulnerability—is stored at a separate address. For ERC-7512 to be useful in this scenario, there has to be an additional piece of data in the audit summary to show that the proxy and any implementation(s) it uses at runtime have passed an audit.
 
 Fortunately, the authors of ERC-7512 have started work on adding support for proxies as the [latest pull request to edit the ERC proposal on GitHub](https://github.com/OnchainAudit/EIPs/pull/2)shows. Even so, given the complexity of proxies, there might be some more wrinkles to work out to make validating audit information for contract proxies easier and more secure. [This article](https://medium.com/rektoff/an-in-depth-analysis-of-erc-7512-onchain-representation-for-security-reviews-aa1121839ff3)by Gregory Makodzeba—which does an amazing job of exploring ERC-7512 from an auditor's perspective— has some insights on the challenges of adopting ERC-7512 to support proxies and is worth reading.
+
+![image](./images/eip1-4.webp)
 
 3. ERC-7512 proposes that a third-party verifier should register the public key associated with a "trusted auditor" before validating the authenticity of an audit report. I've explained why authenticating auditor identities this way is valuable, and won't go into details here; the part that's important to a discussion of ERC-7512's limitations is the "trusted" part. The ERC document doesn't mention details about how an audit company will receive a "trusted auditor" classification, but it's easy to think that protocols will likely consider audit companies with a positive track record and robust reputations in the industry.
 

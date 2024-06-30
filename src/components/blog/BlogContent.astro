@@ -11,11 +11,16 @@ const { content, imgSrc, imgAlt } = Astro.props;
 
 <article class='p-6 md:w-full md:prose body'>
   <a href='/' title='Back to research'>&larr; Back to Research</a>
+
+  <h2>{content.title}</h2>
+
+  <p class="description">{content.description}</p>
   
   <p class='text-slate text-sm md:text-base'>
-    Published on {content.pubDate} by <a href={`https://twitter.com/${content.authorTwitterHandle}`} target="_blank">
-  {content.author}
+    Written by <a href={`https://twitter.com/${content.authorTwitterHandle}`} target="_blank">
+  {content.author} 
   </a>
+  - {content.pubDate}
   </p>
   <slot />
 </article>
@@ -25,6 +30,15 @@ const { content, imgSrc, imgAlt } = Astro.props;
     font-size: 1.2rem;
   }
 
+  .description {
+    font-size: 1.4rem;
+    font-family: "avenir-medium";
+    color: rgb(94, 93, 93);
+  }
+
+  h2 {
+    font-size: clamp(1.75rem, 1.4022rem + 1.7391vi, 2.75rem);
+  }
   .body {
     margin-block: 8rem;
     max-width: 88ch;

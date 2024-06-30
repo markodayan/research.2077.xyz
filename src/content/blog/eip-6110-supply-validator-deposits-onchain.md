@@ -1,5 +1,5 @@
 ---
-title: "EIPs for Nerds #4: EIP-6110(Supply Validator Deposits Onchain)"
+title: "EIPs for Nerds #4: EIP-6110(Supply Validator Deposits Onchain) → EIPs for Nerds #4: EIP-6110 (Supply Validator Deposits Onchain)"
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa

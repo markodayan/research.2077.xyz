@@ -1,5 +1,5 @@
 ---
-title: "EIPs for Nerds #2: EIP-7002(Execution Layer Exits)"
+title: "EIPs for Nerds #2: EIP-7002(Execution Layer Exits → EIPs for Nerds #2: EIP-7002 (Execution Layer Exits)"
 pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa

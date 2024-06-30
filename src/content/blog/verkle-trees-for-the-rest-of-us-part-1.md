@@ -1,12 +1,12 @@
 ---
 title: "Verkle Trees For The Rest Of Us: Part 1"
-pubDate: 06/28/2024
+pubDate: 12/15/2023
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - DeFi
 imgUrl: '../../assets/VerkleTreesForTheRestOfUs-PartI.webp'
-description: 'Much ado about Verkle trees'
+description: 'An ELI5-style article series on Ethereum’s next major upgrade: The Verge'
 layout: '../../layouts/BlogPost.astro'
 ---
 ![image](../../assets/VerkleTreesForTheRestOfUs-PartI.webp)
