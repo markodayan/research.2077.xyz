@@ -1,15 +1,16 @@
 ---
-title: "EIPs for Nerds #4: EIP-6110(Supply Validator Deposits Onchain) → EIPs for Nerds #4: EIP-6110 (Supply Validator Deposits Onchain)"
-pubDate: 03/13/2024
+title: "EIPs For Nerds #2: EIP-7002 (Execution Layer Triggerable Exits)"
+pubDate: 01/08/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - Infrastructure
   - Layer 1
-imgUrl: '../../assets/EIPsForNerds4-EIP-6110(SupplyValidatorDepositsOn-Chain).webp'
-description: 'EIP-6110 deprecates the Eth1-Eth2 bridge and reforms the Beacon Chain's validator deposit processing mechanism for better staking UX and improved network security.'
+imgUrl: '../../assets/EIPsForNerds2-EIP-7002(ExecutionLayerTriggerableExits).webp'
+description: 'EIP-7002 brings Ethereum closer to the goal of simple, secure, and trustless staking.'
 layout: '../../layouts/BlogPost.astro'
 ---
+
 
 ![image](../../assets/EIPsForNerds4-EIP-6110(SupplyValidatorDepositsOn-Chain).webp)
 
