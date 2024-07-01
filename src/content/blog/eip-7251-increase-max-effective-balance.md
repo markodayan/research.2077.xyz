@@ -25,7 +25,7 @@ Let's dive in!
 
 ## Setting the stage: A lack of serenity in Ethereum’s consensus 
 
-Ethereum's transition Proof of Stake (fka "Ethereum 2.0") was [originally called the Serenity upgrade](https://www.gemini.com/cryptopedia/ethereum-2-0-blockchain-roadmap-proof-of-stake-pos)(I don't know why the name "Serenity" was chosen—but many expected the Serenity upgrade to fix all of Ethereum's problems, so the name seems fitting). Now, the Ethereum 2.0 (note that I'm using "Ethereum 2.0" for historical context only) we got isn't quite the Ethereum 2.0 some imagined it would be (i.e., achieving Visa-like scale with execution sharding, or transitioning from the EVM to eWASM for more efficiency), but it _works_.
+Ethereum's transition Proof of Stake (fka "Ethereum 2.0") was [originally called the Serenity upgrade](https://www.gemini.com/cryptopedia/ethereum-2-0-blockchain-roadmap-proof-of-stake-pos) (I don't know why the name "Serenity" was chosen—but many expected the Serenity upgrade to fix all of Ethereum's problems, so the name seems fitting). Now, the Ethereum 2.0 (note that I'm using "Ethereum 2.0" for historical context only) we got isn't quite the Ethereum 2.0 some imagined it would be (i.e., achieving Visa-like scale with execution sharding, or transitioning from the EVM to eWASM for more efficiency), but it _works_.
 
 For example,[solo stakers currently make up a decent percentage](https://blog.rated.network/blog/solo-stakers)of the Beacon Chain's validator set—recall that reducing the barrier to running a validator was a key goal of switching to Proof of Stake—and Ethereum PoS has remained ["World War III-resistant"](https://time.com/6212184/justin-drake-ethereum-merge/#:~:text=World%20War%20III%2Dresistant)despite concerns around centralization of stake. There _are_rough spots, including [something about LSDs](https://github.com/djrtwo/writing/blob/main/docs/2022-05-30_the-risks-of-lsd.md)(not the drug), but nothing enough to stop the Beacon Chain from operating as the economically secure, "green," decentralized settlement layer it was designed to be.
 
@@ -41,7 +41,7 @@ While Ethereum's validator set growth was inevitable, especially with the popula
 
 The design decision in question? Limiting validator's maximum effective balance (`MAX_EFFECTIVE_BALANCE`) to 32 ETH. In the next section we'll see what effective balance means, and explore how capping the maximum effective balance at 32 ETH contributes to the Beacon Chain's growing validator set.
 
-## Understanding MAX_EFFECTIVE_BALANCE in Ethereum
+## Understanding `MAX_EFFECTIVE_BALANCE in Ethereum
 
 A validator on Ethereum has two balances: an _actual_balance and an _effective_balance. The "actual balance" is simply the sum of the validator's initial deposit and the rewards minus any penalties and withdrawals. The effective balance is derived from the validator's actual balance and represents "the maximum amount a validator has at risk from the protocol's perspective." We can further break down this definition to have a better mental model of a validator's effective balance:
 
@@ -178,17 +178,23 @@ This makes sense from the operator's perspective as they only have to sign one m
 
 **EIP-7251** (appropriately named **EIP-7251: Increase MAX_EFFECTIVE_BALANCE**) modifies the Beacon Chain's specification and introduces a slew of changes necessary to implement _and_incentivize consolidation of validators on the consensus layer. In the next section, we'll take an in-depth look at those changes before discussing the pros and cons of implementing EIP-7251—especially the proposal to increase `MAX_EFFECTIVE_BALANCE` for validators.
 
+## An overview of EIP-7251: Increase MAX_EFFECTIVE_BALANCE
+
 [EIP-7251](https://eips.ethereum.org/EIPS/eip-7251)introduces a significant change to the core consensus protocol: an increase in [MAX_EFFECTIVE_BALANCE](https://github.com/ethereum/consensus-specs/blob/9c35b7384e78da643f51f9936c578da7d04db698/specs/phase0/beacon-chain.md#gwei-values)from 32 ETH to 2048 ETH (where _k_= 64). This removes the biggest blocker to the consolidation of validators and is arguably the most critical component of the plan to contract Ethereum's validator set through validator consolidation.
 
 But there are other features, beyond an increased maximum effective balance, that are needed to implement validator consolidation without decreasing existing security mechanisms or increasing operational overhead and risk for solo stakers and staking services. Thus, EIP-7251—contrary to what the EIP's name suggests—does more than increase the maximum effective balance for validators. We'll go through these changes in detail subsequently:
 
 _Note: This is intended to be a rough overview of changes proposed by EIP-7251 rather than an intensive explanation of the (current) specification. For a more detailed overview, I'll encourage reading the [draft specification](https://eips.ethereum.org/EIPS/eip-7251)and the [FAQ document](https://notes.ethereum.org/@mikeneuder/eip-7251-faq)written by EIP-7251's authors._
 
+## Increasing `MAX_EFFECTIVE_BALANCE` and creating `MIN_ACTIVATION_BALANCE`
+
 EIP-7251 updates `MAX_EFFECTVE_BALANCE`from the current value of `32 ETH`to `2048 ETH,`but it doesn't change the minimum amount a validator needs to stake to join the Beacon Chain. This seems contradictory (or impossible), given that a validator's eligibility for activation is currently determined by checking **[is eligible_for_activation queue()](https://github.com/LeastAuthority/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#is_eligible_for_activation_queue)**against `MAX_EFFECTVE_BALANCE`during Beacon Chain processing.
 
 EIP-7251 resolves this contradiction by introducing a new constant `MIN_ACTIVATION_BALANCE`(set to 32 ETH) to represent the minimum effective balance required to activate a new validator and modifies `is_eligible_for_activation_queue`to check against `MIN _ACTIVATION_BALANCE`rather than `MAX_EFFECTIVE_BALANCE`. This ensures solo stakers can continue to stake 32 ETH even with the new value for `MAX_EFFECTIVE_BALANCE`and preserves the Beacon Chain's economic decentralization.
 
 An important caveat: EIP-7251 is purely opt-in; a validator that doesn't update to the new `0x02`compounding withdrawal credential introduced by EIP-7251—and sticks with `0x01`credentials—will have `MAX_EFFECTIVE_BALANCE` set to 32 ETH and receive partial rewards in the normal frequency. The next section discusses EIP-7251's compounding withdrawal credential in more detail.
+
+### Introducing a new compounding withdrawal credential (0x02)
 
 EIP-7251 introduces a new compounding withdrawal credential (`0x02`) to complement existing [BLS withdrawal credentials](https://eth2book.info/capella/part3/config/constants/#bls_withdrawal_prefix)(`0x0`) and [execution-layer withdrawal credentials](https://eth2book.info/capella/part3/config/constants/#eth1_address_withdrawal_prefix)(`0x01`). The "compounding withdrawal" naming reflects that validators can compound rewards by switching to `0x02 `credentials. Since rewards are computed to scale with effective balances, accruing a higher effective balance (up to the limit of `MAX_EFFECTIVE_BALANCE`), instead of withdrawing excess balances above the minimum activation balance of 32 ETH, increases the validator's rewards over time.
 
@@ -213,6 +219,8 @@ elif has_eth1_withdrawal_credential(validator) and balance > MIN_ACTIVATION_BALA
 
 _Note: Details on how the migration from_ `0x01` _withdrawal credentials to_ `0x02 ` _compounding withdrawal credentials will work are still light—validators may be able to do a one-time change in-protocol (similar to_ `0x0` _→_ `0x01` _rotation), **or**need to withdraw and re-enter with new withdrawal credentials. I'll update this article once core developers settle on a decision._
 
+### In-protocol combination of validator indices 
+
 EIP-7251 introduces a new consolidation operation that combines two validators into a single validator _without_requiring both validators to exit the Beacon Chain. A consolidation operation moves the balance of a `source` validator to a `target` validator and is signed by the source validator's signing key.
 
 Here's a sketch of the consolidation operation from the EIP-7251 spec:
@@ -227,6 +235,8 @@ class Consolidation(Container):
 
 This change reduces overhead for solo stakers and staking pools that want to merge multiple validators without going through the cumbersome process of exiting validators from the active set and combining the withdrawn funds to activate a new validator. Consolidation operations are submitted by the source validator and processed like any other Beacon Chain operation (e.g.,[Deposit](https://github.com/ethereum/consensus-specs/blob/9c35b7384e78da643f51f9936c578da7d04db698/specs/phase0/beacon-chain.md#deposit) and [VoluntaryExit](https://github.com/ethereum/consensus-specs/blob/9c35b7384e78da643f51f9936c578da7d04db698/specs/phase0/beacon-chain.md#voluntaryexit)) during each epoch. We'll explain consolidation operations in more detail subsequently.
 
+### Recap: How does a voluntary validator exit work?
+
 EIP-7251's in-protocol consolidation operation uses elements of the existing `VoluntaryExit`operation, so it helps to understand how voluntary exits work before explaining in-protocol consolidation. Here's a rough sketch of the voluntary exit procedure:
 
 1. A validator signs a `VoluntaryExit`object and broadcasts it over the peer-to-peer network for inclusion in a Beacon block. The `initiate_validator_exit`function is called during Beacon block processing and sets the exiting validator's `exit_epoch`and `withdrawable_epoch`in the `BeaconState`.
@@ -240,6 +250,8 @@ The validator is expected to continue performing consensus duties (e.g., attesti
 At the beginning of the `withdrawable_epoch`the validator's balance is transferred to the execution-layer address specified in the withdrawal credentials. Note that the validator doesn't earn rewards after the exit epoch—but it can still be slashed for offenses committed in the past until the withdrawal is processed at the `withdrawable_epoch`. Imposing a minimum delay of 27 hours provides enough time detect protocol-violating behavior and prevents faulty validators from exiting stakes without incurring penalties for historical offenses.
 
 The graphic below shows the timeline for a voluntary exit operation:
+
+### How does in-protocol validator consolidation work?
 
 EIP-7251 slightly modifies the mechanics of a `VoluntaryExit`operation for validators that signal a desire to consolidate with another validator. The figure below describes the process of consolidating two validators in-protocol:
 
@@ -273,11 +285,15 @@ But this requires implementing a mechanism for verifying execution-layer signatu
 
 It's possible this part of the consolidation operation specification will change, especially as large staking pools like RocketPool (which uses > 1000 deposit addresses to fund validators controlled by node operators) may find it difficult to consolidate under the current design. If that happens, I'll update this document to reflect changes to the spec.
 
+### How does slashing work when validators are consolidating?
+
 In-protocol consolidation doesn't change much about the slashing process. As with a `VoluntaryExit`, the `source`validator is slashable for its original balance (the initial `effective_balance`) until it reaches the assigned withdrawable epoch. The `target`validator is also slashable for its initial `effective_balance`—at least until we reach the `withdrawable_epoch`of the source validator.
 
 At this point, the source validator's balance is transferred to the target validator and the latter becomes responsible for the aggregate (consolidated) balance of both validators. If the target validator commits a slashable offense during the source validator's withdrawal epoch (after balances have been merged), it is slashed proportionally to its `effective_balance`after consolidation.
 
 Below is a graphic describing how slashing is attributed during the consolidation period:
+
+### Permitting validators to set custom ceilings for `MAX_EFFECTIVE_BALANCE` 
 
 The withdrawal of a validator's balance, once it exceeds `MAX_EFFECTIVE_BALANCE`, to the withdrawal address is a system-level operation that occurs automatically and doesn't require a validator to initiate a transaction. Notably, the partial withdrawal sweep offers stakers a gasless mechanism for "skimming" rewards from the consensus layer, and provides a reliable source of income stakers rely on to cover operational costs (among other things).
 
@@ -292,6 +308,8 @@ A useful (albeit possibly inaccurate) mental model is to think of `0x02`validato
 * Partial withdrawals after the variable MaxEB for an `0x02`validator occurs whenever the effective balance crosses the value of `MAX_EFFECTIVE_BALANCE`set by the validator. EIP-7251 permits validators to set any value for the variable MaxEB—provided the chosen value doesn't exceed 2048 ETH.
 
 Permitting variable ceilings for the maximum effective balance ensures stakers can continue to rely on gasless automatic withdrawals("skimming") as a source of income. It also makes adopting EIP-7251 attractive for solo stakers and staking services that prefer skimming to the alternative for partially withdrawing validator balances under EIP-7251: execution-layer partial withdrawals (which we discuss next).
+
+### Adding execution-layer partial withdrawals 
 
 [EIP-7002](https://eips.ethereum.org/EIPS/eip-7002)introduces the concept of **execution-layer exits**: a staker can exit their validator from the Beacon Chain by sending an exit transaction—signed with the validator's withdrawal credential—to a "validator exit precompile" on the execution layer. Exit messages are added to a queue, and the [ExecutionPayload](https://eth2book.info/capella/part3/transition/block/#execution-payload)of a Beacon block consumes several exit messages from this queue up to the value of `MAX_EXITS_PER_BLOCK`(16). You can read _ [EIPs for NERDS #3: EIP-7002 (Execution Layer Triggerable Exits)](https://ethereum2077.substack.com/p/eip-7002-execution-layer-exits)_for a comprehensive overview of execution-layer triggered exits, especially to understand how they compare to voluntary exits triggered on the consensus layer.
 
@@ -313,6 +331,8 @@ One question that may arise is: _"What happens if validators start moving large 
 
 Without a mechanism to rate-limit partial withdrawals of validator stakes, implementing EIP-7251 may break certain invariants critical to the security of Ethereum's consensus protocol. Fortunately, the authors of EIP-7251 have considered this edge case and proposed modifications to the mechanism for rate-limiting withdrawals and deposits on the Beacon Chain—we will discuss this feature next.
 
+### Using weight-based rate limiting for exit and deposit queues 
+
 Proof of Stake protocols with [Byzantine Fault Tolerance](https://academy.binance.com/en/articles/byzantine-fault-tolerance-explained)(BFT) have _accountable safety_if adversarial actions—like finalizing two conflicting blocks—cannot occur without the protocol slashing `&#x2153; * n`of validator stakes where _n_is the total active stake. Since `&#x2154; * n `stake is required to finalize blocks, two conflicting blocks appearing at the same height in an epoch _n_means at least ⅓ of the active stake must have voted twice for different blocks _b_and _b'_.
 
 Signatures are cryptographically linked to each validator's public key, so an honest party can prove which validators double-signed during the epoch. But, for the Proof of Stake protocol to slash the offending validators, a supermajority (`&#x2154; * n`) validators have to finalize a block _b+1_in the next epoch _e+1_that contains evidence of double-signing. This means an attacker must not control `&#x2154; * n`(or more) of the total active stake, or it can choose to finalize a different block that doesn't include evidence from the whistleblower.
@@ -320,6 +340,8 @@ Signatures are cryptographically linked to each validator's public key, so an ho
 Thus security relies on the assumption that the total active stake cannot change by more than `&#x2153; * n`between epochs _n_and _n+1_—otherwise, an adversary can potentially increase its share of the total stake _n_from `&#x2153; * n`to `&#x2154; * n`. This is why PoS protocols like [Gasper](https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/gasper/)require a mechanism for rate-limiting inflow and outflow of stake during epoch transitions; importantly, rate-limiting parameters must be carefully chosen as they determine the level of economic security the consensus protocol provides.
 
 Note that the rate-limiting mechanism doesn't care about the number of validators joining or exiting during epochs and focuses on changes to the validator _weight_(i.e., the amount of stake) during the boundary between epochs _n_and _n+1_. The importance of this detail will become evident as we discuss changes to the rate-limiting mechanism proposed by EIP-7251.
+
+### Validator churn limits under EIP-7251
 
 Today, the Beacon Chain's _churn limit_(i.e., the maximum number of validator activations and exits per epoch) is determined by the [get_validator_churn_limit](https://github.com/ethereum/consensus-specs/blob/9c35b7384e78da643f51f9936c578da7d04db698/specs/phase0/beacon-chain.md#get_validator_churn_limit)function. `get_validator_churn_limit`is influenced by two parameters:[MIN_PER_EPOCH_CHURN_LIMIT](https://github.com/LeastAuthority/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#misc)= 4 and [CHURN_LIMIT_QUOTIENT](https://github.com/LeastAuthority/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#misc)= 65,536 (2**16).
 
@@ -347,6 +369,8 @@ EIP-7251 also modifies the exit and activation queues to use weight-based rate-l
 
 We'll see how the new weight-based rate limiting for activation queues and exit queues works shortly:
 
+#### Validator activations under EIP-7251 
+
 Validators are activated during the **[process_registry_updates](https://github.com/ethereum/consensus-specs/blob/9c35b7384e78da643f51f9936c578da7d04db698/specs/phase0/beacon-chain.md#epoch-processing)**phase of the Beacon Chain's epoch transition workflow. The value of `activation_balance_to_consume`is a function of the epoch churn limit (`per_epoch_churn_limit`), activation validator balance (`activation_validator_balance`), and effective balance of the previously activated validator. We can understand this concept by using details from the previous example:
 
 * The current epoch churn limit is 438 ETH, and the effective balance of the validator at the front of the activation queue is 200 ETH. This means `activation_validator_balance`is 200 ETH and `activation_balance_to_consume`for the current epoch is 238 ETH (`activation_balance_to_consume`= `per_epoch_churn_limit`-`activation_validator_balance`).
@@ -358,6 +382,8 @@ Validators are activated during the **[process_registry_updates](https://github.
 * We subtract the epoch's `activation_balance_to_consume`from `validator_effective_balance`and roll the remaining validator balance to the next epoch. The `activation_validator_balance`for epoch _n + 1_is set to 112 ETH to reflect the churn caused by the leftover validator balance from the previous epoch _n_.
 
 * To get the `activation_balance_to_consume`for epoch _n + 1_, we subtract `activation_validator_balance`from `per_epoch_churn_limit`, which gives us 326 ETH. The value of validator #3's unprocessed effective balance (112 ETH) is lower than the epoch churn limit (438 ETH), so we can schedule the validator for activation during epoch _n +1_.
+
+#### Validator exits under EIP-7251 
 
 EIP-7251 modifies the [initiate_validator_exi](https://github.com/ethereum/consensus-specs/blob/9c35b7384e78da643f51f9936c578da7d04db698/specs/phase0/beacon-chain.md#initiate_validator_exit) `t`[()](https://github.com/ethereum/consensus-specs/blob/9c35b7384e78da643f51f9936c578da7d04db698/specs/phase0/beacon-chain.md#initiate_validator_exit)function to account for the validator's weight before computing the `exit_queue_epoch`(i.e., the epoch where the validator can exit and fully withdraw). Furthermore, `exit_queue_churn`is modified to accumulate balances of validators leaving in the current epoch, and `exit_balance_to_consume`tracks the balance of the validator at the head of the exit queue.
 
@@ -386,6 +412,8 @@ We can understand this concept by using a similar example from the section on ac
 
 Changes to the activation and exit queues proposed by EIP-7251 ensure that large validators can be processed for full exits or activation over multiple epochs. More importantly, computing exit and activation epochs mean validators can variable activation balances and effective balances without breaking the property that at most `1/65536`of the total active stake can exit/enter the Beacon Chain's active set.
 
+#### Partial deposits and withdrawals under EIP-7251  
+
 So far, we've discussed how EIP-7251 addresses the problem of variable activation and effective balances among validators exiting and joining the Beacon Chain and implements measures to preserve Gasper's economic security properties. But how does it handle partial deposits and withdrawals, as validators potentially have more ETH to partially withdraw once `MAX_EFFECTIVE_BALANCE `is increased to 2048 ETH and the variable maxEB feature is implemented?
 
 Like validators exiting or joining with enormous stakes, large amounts of stake flowing in and out of the protocol via partial withdrawals and deposits (a.k.a., "validator top-ups") can be problematic. For background: partial deposits skip the activation queue and are capped at `MAX_DEPOSITS = 16 `per block, which is higher than the limit on validator activations.
@@ -403,6 +431,8 @@ An alternative proposal is to cap partial deposits at 32 ETH so that `0x02`valid
 However, limiting top-ups to 32 ETH has a greater impact on validators that _do_increase MaxEB and results in poor UX: (1) Validators with a MaxEB higher than 32 ETH cannot replenish the `effective_balance`if it reduces due to a slashing or penalty event. (2) Validators can no longer top-up to increase `effective_balance`in typical situations and must exit before activating with a higher effective balance.
 
 Partial execution-layer withdrawals under EIP-7251 will follow the same pattern of weight-based rate limiting as total withdrawals triggered with a validator's signing key. For context, full exits triggered from a validator's withdrawal credentials are rate-limited by default: EL-triggered exit messages are added to the `exit_queue`on the Beacon Chain and processed the same way as `VoluntaryExit`messages. Partial EIP 7002-style exits will go through the `exit_queue`as well, so rate-limiting partial withdrawals under EIP-7251 is relatively straightforward.
+
+#### Modifying initial slashing penalty and correlation penalties 
 
 The initial slashing penalty (applied by the [slash_validator()](https://github.com/ethereum/consensus-specs/blob/dev/specs/bellatrix/beacon-chain.md#modified-slash_validator)function) is the first reduction applied to the balance of a balance of a validator that commits a slashable offense and is linearly proportional to the validator's effective balance. For example, a validator with an effective balance of 32 ETH will have an initial penalty of 1/32 or 1 ETH.
 
@@ -425,7 +455,11 @@ To sum up, EIP-7251 doesn't exactly change the slashing penalty to solely favor 
 * Aligns cryptoeconomics of slashing with the new reality of higher effective balances
 * Brings down slashing risk to levels that large validators can tolerate and increases the likelihood of more validators opting to consolidate stake
 
+## Why EIP-7251? The case for increasing `MAX_EFFECTIVE_BALANCE`
+
 Most of the benefits of implementing EIP-7251 are evident from discussions in previous sections. But a summary of the net benefits of increasing `MAX_EFFECTIVE_BALANCE` for validators to the network and stakers may be helpful, especially if you skipped to the part where you learn "what's in it for me for me as a solo staker/staking service operator?"
+
+### Reduced load on the consensus layer
 
 Aditya Asgaonkar's _ [Removing Unnecessary Stress from Ethereum's P2P Network](https://ethresear.ch/t/removing-unnecessary-stress-from-ethereums-p2p-network/15547/1)_post provides a good overview (from the perspective of a protocol developer) of the burden having a large number of validators places on the Beacon Chain's p2p networking layer. For instance, a large validator set increases the number of messages broadcasted and gossiped over the network and the number of attestations to aggregate and verify in each epoch. These factors combined could increase compute and bandwidth requirements for validator nodes, degrade network performance, and ultimately hurt decentralization.
 
@@ -455,9 +489,13 @@ Given that these staking pools combined control 525,000 validators, a mass conso
 
 Moreover, it's unlikely staking operators will immediately start running validators with effective balances in the region of 2048 ETH due to the increased slashing risk; a more realistic assumption is that staking pools will begin with smaller consolidations (e.g., combining 32 ETH validators to create a 64 ETH or 128 ETH validators). This is why [distributed validator technology](https://ethereum.org/en/staking/dvt/)(DVT) needs to become battle-tested enough to be deployed in production staking environments; with DVT, large validators can be run on multiple machines to increase fault tolerance, enable faster recovery from downtime, and contain the effects of client bugs and machine failures to individual nodes.
 
+### Unlocking future upgrades
+
 As explained in the introductory section, critical upgrades on Ethereum's roadmap—most notably, single-slot finality (SSF) and enshrined proposer-builder separation (ePBS)—can only be implemented if the validator set reduces or at least remains within reasonable bounds (e.g., see [Vitalik's recent argument for sticking to 8192 signatures in a post-SSF world](https://ethresear.ch/t/sticking-to-8192-signtures-per-slot-post-ssf-how-and-why/17989)). EIP-7251 proposes a minimally disruptive solution for validator set contraction on Ethereum and effectively removes obstacles to activating single-slot finality, proposer-builder separation, and other upgrades that share "low validator set" as a dependency.
 
 A slightly related benefit from EIP-7251 is reducing pressure to accelerate R&D efforts related to dealing with the challenges of an enormous validator set (most of which come with various second-order consequences, as past discussions have shown). This minimizes demand for more drastic changes like [EIP-7514](https://eips.ethereum.org/EIPS/eip-7514)—which proposes to reduce the validator churn rate—in the future and ensures core developers can spend time working on other aspects of the protocol.
+
+### Making solo staking competitive 
 
 At first glance, EIP-7251 looks like an attempt to make life easier for large staking operators—but there's more to the proposal to increase the maximum effective balance. For example, solo stakers also benefit from EIP-7251 due to the availability of compounding rewards and the opportunity to stake ETH in flexible sizes. Both features are crucial to make solo staking attractive and bolster economic decentralization on the Beacon Chain.
 
@@ -465,9 +503,15 @@ To put things into context: a solo staker with a single 32 ETH validator will ha
 
 With EIP-7251, a solo validator that migrates to `0x02`credentials can re-stake rewards (not to be confused with EigenLayer's restaking model) and earn higher rewards from having a higher effective balance. This mimics the compounding process adopted by staking pools, which I described earlier, and shows that adopting EIP-7251 is ideal for solo stakers as much as for large staking services.
 
+### Reducing operational overhead for large staking pools
+
 A staking service operator today is running anywhere from 1,000 to 10,000 validators (or more) on a single machine, which can problematic from a logistics perspective. Since maximizing ROI on staked ETH is the primary reason for running many validators, EIP-7251 ensures staking pools can continue to run profitably with fewer validators by consolidating validator balances _in protocol_.
 
 The ability to set variable ceilings for a validator's maximum effective balance also reduces the necessity of activating new validators, as rewards can accrue and compound for more extended periods before the `MAX_EFFECTIVE_BALANCE`threshold and the automatic partial withdrawals sweep starts. A potential benefit is that node operators can manage fewer validator keys and scale down the complexity of signing key management.
+
+## Are there any drawbacks to implementing EIP-7251? 
+
+### Increased slashing penalty risk for large validators 
 
 The slashing risk borne by validators with higher effective balances is arguably the biggest argument against implementing EIP-7251. Some might even argue that the risk of running a validator with a larger slashable balance outweighs the net benefit from consolidating validators, especially if the linear scaling properties of the initial penalty and correlation penalty remain unchanged.
 
@@ -482,6 +526,8 @@ The "maximum effective balance cannot exceed 32 ETH" specification has been arou
 To illustrate, the [risk assessment for Lido's Community Staking Module](https://research.lido.fi/t/risk-assessment-for-community-staking/5502/1)—the CSM will allow for permissionless entry to Lido's node operator set—currently recommends an operator bond of 4 ETH for security, with a caveat: the recommended bond size can change depending on implementation of proposals like EIP-7251. Since validator balances can increase beyond 32 ETH, increasing bond requirements for validator node operators in a trustless staking pool only makes sense.
 
 It's also important to note that the decision to have 32 ETH stake sizes was made for altogether different reasons than explicitly to reduce risk for staking pools. Perhaps the 32 ETH stake size , and the lower potential net loss from slashing, is part of the appeal of running an Ethereum staking service (I'm not an expert); even so, staking pool risk is mostly an orthogonal consideration to the goal of making the network secure, healthy, and robust.
+
+### Regulatory concerns over auto-compounding staking rewards
 
 Another argument against implementing EIP-7251 is that introducing auto-compounding validator rewards to the core protocol may attract scrutiny from regulators, especially if it suggests ETH is an interest-bearing security. Here's an excerpt from the [relevant comment on Ethresear.ch](https://ethresear.ch/t/increase-the-max-effective-balance-a-modest-proposal/15801/48)(a response to _ [Increase MAX_EFFECTIVE_BALANCE: A Modest Proposal](https://ethresear.ch/t/increase-the-max-effective-balance-a-modest-proposal/15801)_):
 
@@ -503,9 +549,13 @@ If your validator is at 17 ETH, you can progressively increase your rewards—pr
 
 Also, if a regulator _really_thought auto-compounding, which registered staking services like Coinbase already do out-of-protocol by spinning up additional validators from consolidated rewards, was "investment," it could simply require that stakers pay variable taxes on earnings depending on how much and when they compounded rewards for a validator. This solution may be harder to implement, but is arguably better than the "man with a hammer" approach of rewriting ETH's classification as a commodity.
 
+### Increasing development overhead for staking protocols
+
 As I mentioned, the 32 ETH stake size has been a feature of staking for an extended period, so many protocol decisions have been predicated on this feature. Changing the maximum allowable stake size would require staking protocols to rethink different economic and technical components and potentially increase R&D overhead in the short term. Moreover, staking protocols that wish to ossify and make critical components non-upgradable will have to push back timelines to account for changes introduced by EIP-7251.
 
 For example, RocketPool [recently switched to 8 ETH bonds](https://docs.rocketpool.net/guides/atlas/lebs)for node operators in the Atlas upgrade (after starting with 16/32 ETH ETH bonds). If EIP-7251 is implemented, it's safe to assume RocketPool developers and the community will need to re-open the conversation around ideal bond sizes for security once the maximum effective balance is increased. **Note**: This is the case for any staking service that requires node operators to have financial skin-in-in-the-game vs. operating with a "trust me bro" security model, not just RocketPool.
+
+### Impact of increasing `MAX_EFFECTIVE_BALANCE` on proposer selection
 
 A potential question that may also arise around the change in maxEB is the impact of stake consolidation on proposer selection. Intuitively, it _feels_like EIP-7251 will benefit institutional stakers and staking pools by biasing proposer selection in favor of validators with higher effective balances and make it harder for solo stakers to compete.
 
@@ -593,6 +643,8 @@ This another good reason to consolidate validators rather than distribute stake 
 * It benefits the network since proposer selection happens faster. Higher effective balances for validators means fewer iterations to compute the `proposer_index`for the next slot.
 
 * It benefits large stakers because the probabilities of being selected as proposer are concentrated into a single consolidated validator. The consolidated validator also earns more staking rewards since the reward for performing consensus duties (e.g., proposing) scales with the effective balance.
+
+## EIP-7251 and the future of Proof of Stake in Ethereum
 
 Designing a functional and secure Proof of Stake consensus protocol like Ethereum's Beacon Chain is difficult. It means making decisions with limited information and [leaving a line of retreat](https://www.lesswrong.com/posts/3XgYbghWruBMrPTAL/leave-a-line-of-retreat)to account for the possibility that estimates and risk estimates may be insufficient for preparing for reality's surprises.
 
