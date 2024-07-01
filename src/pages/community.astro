@@ -11,33 +11,38 @@ import ErrorPage from '@components/errors/404.astro';
   description='2077 Collective deep dive into technical ethereum concepts'
 >
 <main class='p-6'>
-    <ul class='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-    <a href="">
-      <li class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center cursor-pointer hover:bg-green-500 transition duration-300'>
-        
+    <div class='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+    <a href="" class="h-64 ">
+      <div class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center cursor-pointer hover:bg-green-500 transition duration-300'>
           discord logo hover over
-        
-      </li>
+      </div>
     </a>
     <a href="">
-        <li class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center cursor-pointer hover:bg-green-500 transition duration-300'>
+        <div class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center cursor-pointer hover:bg-green-500 transition duration-300'>
+            <img src="/discord.svg" alt="">
+        </div>
+      </a>
+      <a href="https://www.farcaster.id/2077collective" target="_blank">
+        <div class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center cursor-pointer hover:bg-green-500 transition duration-300'>
           
-            twitter logo hover over
+            2077collective farcaster logo hover over
           
-        </li>
-      </a><a href="">
-        <li class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center cursor-pointer hover:bg-green-500 transition duration-300'>
-          
-            fc logo hover over
-          
-        </li>
-      </a><a href="">
-        <li class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center cursor-pointer hover:bg-green-500 transition duration-300'>
+        </div>
+      </a>
+      <a href="">
+        <div class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center cursor-pointer hover:bg-green-500 transition duration-300'>
           
             spotify logo hover over
           
-        </li>
-      </a>
+        </div>
+        </a>
+        <a href="https://www.farcaster.id/ethereum2077" target="_blank">
+          <div class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center cursor-pointer hover:bg-green-500 transition duration-300'>
+            
+              ethereum2077 farcaster logo hover over
+            
+          </div>
+        </a>
     </ul>
   </main>
 </Layout>
