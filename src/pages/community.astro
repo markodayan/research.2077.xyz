@@ -1,0 +1,43 @@
+---
+import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
+import Layout from '@layouts/Default.astro';
+import ErrorPage from '@components/errors/404.astro';
+---
+
+
+<Layout
+  title='Home'
+  pageTitle='Research | 2077 Collective'
+  description='2077 Collective deep dive into technical ethereum concepts'
+>
+<main class='p-6'>
+    <ul class='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+      <li class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center hover:bg-green-500 transition duration-300'>
+        <a href="">
+          discord logo hover over
+        </a>
+      </li>
+      <li class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center hover:bg-green-500 transition duration-300'>
+        <a href="">
+          twitter logo hover over
+        </a>
+      </li>
+      <li class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center hover:bg-green-500 transition duration-300'>
+        <a href="">
+          farcaster logo hover over
+        </a>
+      </li>
+      <li class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center hover:bg-green-500 transition duration-300'>
+        <a href="">
+          youtube logo hover over
+        </a>
+      </li>
+      <li class='bg-black text-white rounded-lg p-4 h-64 flex items-center text-center justify-center hover:bg-green-500 transition duration-300'>
+        <a href="">
+          substack logo hover over
+        </a>
+      </li>
+    </ul>
+  </main>
+</Layout>
+

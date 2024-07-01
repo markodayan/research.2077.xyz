@@ -4,7 +4,8 @@ pubDate: 12/20/2023
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - DeFi
+  - Infrastructure
+  - Layer 2
 imgUrl: '../../assets/DataAvailabilityOr-HowRollupsLearnedToStopWorryingAndLoveEthereum.webp'
 description: 'To be (fully) secured by Ethereum or not, that is the question.'
 layout: '../../layouts/BlogPost.astro'

@@ -4,7 +4,7 @@ pubDate: 03/13/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - Governance
+  - Infrastructure
   - Layer 1
 imgUrl: '../../assets/EIPsForNerds4-EIP-6110(SupplyValidatorDepositsOn-Chain).webp'
 description: 'Sending ETH from Ethereum execution layer to the consensus layer'

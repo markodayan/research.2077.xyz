@@ -4,7 +4,7 @@ pubDate: 01/08/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - Governance
+  - Infrastructure
   - Layer 1
 imgUrl: '../../assets/EIPsForNerds2-EIP-7002(ExecutionLayerTriggerableExits).webp'
 description: 'EIP-7002 brings Ethereum closer to the goal of simple, secure, and trustless staking.'

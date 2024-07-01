@@ -4,7 +4,7 @@ pubDate: 03/25/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - Governance
+  - Infrastructure
   - Layer 1
 imgUrl: '../../assets/EIPsForNerds5-EIP-7503(Zero-KnowledgeWormholes).webp'
 description: 'Making privacy-preserving transfers on Ethereum'

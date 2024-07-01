@@ -4,7 +4,7 @@ pubDate: 12/05/2023
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - Governance
+  - Infrastructure
   - Layer 1
 imgUrl: '../../assets/EIPsForNerds1-ERC-7512(On-ChainRepresentationForSecurityAudits).webp'
 image: ./images/article.svg

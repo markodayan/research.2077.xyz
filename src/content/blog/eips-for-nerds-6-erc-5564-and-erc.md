@@ -4,7 +4,7 @@ pubDate: 05/16/2024
 author: Ethereum2077, Koray Akpinar
 authorTwitterHandle: 2077Collective, korayakpinarr
 tags:
-  - Governance
+  - Infrastructure
   - Layer 1
 imgUrl: '../../assets/EIPsForNerds6-ERC-5564-ERC-6538-StealthAddresses.webp'
 description: 'Introducing stealth addresses to enhance user privacy'
