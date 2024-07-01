@@ -4,7 +4,8 @@ pubDate: 06/28/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - DeFi
+  - Governance
+  - Layer 1
 imgUrl: '../../assets/EIPsForNerds4-EIP-6110(SupplyValidatorDepositsOn-Chain).webp'
 description: 'Sending ETH from Ethereum execution layer to the consensus layer'
 layout: '../../layouts/BlogPost.astro'
