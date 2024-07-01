@@ -10,8 +10,21 @@ const { content, imgSrc, imgAlt } = Astro.props;
 ---
 
 <article class='p-6 md:w-full md:prose body'>
-  <a href='/' title='Back to research'>&larr; Back to Research</a>
+  <a href='/' class="text-sm" title='Back to research'>&larr; Back to Research</a>
 
+  <ul class='flex gap-4 tags'>
+    {
+      content.tags.map((tag) => {
+        return (
+          <li class="">
+            <a class="text-sm text-green-500" href={`/blog/tags/${tag.toLowerCase()}/`}>
+              {tag}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
   <h2>{content.title}</h2>
 
   <p class="description">{content.description}</p>
@@ -26,8 +39,38 @@ const { content, imgSrc, imgAlt } = Astro.props;
 </article>
 
 <style>
+  .body {
+    margin-block-end: 8rem;
+    max-width: 88ch !important;
+    font-size: clamp(1rem, 0.913rem + 0.4348vi, 1.25rem) !important;
+  }
   p {
     font-size: 1.2rem;
+  }
+
+  .tags {
+      margin-block-start: 1rem;
+      padding: 0;
+    li {
+      list-style-type: none;
+    }
+    a {
+      text-decoration: none;
+    display: flex;
+      align-items: center;
+      column-gap: 0.2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      background-color: var(--semantic-green-light-hover);
+      color: var(--leather-dark-hover);
+      min-width: fit-content;
+      padding-inline: 0.4rem;
+      padding-block: 0.2rem;
+      border-radius: 0.5rem;
+
+      &:hover {
+        background-color: var(--semantic-green-dark-active);
+  }
   }
 
   .description {
@@ -38,10 +81,5 @@ const { content, imgSrc, imgAlt } = Astro.props;
 
   h2 {
     font-size: clamp(1.75rem, 1.4022rem + 1.7391vi, 2.75rem);
-  }
-  .body {
-    margin-block: 8rem;
-    max-width: 88ch;
-    font-size: clamp(1rem, 0.913rem + 0.4348vi, 1.25rem) !important;
   }
 </style>
