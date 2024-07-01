@@ -60,7 +60,7 @@
     font-family: 'avenir-heavy';
     font-weight: 400;
     line-height: 1.1;
-    text-wrap: balance;
+    //text-wrap: balance;
   }
   
   h1 {
@@ -95,12 +95,15 @@
   }
     
   blockquote {
+
+    margin: 1em 0;
+    padding-left: 1em;
       padding-inline-start: 1em;
       border-inline-start: 0.3em solid;
       border-inline-start-color: var(--color-primary);
       font-style: italic;
       font-size: var(--size-step-1);
-      max-width: 50ch;
+      border-left: 4px solid red !important;
   }
   
   .flow > * + * {

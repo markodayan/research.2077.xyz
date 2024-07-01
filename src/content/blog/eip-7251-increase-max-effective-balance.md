@@ -1,17 +1,19 @@
 ---
-title: "EIPs For Nerds #3: EIP-7251(Increase Max Effective Balance) → EIPs For Nerds #3: EIP-7251 (Increase Max Effective Balance)"
-pubDate: 06/28/2024
+title: "EIPs For Nerds #3: EIP-7251 (Increase MAX_EFFECTIVE_BALANCE)"
+pubDate: 01/10/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - DeFi
 imgUrl: '../../assets/EIPsForNerds3-EIP-7251(IncreaseMAX_EFFECTIVE_BALANCE).webp'
-description: 'Beyond Proof of Stake in the Ethereum ecosystem'
+description: 'Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away. — Antoine de Saint-Exupéry'
 layout: '../../layouts/BlogPost.astro'
 ---
 ![image](../../assets/EIPsForNerds3-EIP-7251(IncreaseMAX_EFFECTIVE_BALANCE).webp)
 
-Being a rational optimist isn't just about working to solve problems; it also involves (a) acknowledging you might create _new_problems—which will only show up later—in the process of solving an existing problem, and (b) dealing with the despair that comes from seeing how your previous problem-solving actions led to _another_problem in the present. As a [TED Talk](https://penguinrandomhousehighereducation.com/2018/05/21/steven-pinker-progress-ted-talk/)once put it, the art of progress is essentially creating new problems to solve:
+I often talk about rational optimism—[I wrote an entire article about the intersection between rational optimism and crypto](https://fullycrypto.com/how-rational-optimism-fuels-belief-in-crypto) at the height of 2022’s bear market—and like to identify as a “rational optimist”. But there are *many downsides to* rational optimism that people like Naval Ravikant and Andreessen Horowitz won’t tell you.
+
+Being a rational optimist isn't just about working to solve problems; it also involves (a) acknowledging you might create _new_problems—which will only show up later—in the process of solving an existing problem, and (b) dealing with the despair that comes from seeing how your previous problem-solving actions led to _another_problem in the present. As a [TED Talk](https://penguinrandomhousehighereducation.com/2018/05/21/steven-pinker-progress-ted-talk/) once put it, the art of progress is essentially creating new problems to solve:
 
 > _"Progress does not mean that everything becomes better for everyone everywhere all the time. That would be a miracle, and progress is not a miracle but problem-solving. Problems are inevitable and solutions create new problems which have to be solved in their turn." — Steve Pinker_
 
@@ -20,6 +22,8 @@ This semi-philosophical introduction is vital to discussing the next Ethereum Im
 While EIP-7251 looks like a simple change, increasing the validator's effective balance is one of the most significant changes to the core protocol—possibly right up with enabling withdrawals—since The Merge. This article provides a rough overview of EIP-7251, including the advantages and potential drawbacks of implementing the EIP, and includes enough details to help make sense of the why and how of increasing MAX_EFFECTIVE_BALANCE for validators.
 
 Let's dive in!
+
+## Setting the stage: A lack of serenity in Ethereum’s consensus 
 
 Ethereum's transition Proof of Stake (fka "Ethereum 2.0") was [originally called the Serenity upgrade](https://www.gemini.com/cryptopedia/ethereum-2-0-blockchain-roadmap-proof-of-stake-pos)(I don't know why the name "Serenity" was chosen—but many expected the Serenity upgrade to fix all of Ethereum's problems, so the name seems fitting). Now, the Ethereum 2.0 (note that I'm using "Ethereum 2.0" for historical context only) we got isn't quite the Ethereum 2.0 some imagined it would be (i.e., achieving Visa-like scale with execution sharding, or transitioning from the EVM to eWASM for more efficiency), but it _works_.
 
@@ -31,23 +35,29 @@ One of those problems is the negative second-order effects of having an extremel
 
 Having many validators theoretically improves Ethereum's decentralization, especially if you compare it to traditional Proof of Stake protocols that limit participation in consensus to 100-200 "super-validators". But an extremely large validator set introduces problems with implications for the network's health and long-term sustainability. Unsurprisingly, many of these problems have only become evident as the validator set on Ethereum increased in the months following The Merge and the activation of withdrawals in the Shanghai-Capella upgrade.
 
+![image](./images/inc1.webp)
+
 While Ethereum's validator set growth was inevitable, especially with the popularity of liquid staking, the large validator set is partially a consequence of previous design decisions ("tech debt" in nerd-speak). This explains why I started with a philosophical talk on rational optimism—to show how creating solutions leads to creating complex problems that demand even more complex solutions.
 
 The design decision in question? Limiting validator's maximum effective balance (`MAX_EFFECTIVE_BALANCE`) to 32 ETH. In the next section we'll see what effective balance means, and explore how capping the maximum effective balance at 32 ETH contributes to the Beacon Chain's growing validator set.
 
+## Understanding MAX_EFFECTIVE_BALANCE in Ethereum
+
 A validator on Ethereum has two balances: an _actual_balance and an _effective_balance. The "actual balance" is simply the sum of the validator's initial deposit and the rewards minus any penalties and withdrawals. The effective balance is derived from the validator's actual balance and represents "the maximum amount a validator has at risk from the protocol's perspective." We can further break down this definition to have a better mental model of a validator's effective balance:
 
-1. **"The maximum amount a validator has at risk"**is a reference to the core principle of Proof of Stake: economic security is a function of a protocol's capacity to levy a high cost on actions that can be construed as an attack on the protocol—whether those actions are deliberate or accidental is irrelevant—by destroying part or all of the collateral pledged by validator before joining the protocol. An example of a protocol-violating behavior is lying about the validity of a block (each validator "votes" for a block and is expected to vote for a block if it has evidence the block includes valid transactions).
+1. **"The maximum amount a validator has at risk"** is a reference to the core principle of Proof of Stake: economic security is a function of a protocol's capacity to levy a high cost on actions that can be construed as an attack on the protocol—whether those actions are deliberate or accidental is irrelevant—by destroying part or all of the collateral pledged by validator before joining the protocol. An example of a protocol-violating behavior is lying about the validity of a block (each validator "votes" for a block and is expected to vote for a block if it has evidence the block includes valid transactions).
 
-This is why PoS protocols like Ethereum's [Gasper](https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/gasper/)are designed to use validator balances to inform decisions like selecting a validator to propose a new block, calculating rewards, and slashing validators that provably deviate from the protocol's rules. The theory is that a validator with "more at stake" has less incentive to act dishonestly since the penalty for dishonest behaviors is dynamic and increases in proportion to the collateral pledged by the validator.
+This is why PoS protocols like Ethereum's [Gasper](https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/gasper/) are designed to use validator balances to inform decisions like selecting a validator to propose a new block, calculating rewards, and slashing validators that provably deviate from the protocol's rules. The theory is that a validator with "more at stake" has less incentive to act dishonestly since the penalty for dishonest behaviors is dynamic and increases in proportion to the collateral pledged by the validator.
 
 In the context of the Beacon Chain, a validator's effective balance determines the validator's _weight_or influence in the consensus protocol. For instance, a Beacon Chain block becomes final (i.e., irreversible) if the total stake of validators that voted for a block represents a supermajority (66% or more) of the total stake of all active validators. To understand how and where a validator's effective balance is used in Beacon Chain consensus, I encourage reading _ [Economic aspects of effective balance](https://eth2book.info/capella/part2/incentives/balances/#economic-aspects-of-effective-balance)._
 
-2. **"From the protocol's perspective"**means the Beacon Chain always sees each validator as having at most 32 ETH (the maximum effective balance) staked in the protocol. Any other amount over the maximum effective balance isn't considered "at stake" and cannot be slashed—nor does it count towards the rewards a validator earns for carrying out duties correctly—making it "ineffective" from the protocol's perspective.
+2. **"From the protocol's perspective"** means the Beacon Chain always sees each validator as having at most 32 ETH (the maximum effective balance) staked in the protocol. Any other amount over the maximum effective balance isn't considered "at stake" and cannot be slashed—nor does it count towards the rewards a validator earns for carrying out duties correctly—making it "ineffective" from the protocol's perspective.
 
 A validator's actual balance will expectedly increase once it starts receiving rewards and doesn't get slashed. However, the Beacon Chain conducts a "sweep" at every block and automatically withdraws amounts over 32 ETH to the execution-layer address specified in the validator's withdrawal credentials (see _ [EIPs For Nerds #2: EIP-7002 (Execution-Layer Triggerable Exits)](https://ethereum2077.substack.com/p/eip-7002-execution-layer-exits)_for an in-depth discussion of withdrawal credentials). Not every validator receives partial rewards immediately, but most estimates suggest that a validator will receive partial rewards on a frequency of 5-7 days.
 
-The value of 32 ETH as the `MAX_EFFECTIVE_BALANCE`is a carryover feature from the [original sharding roadmap](https://notes.ethereum.org/@vbuterin/serenity_design_rationale#Serenity-Design-Rationale). At the time, the vision was to split the Ethereum network into 64 sub-networks (**shards**), with each subnet processing sets of transactions in parallel and the Beacon Chain serving as a coordination layer for the network.
+## Why was MAX_EFFECTIVE_BALANCE set to 32 ETH initially?
+
+The value of 32 ETH as the `MAX_EFFECTIVE_BALANCE` is a carryover feature from the [original sharding roadmap](https://notes.ethereum.org/@vbuterin/serenity_design_rationale#Serenity-Design-Rationale). At the time, the vision was to split the Ethereum network into 64 sub-networks (**shards**), with each subnet processing sets of transactions in parallel and the Beacon Chain serving as a coordination layer for the network.
 
 Under this arrangement:
 
@@ -57,17 +67,28 @@ Under this arrangement:
 
 * Validators in the "main" committee for the slot voted on the validity of shard blocks by checking block headers (described as "cross-links") and confirming that a majority (⅔) of validators in the subcommittee signed the block, and those signatures corresponded to public keys of existing validators.
 
+![image](./images/inc1-2.webp)
+*[Architecture of Ethereum’s early sharding design.]*
+<span class="text-base italic text-center"><a href="https://near.org/blog/detailed-overview-of-ethereum-2-0-shard-chains-committees-proposers-and-attesters" target="_blank">(source)</a>
+<span>
+
 A concern with this sharding design was the susceptibility of a shard to attacks by a dishonest majority of validators—an adversary that controlled enough members of the committee attesting to a shard's transactions (e.g., > ⅔) had a high probability of getting the Beacon Chain to finalize invalid shard blocks. Thus, it was necessary to ensure that:
 
-* **Every** **validator in the protocol had equal probability of appearing in the committee for a shard.**This made it difficult for an attacker to predict if the validators it controlled would end up in a particular shard committee and reduced the likelihood of a malicious takeover of one or more shards.
+* **Every** **validator in the protocol had equal probability of appearing in the committee for a shard.** This made it difficult for an attacker to predict if the validators it controlled would end up in a particular shard committee and reduced the likelihood of a malicious takeover of one or more shards.
 
-* **Validators had roughly the same** _**weight**_ **or influence in the consensus protocol.**Without this feature, an attacker still had a chance of gaining undue influence in a subcommittee, as the protocol used the total validator _weight_(the amount staked by each validator) that attested to a block, and not validator _count_(the number of validators that voted for a block), to determine if a block was eligible for finalization.
+* **Validators had roughly the same** _**weight**_ **or influence in the consensus protocol.** Without this feature, an attacker still had a chance of gaining undue influence in a subcommittee, as the protocol used the total validator _weight_(the amount staked by each validator) that attested to a block, and not validator _count_(the number of validators that voted for a block), to determine if a block was eligible for finalization.
 
 The solution for problem #1 was to design a [verifiably random function (VRF)](https://eth2book.info/capella/part2/building_blocks/randomness/)and use it as a source of randomness to inform validator assignments to committees. A visual description of the random assignment of validators is shown below:
 
-Solving problem #2 meant limiting each validator's effective balance—which represented its weight in the protocol—to a constant of 32 ETH. If `MAX_EFFECTIVE_BALANCE`was variable, an attacker could finalize an invalid block if it controlled ⅔ of the entire stake in a committee—even if ⅔ of validators in the committee were honest. Conversely, giving every validator equal weight in the committee reduced the possibility of a minority of validators exerting outsized influence on a shard's consensus.
+![image](./images/inc1-3.webp)
+<span class="text-base italic text-center"><a href="https://vitalik.eth.limo/general/2021/04/07/sharding.html" target="_blank">(source)</a>
+<span>
+
+Solving problem #2 meant limiting each validator's effective balance—which represented its weight in the protocol—to a constant of 32 ETH. If `MAX_EFFECTIVE_BALANCE` was variable, an attacker could finalize an invalid block if it controlled ⅔ of the entire stake in a committee—even if ⅔ of validators in the committee were honest. Conversely, giving every validator equal weight in the committee reduced the possibility of a minority of validators exerting outsized influence on a shard's consensus.
 
 You may also notice MAX_EFFECTIVE_BALANCE is also the minimum deposit amount (32 ETH) required to activate a validator. This isn't a coincidence. Unlike [the original proposal for a minimum deposit of 1500 ETH](https://eips.ethereum.org/EIPS/eip-1011), a lower activation balance of 32 ETH increased the likelihood of more people running Beacon Chain validators and ensured adversaries had a negligible probability of controlling ⅔ of validators in a committee. _ [Minimum Committee Size Explained](https://medium.com/@chihchengliang/minimum-committee-size-explained-67047111fa20)_provides a formal explanation of this concept and is useful for understanding the original security design of subcommittees.
+
+## Why is a MAX_EFFECTIVE_BALANCE of 32 ETH no longer necessary?
 
 Subcommittees became surplus to requirement once [Danksharding](https://notes.ethereum.org/@dankrad/new_sharding)replaced the original sharding roadmap. More importantly, the Beacon Chain's security property (e.g., the validity of transactions finalized by the consensus protocol) was no longer reliant on the assumption that ⅔ of validators in _every_subcommittee was honest.
 
@@ -91,15 +112,23 @@ We need a subcommittee to have one honest aggregator since a validator can only 
 
 The observation that subcommittees can operate with honest-minority (`1-of-N`) assumptions implies that setting `MAX_EFFECTIVE_BALANCE`to a constant of 32 ETH is no longer necessary. We could leave the maximum effective balance untouched in the spirit of "if ain't broke, don't fix it", but capping the MaxEB for validators introduces new problems exacerbated by the increasing appeal of staking on Ethereum.
 
+## Why is capping MAX_EFFECTIVE_BALANCE at 32 ETH a problem today?
+
 Imagine you're running a staking service, and promise stakers eye-popping APRs on staked ETH. To hold up your end of the bargain, and profit from the arrangement, you need to earn enough rewards from validating to pay back the promised yield and cover operational costs. However, the Beacon Chain caps the maximum effective balance for each validator at 32 ETH and automatically schedules every additional wei for withdrawal; plus, even if your validator's balance reaches 33 ETH before the withdrawals sweep activates, the extra 1 ETH is inactive and doesn't figure into the calculation of rewards.
+
+![image](./images/inc1-4.webp)
 
 Fortunately, there's a simple workaround: you can combine excess balances of multiple validators to fund a new 32 ETH validator and start earning fresh rewards. Repeating this process (_earn rewards → withdraw rewards → consolidate rewards into 32 ETH → activate a new validator_) at intervals compounds staking rewards and ensures compound staking rewards and ensures you can keep stakers happy, pay taxes, and remain profitable. You can even increase profits from economies of scale by running multiple validators on the same machine (a "validator" is simply a computer process identified by a public-private keypair).
 
+![image](./images/inc1-5.webp)
+<span class="text-base italic text-center">“This is not financial advice."
+<span>
+
 On the surface, this looks like a good business model for an institutional staking service or staking pool. But it doesn't take a genius to see the problem: a large staking pool is forced to spin up multiple validators to maximize earnings _even if the same entity operates those validators._The emphasis on the last part reflects the differences between the network's notion of a validator and the real-world notion of a validator:
 
-* **The network sees each validator as a unique entity**: A validator joins the entry queue after placing a deposit in the deposit contract (the `deposit`message is indexed with a unique ID); once activated, the validator sends attestations that must be processed separately from attestations sent by other validators. Also, balances for two validators cannot be merged in-protocol; both validators have to exit before their stakes are combined and used to fund a new validator. (The cumulative balances of the two validators must be lower than the `MAX_EFFECTIVE_BALANCE`of 32 ETH for the new validator to earn rewards for every unit of ETH staked.)
+* **The network sees each validator as a unique entity**: A validator joins the entry queue after placing a deposit in the deposit contract (the `deposit` message is indexed with a unique ID); once activated, the validator sends attestations that must be processed separately from attestations sent by other validators. Also, balances for two validators cannot be merged in-protocol; both validators have to exit before their stakes are combined and used to fund a new validator. (The cumulative balances of the two validators must be lower than the `MAX_EFFECTIVE_BALANCE` of 32 ETH for the new validator to earn rewards for every unit of ETH staked.)
 
-* **In real-world scenarios, multiple validators may be funded by the same address and share the same withdrawal credentials**. Additionally, messages (including attestations and voluntary exits) broadcasted on the network may originate from the same entity that controls signing keys for multiple validators. Similarly, the `deposit`message for two validators may be from the same operator who is simply consolidating rewards from existing validators to activate new validators (with all validators running on the same machine).
+* **In real-world scenarios, multiple validators may be funded by the same address and share the same withdrawal credentials**. Additionally, messages (including attestations and voluntary exits) broadcasted on the network may originate from the same entity that controls signing keys for multiple validators. Similarly, the `deposit` message for two validators may be from the same operator who is simply consolidating rewards from existing validators to activate new validators (with all validators running on the same machine).
 
 To illustrate, the biggest staking pool today (Lido) controls more than ~275,000 validators and has 40+ node operators. Seeing the outsized ratio of validators to node operators, it doesn't take a genius to see that "Lido's 275,000 validators" can be more accurately described as "Lido's 6,875 validators" (this assumes each operator controls an equal number of validators and all validators run on the same machine). But the Beacon Chain still sees Lido as having 275,000 validators in what some describe as "artificial decentralization."
 
@@ -115,21 +144,23 @@ While problem #2 isn't strictly a concern for protocol developers, problem #1 ha
 
 * Client developers may be forced to implement optimizations to deal with an increase in bandwidth and memory requirements, which increases the risk of bugs from frequent code rewrites and updates. Presently, consensus-related data like deposits, validator pubkeys, and attestations are directly stored in the Beacon Chain state and consensus clients must keep this state in memory to compute valid state transitions.
 
-* In worst-case scenarios, several validators may not process consensus messages fast enough to keep up with the rest of the chain and temporarily drop off the network. This can stall the Beacon Chain's ability to finalize blocks, especially if the set of remaining validators doesn't meet the 66% of stake threshold required to attest to a block before it achieves a notion of finality defined by Ethereum's [LMD-GHOST](https://inevitableeth.com/home/ethereum/network/consensus/lmd-ghost)algorithm.
+* In worst-case scenarios, several validators may not process consensus messages fast enough to keep up with the rest of the chain and temporarily drop off the network. This can stall the Beacon Chain's ability to finalize blocks, especially if the set of remaining validators doesn't meet the 66% of stake threshold required to attest to a block before it achieves a notion of finality defined by Ethereum's [LMD-GHOST](https://inevitableeth.com/home/ethereum/network/consensus/lmd-ghost) algorithm.
 
 These aren't theoretical concerns, with recent incidents highlighting the drawbacks of a large validator set:
 
-* _ [Cascading Network Effects on Ethereum's Finality](https://ethresear.ch/t/cascading-network-effects-on-ethereums-finality/15871)_discusses two non-finalization incidents, where the number of attesting validators dropped below 66% on July 22, 2023. While the root cause was a bug that caused consensus clients to spend computational resources on processing valid-but-old attestations, which prevented validators from processing newer attestations, the issue was likely exacerbated by the number of valid-but-old attestations processed by clients. If the number of attestations was low, clients could theoretically catch up faster with the network—although not as fast as if they were processing attestations from the current epoch.
+* _ [Cascading Network Effects on Ethereum's Finality](https://ethresear.ch/t/cascading-network-effects-on-ethereums-finality/15871) _discusses two non-finalization incidents, where the number of attesting validators dropped below 66% on July 22, 2023. While the root cause was a bug that caused consensus clients to spend computational resources on processing valid-but-old attestations, which prevented validators from processing newer attestations, the issue was likely exacerbated by the number of valid-but-old attestations processed by clients. If the number of attestations was low, clients could theoretically catch up faster with the network—although not as fast as if they were processing attestations from the current epoch.
 
 * In a [Devconnect 2023 talk](https://www.youtube.com/watch?v=gnFIeW84SQk&t=3600s),[Mike Neuder](https://twitter.com/mikeneuder)(researcher at the Ethereum Foundation and one of the authors of EIP-7251) discusses the experience of developers who ran a testnet with 2.1 million validators—where the chain was unable to finalize for long periods due to the inability of consensus clients to process a high number of attestations from validators. To put this discovery into context, the Beacon Chain is already close to 900,000 validators and, given current rates of deposits, will likely reach two million validators in the next few years.
 
 * Additionally, experiments have put upper bounds on the number of BLS signatures from validators that can be efficiently aggregated using state-of-the-art aggregation schemes like [Horn](https://ethresear.ch/t/horn-collecting-signatures-for-faster-finality/14219). This has implications for future upgrades on Ethereum's roadmap, such as [single slot finality](https://ethereum.org/en/roadmap/single-slot-finality/)(SSF) and [enshrined proposer-builder separation](https://ethresear.ch/t/why-enshrine-proposer-builder-separation-a-viable-path-to-epbs/15710)(ePBS), that rely on a threshold of attestations being broadcast and approved within a short window (e.g., single-slot finality requires aggregating and verifying signatures from supermajority of all validators (66% or more) in the 12-second duration of a slot).
 
+## EIP-7251 as a solution for reducing Ethereum’s validator set
+
 Proposed solutions to the problem of an Beacon Chain unbounded validator set include:
 
-* **Adjusting validator economics (e.g., reducing rewards).**Since staking pools can spin up additional validators by combining rewards from old validators, reducing validator rewards can slow down the rate at which new validators are activated on the Beacon Chain.
+* **Adjusting validator economics (e.g., reducing rewards).** Since staking pools can spin up additional validators by combining rewards from old validators, reducing validator rewards can slow down the rate at which new validators are activated on the Beacon Chain.
 
-* **Placing limits on the number of validators that can be active at any time.**Once the validator set reaches capacity, a mechanism is activated to constrain an increase in the number of active validators and keep the validator set at the levels required for things like single-slot finality and enshrined PBS to function correctly.
+* **Placing limits on the number of validators that can be active at any time.** Once the validator set reaches capacity, a mechanism is activated to constrain an increase in the number of active validators and keep the validator set at the levels required for things like single-slot finality and enshrined PBS to function correctly.
 
 Both approaches involve radical changes with significant consequences:
 
@@ -137,15 +168,15 @@ Approach #1 requires drastic changes to staking rewards and may have broad knock
 
 However, there _is_another option that is simple enough to implement and effective at contracting Ethereum's validator set. This solution is proposed in EIP-7251 and derives from a simple observation: we can curb artificial decentralization on the Beacon Chain by allowing multiple validators operated by the same entity to be consolidated into a _single_validator.
 
-Consider a hypothetical node operator running four validators: in the current Beacon Chain specification, each validator has to individually sign blocks in the current Beacon Chain specification, which inflates the validator set as the same person controls all four validators. EIP-7251 proposes a validator consolidation mechanism that allows the node operator to merge the four 32 ETH validators into **one**validator with a total stake of 128 ETH.
+Consider a hypothetical node operator running four validators: in the current Beacon Chain specification, each validator has to individually sign blocks in the current Beacon Chain specification, which inflates the validator set as the same person controls all four validators. EIP-7251 proposes a validator consolidation mechanism that allows the node operator to merge the four 32 ETH validators into **one** validator with a total stake of 128 ETH.
 
 This makes sense from the operator's perspective as they only have to sign one message for the one validator they now control; it also makes sense from the network's perspective: a 96 ETH validator can be treated as one validator (instead of four 32 ETH validators), which reduces the number of attestations processed by the consensus protocol. Significantly, it doesn't change anything about the protocol—validators are still slashed and rewarded according to the amount staked (e.g., a 96 ETH validator is slashed differently from a 72 ETH validator)—and preserves existing guarantees of economic security.
 
-* The current value of `MAX_EFFECTIVE_BALANCE = 32 ETH`is hardcoded into the Beacon Chain protocol and needs to change for validator consolidation to become a reality. Specifically, `MAX_EFFECTIVE_BALANCE `has to increase by a significant factor (_k_) enough for validator consolidation to decrease the number of validators on the Beacon Chain's validator substantially.
+* The current value of `MAX_EFFECTIVE_BALANCE = 32 ETH` is hardcoded into the Beacon Chain protocol and needs to change for validator consolidation to become a reality. Specifically, `MAX_EFFECTIVE_BALANCE` has to increase by a significant factor (_k_) enough for validator consolidation to decrease the number of validators on the Beacon Chain's validator substantially.
 
 * No mechanism for signaling to the protocol that the balance of a validator (validator #1) should be added to the balance of another validator (validator #2) in-protocol exists. Validator #1 has to exit the Beacon Chain, after which validator #2's balance can be increased via a "top-up" with funds from validator #1's withdrawal. This is suboptimal from a UX perspective as a staking operator wishing to consolidate two or more validators has to exit those validators and combine their stakes to fund a new one.
 
-**EIP-7251**(appropriately named **EIP-7251: Increase MAX_EFFECTIVE_BALANCE**) modifies the Beacon Chain's specification and introduces a slew of changes necessary to implement _and_incentivize consolidation of validators on the consensus layer. In the next section, we'll take an in-depth look at those changes before discussing the pros and cons of implementing EIP-7251—especially the proposal to increase `MAX_EFFECTIVE_BALANCE`for validators.
+**EIP-7251** (appropriately named **EIP-7251: Increase MAX_EFFECTIVE_BALANCE**) modifies the Beacon Chain's specification and introduces a slew of changes necessary to implement _and_incentivize consolidation of validators on the consensus layer. In the next section, we'll take an in-depth look at those changes before discussing the pros and cons of implementing EIP-7251—especially the proposal to increase `MAX_EFFECTIVE_BALANCE` for validators.
 
 [EIP-7251](https://eips.ethereum.org/EIPS/eip-7251)introduces a significant change to the core consensus protocol: an increase in [MAX_EFFECTIVE_BALANCE](https://github.com/ethereum/consensus-specs/blob/9c35b7384e78da643f51f9936c578da7d04db698/specs/phase0/beacon-chain.md#gwei-values)from 32 ETH to 2048 ETH (where _k_= 64). This removes the biggest blocker to the consolidation of validators and is arguably the most critical component of the plan to contract Ethereum's validator set through validator consolidation.
 
@@ -157,7 +188,7 @@ EIP-7251 updates `MAX_EFFECTVE_BALANCE`from the current value of `32 ETH`to `204
 
 EIP-7251 resolves this contradiction by introducing a new constant `MIN_ACTIVATION_BALANCE`(set to 32 ETH) to represent the minimum effective balance required to activate a new validator and modifies `is_eligible_for_activation_queue`to check against `MIN _ACTIVATION_BALANCE`rather than `MAX_EFFECTIVE_BALANCE`. This ensures solo stakers can continue to stake 32 ETH even with the new value for `MAX_EFFECTIVE_BALANCE`and preserves the Beacon Chain's economic decentralization.
 
-An important caveat: EIP-7251 is purely opt-in; a validator that doesn't update to the new `0x02`compounding withdrawal credential introduced by EIP-7251—and sticks with `0x01`credentials—will have `MAX_EFFECTIVE_BALANCE`set to 32 ETH and receive partial rewards in the normal frequency. The next section discusses EIP-7251's compounding withdrawal credential in more detail.
+An important caveat: EIP-7251 is purely opt-in; a validator that doesn't update to the new `0x02`compounding withdrawal credential introduced by EIP-7251—and sticks with `0x01`credentials—will have `MAX_EFFECTIVE_BALANCE` set to 32 ETH and receive partial rewards in the normal frequency. The next section discusses EIP-7251's compounding withdrawal credential in more detail.
 
 EIP-7251 introduces a new compounding withdrawal credential (`0x02`) to complement existing [BLS withdrawal credentials](https://eth2book.info/capella/part3/config/constants/#bls_withdrawal_prefix)(`0x0`) and [execution-layer withdrawal credentials](https://eth2book.info/capella/part3/config/constants/#eth1_address_withdrawal_prefix)(`0x01`). The "compounding withdrawal" naming reflects that validators can compound rewards by switching to `0x02 `credentials. Since rewards are computed to scale with effective balances, accruing a higher effective balance (up to the limit of `MAX_EFFECTIVE_BALANCE`), instead of withdrawing excess balances above the minimum activation balance of 32 ETH, increases the validator's rewards over time.
 
@@ -167,7 +198,7 @@ ETH1_ADDRESS_WITHDRAWAL_PREFIX = Bytes1('0x01')
 COMPOUNDING_WITHDRAWAL_PREFIX = Bytes1('0x02')
 ```
 
-The compounding withdrawal prefix is checked by the (now modified) `is_partially_withdrawable_validator`function that determines if a validator is eligible for an automatic partial withdrawal. If a validator has `0x02`credentials, the function `get_validator_excess_balance`compares the validator's effective balance with `MAX_EFFECTIVE_BALANCE`and returns any excess as the partial withdrawal amount. Note that MaxEB can be 2048 ETH or any value below 2048 ETH based on the validator's preference (more on this feature later).
+The compounding withdrawal prefix is checked by the (now modified) `is_partially_withdrawable_validator` function that determines if a validator is eligible for an automatic partial withdrawal. If a validator has `0x02`credentials, the function `get_validator_excess_balance` compares the validator's effective balance with `MAX_EFFECTIVE_BALANCE`and returns any excess as the partial withdrawal amount. Note that MaxEB can be 2048 ETH or any value below 2048 ETH based on the validator's preference (more on this feature later).
 
 If a validator has `0x01 `withdrawal credentials, `get_validator_excess_balance `compares the validator's effective balance with `MIN_ACTIVATION_BALANCE`and returns any excess as the partial withdrawal amount. This preserves the functionality of automated partial withdrawals for solo stakers and minimizes disruption to the rewards skimming workflow for staking operators that continue to stake 32 ETH instead of staking higher amounts.
 
@@ -182,7 +213,7 @@ elif has_eth1_withdrawal_credential(validator) and balance > MIN_ACTIVATION_BALA
 
 _Note: Details on how the migration from_ `0x01` _withdrawal credentials to_ `0x02 ` _compounding withdrawal credentials will work are still light—validators may be able to do a one-time change in-protocol (similar to_ `0x0` _→_ `0x01` _rotation), **or**need to withdraw and re-enter with new withdrawal credentials. I'll update this article once core developers settle on a decision._
 
-EIP-7251 introduces a new consolidation operation that combines two validators into a single validator _without_requiring both validators to exit the Beacon Chain. A consolidation operation moves the balance of a `source`validator to a `target`validator and is signed by the source validator's signing key.
+EIP-7251 introduces a new consolidation operation that combines two validators into a single validator _without_requiring both validators to exit the Beacon Chain. A consolidation operation moves the balance of a `source` validator to a `target` validator and is signed by the source validator's signing key.
 
 Here's a sketch of the consolidation operation from the EIP-7251 spec:
 
@@ -394,7 +425,7 @@ To sum up, EIP-7251 doesn't exactly change the slashing penalty to solely favor 
 * Aligns cryptoeconomics of slashing with the new reality of higher effective balances
 * Brings down slashing risk to levels that large validators can tolerate and increases the likelihood of more validators opting to consolidate stake
 
-Most of the benefits of implementing EIP-7251 are evident from discussions in previous sections. But a summary of the net benefits of increasing `MAX_EFFECTIVE_BALANCE`for validators to the network and stakers may be helpful, especially if you skipped to the part where you learn "what's in it for me for me as a solo staker/staking service operator?"
+Most of the benefits of implementing EIP-7251 are evident from discussions in previous sections. But a summary of the net benefits of increasing `MAX_EFFECTIVE_BALANCE` for validators to the network and stakers may be helpful, especially if you skipped to the part where you learn "what's in it for me for me as a solo staker/staking service operator?"
 
 Aditya Asgaonkar's _ [Removing Unnecessary Stress from Ethereum's P2P Network](https://ethresear.ch/t/removing-unnecessary-stress-from-ethereums-p2p-network/15547/1)_post provides a good overview (from the perspective of a protocol developer) of the burden having a large number of validators places on the Beacon Chain's p2p networking layer. For instance, a large validator set increases the number of messages broadcasted and gossiped over the network and the number of attestations to aggregate and verify in each epoch. These factors combined could increase compute and bandwidth requirements for validator nodes, degrade network performance, and ultimately hurt decentralization.
 

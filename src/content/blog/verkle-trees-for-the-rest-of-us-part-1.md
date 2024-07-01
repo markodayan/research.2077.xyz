@@ -5,12 +5,13 @@ author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - DeFi
+  - Governance
 imgUrl: '../../assets/VerkleTreesForTheRestOfUs-PartI.webp'
 description: 'An ELI5-style article series on Ethereum’s next major upgrade: The Verge'
 layout: '../../layouts/BlogPost.astro'
 ---
 ![image](../../assets/VerkleTreesForTheRestOfUs-PartI.webp)
-So, you must have heard folks in the Ethereum community talk about "The Verge" upgrade—which comes after The Merge and The Surge in Vitalik's roadmap—and you know it has to do with something called "Verkle trees". But you're still in doubt and want answers to the following questions:
+So, you must have heard folks in the Ethereum community talk about "The Verge" upgrade—which comes after The Merge and The Surge in Vitalik's roadmap—and you know it has to do with something called "Verkle trees". But you're still in doubt and want answers to the following questions:;
 
 **1. What are Verkle trees?**
 
@@ -28,6 +29,8 @@ Note that I'll be oversimplifying many things in this article and subsequent pos
 
 Which also goes to say: if you _are_a cryptographer, and you spot errors while reading, please excuse them:
 
+![image](./images/verkle1.webp)
+
 Ethereum is often described as a "state machine" (in addition to "world computer", "global settlement layer" or more colorful variants like "The Infinite Machine") unlike Bitcoin's description as a "distributed ledger"; this distinction has to do with how Ethereum stores information. While Bitcoin stores only [UTXOs (Unspent Transaction Outputs)](https://academy.binance.com/en/glossary/unspent-transaction-output-utxo)—which are mapped to private keys controlled by a user—Ethereum has a concept of "accounts" and stores specific information about Ethereum accounts in a key-value store:
 
 * **Contract accounts (smart contracts)**: storageRoot, nonce, balance, and codeHash
@@ -37,17 +40,31 @@ These data collectively form Ethereum's "state" and when we talk about state, we
 
 What makes Ethereum a "(transaction-based) state machine" is that the blockchain's state changes as transactions are processed in the [Ethereum Virtual Machine (EVM)](https://ethereum.org/en/developers/docs/evm/).The EVM stores the information associated with accounts in a "tree" to enable efficient retrieval of data (among other benefits). A [tree](https://en.wikipedia.org/wiki/Tree_(data_structure))is a hierarchical data structure made up of a set of interconnected nodes; a node is a "child" or "parent" node depending on its position in the tree; parent nodes can have many child nodes (depending on the tree type), but every child node has exactly one parent.
 
+![image](./images/verkle1-2.webp)
+<span class="text-base italic text-center">A “vanilla” tree data structure. <a href="https://towardsdatascience.com/8-useful-tree-data-structures-worth-knowing-8532c7231e8c" target="_blank">(source)</a>
+<span>
+
 Ethereum uses a modular architecture for storing state data, so one tree stores information about transactions (**transaction trie**); another tree stores information about account storage (**storage trie**); and a third tree stores information about transaction receipts (**receipt trie**). As you might expect, it would be clunky to have information about accounts stored in wildly different places—which is why there's _another_tree (**state trie**) that saves all relevant information about Ethereum accounts (EOAs and contract accounts).
 
 The state trie serves a single source of truth for Ethereum's global state and is updated at each block (along with the transaction trie and receipts trie):
+
+![image](./images/verkle1-2.webp)
+<span class="text-base italic text-center"><a href="https://ethereum.stackexchange.com/questions/135130/how-ethereum-client-can-provide-the-state-of-contract-variables-with-merkle-tree" target="_blank">(source)</a>
+<span>
 
 A transaction will usually lead to the modification of one or more of these trees—for example, depositing ETH into a Uniswap pool requires creating a new slot in the pool contract's storage and inserting a new value (i.e., the total deposit associated with that user) in the storage trie. This will in turn lead to the EVM updating the value of the storage root associated with the pool's contract account, which will further cause the root of the state trie to change as well.
 
 Each of the "trees" mentioned above is a [Modified Merkle Patricia Trie](https://medium.com/@eiki1212/ethereum-state-trie-architecture-explained-a30237009d4e)(MPT), which is a variant of the Merkle tree (named after Ralph Merkle who invented it in 1979). In the next section we'll dive into Merkle trees properly and understand why they are useful in the context of public blockchains like Ethereum.
 
+## What is a Merkle tree?
+
 A Merkle tree is a specific example of a tree structure that has certain properties, such as guaranteeing immutability and validity of data. At a basic level, a Merkle tree is made up of **leaf nodes**(a.k.a., _leaves_) that store a cryptographic hash of a piece of data and **parent nodes**(a.k.a., _branches_) that store hashes of the leaf nodes.
 
 To build a Merkle tree, you hash a block of data to form the leaves, hash two (or more) of those leaves to form a parent node, and continue this process until you end up with a single parent node and no remaining leaf (child) nodes. The is last parent node is called the "root" of the tree; you can see from the image below that the final data structure looks like an inverted tree:
+
+![image](./images/verkle1-4.webp)
+<span class="min-w-sm text-base italic text-center"><a href="https://levelup.gitconnected.com/merkle-trees-e4fdaeaa3094" target="_blank">(source)</a>
+<span>
 
 So, what's the point of building up a Merkle tree? For starters, Merkle trees enable efficient verification of the contents of a data structure by storing cryptographic commitments (generated using collision-resistant hash functions) to the data. That's a lot of jargon for an ELI5 article, so I'll break down the important terms:
 
@@ -77,6 +94,8 @@ We send the minimum amount of data (described as a _witness_) that the verifier 
 
 How witnesses are created varies, but we'll stick to the example of Merkle trees at the beginning for the sake of simplicity. Below is a binary Merkle tree (binary means each parent node can have at most two child nodes) where Alice wants to prove to Bob that a piece of data whose commitment is the leaf x1 is part of the tree's data:
 
+![image](./images/verkle1-5.webp)
+
 If you go back to the original introduction to Merkle trees, you'll recall I said that parent nodes at each level in the tree are created by hashing child nodes together, and child nodes at the base of the tree are created by hashing blocks of data. This means the _entire_tree is connected by hashes at each level, making it easy to detect if two trees are the same. You only have to compare the root node for both trees; if the root nodes differ, the two trees also differ.
 
 Thus, to check Alice's claim that the leaf xn has a particular value x in the tree, Bob only needs the following (note that Bob doesn't need to store the underlying data represented by the Merkle tree in this scheme):
@@ -86,6 +105,8 @@ Thus, to check Alice's claim that the leaf xn has a particular value x in the tr
 
 The data Bob needs to compute parent nodes on the path from leaf xn to the root of the Merkle tree is the set of hashes belonging to the siblings (or "sister nodes") of leaf x1 . Here's the same tree from the previous example—but now we highlight (in red) the nodes whose hashes are required to prove leaf x1 's inclusion in the original Merkle tree:
 
+![image](./images/verkle1-6.webp)
+
 You may already see the relationships already; if not, here's a rough explanation:
 
 * Bob hashes the data for leaf x1 and hashes leaf x1 and leaf x2 together to get the hash of the parent node y1
@@ -94,9 +115,17 @@ You may already see the relationships already; if not, here's a rough explanatio
 
 A difference in the value (hash) of the root node hash calculated using witness data provided by Alice and the value (hash) of the root node in Bob's possession can only mean one thing: the leaf data Alice is trying to prove is incorrect and absent from the original (canonical) Merkle tree. Additionally, the parent-child links represented by hashes at each level of the tree leading up to the root, and the deterministic nature of cryptographic commitment schemes, rule out the case where Alice has the correct leaf data, but somehow generates a witness that fails to convince Bob that the value revealed for the leaf in question (x1 ) is correct.
 
+## The problem with Merkle trees: large witness sizes
+
 Now that we've seen how witnesses work, it's time to understand a key problem with Merkle trees: large witness sizes. Proving that a particular value exists at some leaf in the tree requires providing hashes for all sibling nodes; when the tree's depth—that is, the number of levels from a leaf node to the root—is small, witness sizes are manageable as in the previous example:
 
+![image](./images/verkle1-7.webp)
+<span class="max-w-fit text-base italic text-center">This is a binary Merkle tree of depth = 2; a witness for the leaf x1 only requires two sibling hashes (the hashes of leaf node x2 and the parent node y1).
+<span>
+
 However, witness sizes increase (significantly) as the depth of the Merkle tree increases. In the example below of a binary Merkle tree with depth = 4, a witness for the leaf x1 requires providing _three_sibling hashes (the hash of leaf x2 and nodes y2 and y6 ) and the root hash:
+
+![image](./images/verkle1-8.webp)
 
 You can already see how this trend plays out: the more leaves (data) are added to the tree, the more data we need to create a witness that proves a particular leaf is part of the tree. If you're feeling like a giga-brain at this point, you may ask: _"Can't we just reduce the depth (height) of the tree by increasing the number of children per parent node?"_
 
@@ -104,9 +133,13 @@ Since witness sizes seem to be growing in proportion to the height _k_of the tre
 
 Here's an example of a _3_-ary Merkle tree where each parent node can have up to three children:
 
+![image](./images/verkle1-9.webp)
+
 At first glance, we've managed to solve the problem of storing more leaves without increasing the tree's height (this tree has 9 leaf nodes in total and depth = 3 compared to the preceding example of a binary tree with 8 leaf nodes and depth = 4). But how large will the witness for a leaf (e.g., x1 ) in the new tree be? _Very_large as you see in the diagram (the hashes required to compute the path from x1 to the root (y4 ) are highlighted in red):
 
 We now need hashes for _four_siblings (leaf nodes x2 and x3 and inner nodes y2 and y3 ) to create a witness for leaf x1 's inclusion in the Merkle tree. Increasing the branching factor (the formal name denoting how many children each parent in the tree can have) to eight—which gives us an _8_-ary (octary) Merkle tree—worsens the problem:
+
+![image](./images/verkle1-10.webp)
 
 We've increased the size of the tree further without increasing the depth, but proving the value at x1 now requires a total of _nine_hashes (the hashes of leaf nodes x2 , x3 , x4 , x5 , x6 , x7 , x8 , and x9 and the hash of the branch node y2 ). This short "tutorial" shows why Merkle trees are considered a weak form of vector commitment: the witness size is proportional to the size (width and depth) of the data structure (tree). But we want witnesses that remain constant regardless of the tree's size—and the more useful vector commitment schemes will guarantee this property for the most part.
 
@@ -126,6 +159,8 @@ Since every leaf node stores a membership proof, a verifier only has to verify a
 
 Here's what a new (binary) Merkle tree—using a vector commitment—looks like:
 
+![image](./images/verkle1-11.webp)
+
 As you can see, each leaf stores a membership proof _π_and each parent (branch) node stores a commitment _C_to its children. Now, if Alice needs to verify to Bob that a particular value exists at leaf x1 in the Merkle tree, she only needs to provide the following data as a witness to Bob:
 
 * The value for x1 (this is a regular hash of the data stored in the leaf)
@@ -141,13 +176,33 @@ Witnesses for leaves in a Verkle tree will typically have the following (ideal) 
 
 **1.** **Succinctness**: The witness for a leaf (i.e., vector value) should be easy to verify much quickly compared to verifying the entire vector. Succinctness also ensures the witness size only grows _sublinearly_even as the underlying data grows _exponentially_. We can illustrate this property by comparing the previous example of a standard octary Merkle tree—where a parent node can have up to eight children nodes—to a Verkle tree where parent nodes commit to child nodes using vector commitments instead of hashes:
 
+![image](./images/verkle1-12.webp)
+<span class="min-w-sm text-base italic text-center">Original octary Merkle tree (with hashing)
+<span>
+
+![image](./images/verkle1-13.webp)
+<span class="min-w-sm text-base italic text-center">Octary Verkle tree (with vector commitments)
+<span>
+
 Previously, Alice needed exactly _d_-1 hashes (where _d_is the width of the tree and number of leaves per branch) _and_other intermediate sibling hashes on the path to the root—which added up to a total of eight hashes in the octary Merkle tree example—to to prove the inclusion of leaf x1 in the Merkle tree. In contrast, the witness for x1 in the Verkle tree requires only _three_commitments: the vector commitment _C1_, membership proof _π1_(to verify the relationship between x1 and y1 ) and membership proof _π17_(to verify the relationship between y1 and the root).
 
 Alice also doesn't need to provide information about unaccessed sibling nodes on the path from the root node y3 to the leaf x1 —the witness Bob needs to verify if Alice's opening of the root commitment _C3_is correct is made up of exactly _one_proof (and the vector commitment _C1_as extra data) at each level of the tree. As with previous examples, we assume the verifier (Bob) already has a commitment to the root node.
 
+![image](./images/verkle1-14.webp)
+<span class="min-w-sm text-base italic text-center">Please don’t say “who needs siblings” at home.
+<span>
+
 An implication of this property is that increasing the number of children per branch (parent) node in our new tree has a negligible impact on the overall witness size. If we want to store more data (i.e., add more nodes to the tree), while keeping witness sizes small, we can increase the width to make the tree shorter and reduce the levels from leaf nodes to the root. Here's an example of a _hexary_Verkle tree (width = 16) where each branch (parent) can have up to 16 child nodes:
 
+![image](./images/verkle1-15.webp)
+<span class="min-w-sm text-base italic text-center">Verkle tree with 16 child nodes per parent
+<span>
+
 The new Verkle tree has 38 individual nodes in total, compared to 18 nodes for the preceding example—but the size of the witness for leaf x1 is _still_the same and requires just three commitments (π1 , π33 , and C3 ). While this is a contrived example to show the efficiency gains from using vector commitments, it hints at the importance of vector commitments in production networks like Ethereum, which (currently) uses a hexary Merkle tree to store state as shown in the graphic below:
+
+![image](./images/verkle1-16.webp)
+<span class="min-w-sm text-base italic text-center"><a href="https://levelup.gitconnected.com/merkle-trees-e4fdaeaa3094" target="_blank">(source)</a>
+<span>
 
 **2.** **Constant size**: The witness for a leaf should not correlate with the length of the vector (i.e., the size of the data we're committing to). Verkle trees satisfy this requirement as a membership proof _π_derived with respect to a vector commitment C(x1 , x2 ,...xn ) always uses the same number of elements from the group due to nature of the vector commitment scheme. This is in contrast to the vector commitment used in a traditional Merkle tree: a membership proof is always _d_-1 hashes of the leaf's immediate sibling nodes and any other sibling nodes at intermediate levels of the tree.
 
@@ -156,6 +211,15 @@ _Note: Saying "cryptographic mechanism" may seem hand-wavy, but that's the best 
 But that's not all: vector commitments also ensure that an increase in the tree's width—the number of levels from the lowest leaf to the root of the Merkle tree—has minimal impact on the witness size. Let's put that into context:
 
 In the previous example of an octary Merkle tree the number of hashes Alice had to provide for the witness progressively reduced until she reached the root node—Alice gives Bob seven hashes at the first level and one hash at the second level of the Merkle tree. Compare that to the example of an octary Verkle tree where Alice always provides one proof (with the commitment string as additional data) at each level of the tree on the path to the leaf value she wants to prove:
+
+![image](./images/verkle1-17.webp)
+<span class="text-base italic">Commitments (hashes) required to create a valid witness for leaf x1 are highlighted in red.
+<span>
+
+![image](./images/verkle1-18.webp)
+<span class="text-base italic">Vector commitments and membership proofs required to create a valid witness for leaf x1 are highlighted in red.
+<span>
+
 
 So far we've established that vector commitments have some nice properties compared to cryptographic hashes in Merkle trees—for example, you don't have to provide (unaccessed) sibling nodes as part of the witness for a leaf—but how does that help us in practical terms? You'll recall the original reason I adduced for wanting better vector commitment schemes than hash functions used in a standard Merkle tree:
 
