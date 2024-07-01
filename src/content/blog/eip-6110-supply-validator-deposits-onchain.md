@@ -7,12 +7,19 @@ tags:
   - Infrastructure
   - Layer 1
 <<<<<<< HEAD
+<<<<<<< HEAD
 imgUrl: '../../assets/EIPsForNerds2-EIP-7002(ExecutionLayerTriggerableExits).webp'
 description: 'EIP-7002 brings Ethereum closer to the goal of simple, secure, and trustless staking.'
 layout: '../../layouts/BlogPost.astro'
 ---
 
 
+=======
+imgUrl: '../../assets/EIPsForNerds4-EIP-6110(SupplyValidatorDepositsOn-Chain).webp'
+description: 'Sending ETH from Ethereum execution layer to the consensus layer'
+layout: '../../layouts/BlogPost.astro'
+---
+>>>>>>> parent of 55f9870 (Merge pull request #5 from faytey/main)
 =======
 imgUrl: '../../assets/EIPsForNerds4-EIP-6110(SupplyValidatorDepositsOn-Chain).webp'
 description: 'Sending ETH from Ethereum execution layer to the consensus layer'
