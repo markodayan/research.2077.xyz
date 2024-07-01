@@ -1,8 +1,8 @@
 ---
 title: "EIPs for Nerds #6: ERC-5564 and ERC-6538(Stealth Addresses)"
 pubDate: 05/16/2024
-author: Ethereum2077, Koray Akpinar
-authorTwitterHandle: 2077Collective, korayakpinarr
+author: Koray Akpinar
+authorTwitterHandle: korayakpinarr
 tags:
   - Infrastructure
   - Layer 1

@@ -16,6 +16,9 @@ As a rollup-centric ecosystem enthusiast, I've always been interested in solutio
 
 As every day in crypto is learning new things, it should seem obvious that today, I see the vision of _"Rollup interoperability is crucial for Ethereum future"_-era me as pretty outdated. From the POV of philosophy, I still follow the same vision - **rollup interoperability is absolutely crucial for the future of Ethereum**, and the entire ecosystem should work on solutions that improve it. From the POV of technology, however, I learned a lot of new ideas about this topic and changed my mind about some things.
 
+To understand the material below, it’s helpful to have a basic understanding of rollups and the problem of their interoperability. If you don’t, my article [“Dr. Dankshard or How I learned to stop worrying and love rollups“](https://mirror.xyz/alexhook.eth/g8FifgWnh6w9fIXX4DJrZXFf3nsr0dPgARrdFtzbHNs) is a great introduction.
+
+
 **Merhaba!**
 
 ![image](./images/rollups1.webp)
@@ -201,6 +204,14 @@ However, proof verification is still a problem. As we've calculated before, its 
 **Aligned Layer**
 
 [Aligned](https://alignedlayer.com) is an EigenLayer AVS that utilizes restaking operators to verify ZK proofs cheaply. If you're not familiar with EigenLayer, this is a simplified summary of how proofs are verified in Aligned:
+
+* A user sends the proof verification request to the network and pays the fee for it;
+
+* Aligned operators, each of which is an Ethereum validator with their deposits bonded, verify the proof on their nodes and sign for its validity;
+
+* When 2/3 operators sign for the proof, the aggregated signature is sent and verified on Ethereum L1.
+
+* If an invalid proof has reached finality, validators who signed for it can be slashed by verifying it on-chain. This way, the proof gets economic security equal to 2/3 of the total stake of Aligned operators.
 
 This approach has an obvious drawback—Ethereum no longer guarantees proof validity. If the TVL of the rollup's bridge is higher than 2/3 of the total Aligned stake, attacking it becomes profitable. And since we're talking about the finality latency of 1-2 blocks, we can't optimistically prevent the attack.
 

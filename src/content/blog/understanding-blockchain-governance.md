@@ -2,7 +2,7 @@
 title: Understanding Blockchain Governance
 pubDate: 06/05/2024
 author: Fikunmi
-authorTwitterHandle: eawosikaa
+authorTwitterHandle: fikunmi_ap
 tags:
   - Governance
 imgUrl: '../../assets/UnderstandingBlockchainGovernance.webp'

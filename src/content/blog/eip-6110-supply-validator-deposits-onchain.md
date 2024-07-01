@@ -1,5 +1,5 @@
 ---
-title: "EIPs for Nerds #4: EIP-6110(Supply Validator Deposits Onchain) → EIPs for Nerds #4: EIP-6110 (Supply Validator Deposits Onchain)"
+title: "EIPs For Nerds #4: EIP-6110 (Supply Validator Deposits On-Chain)"
 pubDate: 03/13/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
@@ -7,7 +7,7 @@ tags:
   - Infrastructure
   - Layer 1
 imgUrl: '../../assets/EIPsForNerds4-EIP-6110(SupplyValidatorDepositsOn-Chain).webp'
-description: 'Sending ETH from Ethereum execution layer to the consensus layer'
+description: "EIP-6110 deprecates the Eth1-Eth2 bridge and reforms the Beacon Chain's validator deposit processing mechanism for better staking UX and improved network security."
 layout: '../../layouts/BlogPost.astro'
 ---
 ![image](../../assets/EIPsForNerds4-EIP-6110(SupplyValidatorDepositsOn-Chain).webp)
@@ -61,7 +61,7 @@ Here's an example to illustrate:
 
 5. The next proposer on the Beacon Chain requests the latest block header from a miner and receives the block containing Alice's second deposit transaction. The proposer (and indeed, the entire network) cannot discover the double-spend attack because it doesn't process blocks from the PoW chain. Specifically, the validator is a "light node" of the Eth1 chain: it can prove Alice made a deposit transaction by creating a [Merkle proof](https://ethereum2077.substack.com/i/139794043/a-gentle-introduction-to-vector-commitments-and-witnesses-in-merkle-trees)showing Alice's transaction is part of the block, but it cannot know if the block itself is valid (i.e., the block updates the blockchain's state correctly).
 
-5. Once the protocol (inevitably) creates a new validator for Alice, she will have a withdrawable balance of 64 ETH on the Beacon Chain. Provided the amount of the bribe paid to the mining pool to execute the 51% attack is lower than Alice's withdrawable balance, the attack is profitable.
+6. Once the protocol (inevitably) creates a new validator for Alice, she will have a withdrawable balance of 64 ETH on the Beacon Chain. Provided the amount of the bribe paid to the mining pool to execute the 51% attack is lower than Alice's withdrawable balance, the attack is profitable.
 
 Note that the miners in this example don't suffer any punishment for building a chain that reverses transactions. If the majority of miners are honest and follow a minority chain that keeps Alice's transactions intact, the mining pool will have wasted computational resources on mining an alternative chain. The cost of adversarial behavior is _implied_; in contrast, Beacon Chain validators have an explicit financial cost to committing infractions: having their coins destroyed by the protocol. I describe this property (known as _accountable safety_) in [a section from EIPs For Nerds #3: EIP-7251 (Increase MAX_EFFECTIVE_BALANCE)](https://ethereum2077.substack.com/i/140556227/using-weight-based-rate-limiting-for-exit-and-deposit-queues).
 

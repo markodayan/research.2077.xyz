@@ -30,15 +30,18 @@ const { content, imgSrc, imgAlt } = Astro.props;
   <p class="description">{content.description}</p>
   
   <p class='text-slate text-sm md:text-base'>
-    Written by <a href={`https://twitter.com/${content.authorTwitterHandle}`} target="_blank">
+    By <a href={`https://twitter.com/${content.authorTwitterHandle}`} target="_blank">
   {content.author} 
   </a>
   - {content.pubDate}
   </p>
+  <div id="article">
+
   <slot />
+  </div>
 </article>
 
-<style>
+<style is:global>
   .body {
     margin-block-end: 8rem;
     max-width: 88ch !important;
@@ -73,6 +76,15 @@ const { content, imgSrc, imgAlt } = Astro.props;
   }
   }
 
+  #article {
+    
+    a:not([class]) {
+                color: blue !important;
+    }
+  }
+  a:not([class]) {
+    color: blue !important;
+    }
   .description {
     font-size: 1.4rem;
     font-family: "avenir-medium";
