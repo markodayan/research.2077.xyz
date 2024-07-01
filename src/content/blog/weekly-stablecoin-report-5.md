@@ -1,6 +1,6 @@
 ---
 title: "Weekly stable report #5"
-pubDate: 06/28/2024
+pubDate: 05/28/2024
 author: Arbnom
 authorTwitterHandle: arbnom
 tags:

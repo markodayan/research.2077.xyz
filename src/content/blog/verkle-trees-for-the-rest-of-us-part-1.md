@@ -4,8 +4,7 @@ pubDate: 12/15/2023
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - DeFi
-  - Governance
+  - Infrastructure
 imgUrl: '../../assets/VerkleTreesForTheRestOfUs-PartI.webp'
 description: 'An ELI5-style article series on Ethereum’s next major upgrade: The Verge'
 layout: '../../layouts/BlogPost.astro'
