@@ -4,7 +4,8 @@ pubDate: 03/25/2024
 author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
-  - DeFi
+  - Infrastructure
+  - Layer 1
 imgUrl: '../../assets/EIPsForNerds5-EIP-7503(Zero-KnowledgeWormholes).webp'
 description: 'EIP-7503 unlocks native on-chain privacy and removes a major obstacle to Ethereum's mainstream adoption.'
 layout: '../../layouts/BlogPost.astro'
