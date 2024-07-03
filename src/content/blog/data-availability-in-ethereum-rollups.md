@@ -201,7 +201,8 @@ But back to Andrew's point about censoring requests for data blobs. You might th
 
 > _"A trustless DAC [another name for a decentralized data availability service] is considered the ideal data availability solution in the blockchain community. But decentralized DACs have one fundamental issue that remains unsolved: the Fisherman's Problem. In data availability literature, The Fisherman's Problem is used to illustrate issues that appear in interactions between clients requesting data and nodes storing data in a trustless DAC protocol._
 >
-_Below is a brief description of The Fisherman's Problem:_
+>_Below is a brief description of The Fisherman's Problem:_
+>
 >_Imagine a client requesting data from a node finds out parts of a block are unavailable and alerts other peers on the network. The node, however, releases the data afterwards so that other nodes find that the block's data is available upon inspection. This creates a dilemma: Was the node deliberately withholding data, or was the client raising a false alarm?"_
 
 ![image](./images/data1-7.webp)
@@ -240,7 +241,7 @@ Once the transaction makes its way into the rollup's inbox, however, it becomes 
 
 Forcing the execution of L1 → L2 transactions is more difficult if a zk-rollup publishes state diffs on-chain. In such rollups, transactions—specifically, the output of transactions—are posted to L1 _after_ execution (which is primarily handled by the sequencer). This means users have no way to automatically include transactions and must rely on the cooperation of a sequencer to execute transactions that interact with a rollup's bridge contract.
 
-To clarify, this explanation does _not_connote that every zk-rollups designed this way are susceptible to censorship. Certain zkEVM implementations have mechanisms that allow a user to post a message on L1 if they're being censored on L2. If that transaction isn't processed after a preset delay the chain enters an "emergency mode". This usually does one (or both) of the following:
+To clarify, this explanation does _not_ connote that every zk-rollups designed this way are susceptible to censorship. Certain zkEVM implementations have mechanisms that allow a user to post a message on L1 if they're being censored on L2. If that transaction isn't processed after a preset delay the chain enters an "emergency mode". This usually does one (or both) of the following:
 
 * Prevents any more state updates from the trusted sequencer (whilst allowing users to withdraw assets from the rollup's bridge using Merkle proofs of ownership)
 * Allows anyone (including users) to become an operator and process rollup transactions
@@ -251,7 +252,7 @@ Besides, not every user will have the resources to generate validity proofs for 
 
 ## Fast finality
 
-It's no secret that proof generation costs are significant for zkEVM rollups—at least until innovations like parallelization or [hardware acceleration](https://www.paradigm.xyz/2022/04/zk-hardware)reduce prover costs. Verifying proofs on-chain also incurs a high fixed cost (between 500K gas and 3M gas depending on the implementation).
+It's no secret that proof generation costs are significant for zkEVM rollups—at least until innovations like parallelization or [hardware acceleration](https://www.paradigm.xyz/2022/04/zk-hardware) reduce prover costs. Verifying proofs on-chain also incurs a high fixed cost (between 500K gas and 3M gas depending on the implementation).
 
 This forces zk-rollups to make a tradeoff when deciding how often transaction batches are published and finalized on mainnet. To illustrate, a rollup can publish transaction batches alongside validity proofs that attest to validity of batched transactions frequently (giving users fast finality on transactions), but it is expensive to create and verify proofs at a rapid pace.
 
@@ -274,7 +275,8 @@ A not-so-obvious consequence of publishing state diffs is that recreating a roll
 And while this topic is rarely discussed, _many_applications need access to both real-time and historical blockchain data to improve overall user experience. Consider, for example, the following scenario (taken from this [great post](https://medium.com/offchainlabs/optimistic-rollups-the-present-and-future-of-ethereum-scaling-60fb9067ae87) by the Arbitrum team):
 
 > _"Suppose that Alice submits a transaction paying Bob 1 ETH, and Bob submits a transaction paying Charlie 1 ETH, in quick succession. Later you verify a proof that Alice has 1 ETH less than before, Bob's balance hasn't changed, and Charlie has 1 ETH more than before._
-_But what happened? Did Alice pay Bob? Did Bob pay Charlie? Maybe Alice paid Charlie directly. Maybe Alice burned an ETH and Charlie was paid by someone else. Maybe Diana was the intermediary, not Bob. Bob looks to the blockchain for evidence, but with some ZK-rollups that don't provide chain visibility, he can't tell the difference."_
+> 
+>_But what happened? Did Alice pay Bob? Did Bob pay Charlie? Maybe Alice paid Charlie directly. Maybe Alice burned an ETH and Charlie was paid by someone else. Maybe Diana was the intermediary, not Bob. Bob looks to the blockchain for evidence, but with some ZK-rollups that don't provide chain visibility, he can't tell the difference."_
 
 Here, Bob can't tell how many times 1 ETH moved between accounts because the batch includes final state diffs (Alice's balance decreased by 1 ETH and Charlie's balance increased by 1 ETH) and excludes intermediary transactions (Alice sending 1 ETH to Bob). And Bob's balance doesn't change because the rollup batch conceals information about intermediate state transitions.
 
@@ -302,7 +304,7 @@ Some of these applications and services include:
 
 This article has largely focused on the benefits of rollups using Ethereum for data availability, but that doesn't mean there are no drawbacks involved. In fact, I'll be the first to admit that rollups currently [pay](https://l2fees.info/l1-fees) _ [a lot](https://l2fees.info/l1-fees)_ [to Ethereum for data availability](https://l2fees.info/l1-fees)—and since rollups aren't nonprofits, this cost is naturally passed on to users.
 
-Still, putting (full) transaction data on-chain provides a number of advantages—many of which I've analyzed in this post. These are benefits that a _practical_chain should provide, and every rollup's data availability policy should be evaluated based on how well it guarantees those benefits for users.
+Still, putting (full) transaction data on-chain provides a number of advantages—many of which I've analyzed in this post. These are benefits that a _practical_ chain should provide, and every rollup's data availability policy should be evaluated based on how well it guarantees those benefits for users.
 
 Building things that work in real-world conditions requires making compromises, but a problem appears when when protocols avoid communicating the various trust assumptions that underlie the security of assets owned by users—or, worse, cut corners and dress it up under the banner of "tradeoffs" (something certain marketing teams in crypto have turned into an art ).
 
