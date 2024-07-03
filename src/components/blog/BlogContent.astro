@@ -46,9 +46,18 @@ const { content, imgSrc, imgAlt } = Astro.props;
     margin-block-end: 8rem;
     max-width: 88ch !important;
     font-size: clamp(1rem, 0.913rem + 0.4348vi, 1.25rem) !important;
+
+    .hr {
+      margin-block: 2rem;
+      border-bottom: 1px solid rgb(206, 206, 206);
+    }
   }
   p {
     font-size: 1.2rem;
+  }
+
+  #article {
+    margin-block-end: 8rem;
   }
 
   .tags {
@@ -59,7 +68,7 @@ const { content, imgSrc, imgAlt } = Astro.props;
     }
     a {
       text-decoration: none;
-    display: flex;
+      display: flex;
       align-items: center;
       column-gap: 0.2rem;
       font-size: 1rem;
@@ -76,15 +85,9 @@ const { content, imgSrc, imgAlt } = Astro.props;
   }
   }
 
-  #article {
-    
-    a:not([class]) {
-                color: blue !important;
-    }
+  article {
+
   }
-  a:not([class]) {
-    color: blue !important;
-    }
   .description {
     font-size: 1.4rem;
     font-family: "avenir-medium";
