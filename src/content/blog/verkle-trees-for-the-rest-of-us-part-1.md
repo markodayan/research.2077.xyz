@@ -10,7 +10,8 @@ description: 'An ELI5-style article series on Ethereum’s next major upgrade: T
 layout: '../../layouts/BlogPost.astro'
 ---
 ![image](../../assets/VerkleTreesForTheRestOfUs-PartI.webp)
-So, you must have heard folks in the Ethereum community talk about "The Verge" upgrade—which comes after The Merge and The Surge in Vitalik's roadmap—and you know it has to do with something called "Verkle trees". But you're still in doubt and want answers to the following questions:;
+
+So, you must have heard folks in the Ethereum community talk about "The Verge" upgrade—which comes after The Merge and The Surge in Vitalik's roadmap—and you know it has to do with something called "Verkle trees". But you're still in doubt and want answers to the following questions:
 
 **1. What are Verkle trees?**
 
@@ -22,11 +23,13 @@ So, you must have heard folks in the Ethereum community talk about "The Verge" u
 
 **5. What are the implications of upgrading to Verkle trees for the Ethereum ecosystem?**
 
-Well, you're in luck. After spending a lot of time reading posts from Dankrad Feist/Vitalik Buterin on Verkle trees and watching Guillaume Ballet's talks on the topic (which I highly recommend watching, if only for the memes and jokes), I _may_know a thing or two about Verkle trees enough to write a series about it.
+Well, you're in luck. After spending a lot of time reading posts from Dankrad Feist/Vitalik Buterin on Verkle trees and watching Guillaume Ballet's talks on the topic (which I highly recommend watching, if only for the memes and jokes), I _may_ know a thing or two about Verkle trees enough to write a series about it.
 
-Note that I'll be oversimplifying many things in this article and subsequent posts; my intention is to give a crash course on Verkle trees, not a lecture, so you know _just_enough to understand how how Verkle trees—and the Verge—fit it into Ethereum's technical roadmap. There's a substantial amount of talk about cryptography, but trust me, I'm not a cryptographer, and reading this article won't require a CompSci degree.
+Note that I'll be oversimplifying many things in this article and subsequent posts; my intention is to give a crash course on Verkle trees, not a lecture, so you know _just_ enough to understand how how Verkle trees—and the Verge—fit it into Ethereum's technical roadmap. There's a substantial amount of talk about cryptography, but trust me, I'm not a cryptographer, and reading this article won't require a CompSci degree.
 
-Which also goes to say: if you _are_a cryptographer, and you spot errors while reading, please excuse them:
+Which also goes to say: if you _are_ a cryptographer, and you spot errors while reading, please excuse them:
+
+## Setting the stage: How does Ethereum work with “trees”? 
 
 ![image](./images/verkle1.webp)
 
