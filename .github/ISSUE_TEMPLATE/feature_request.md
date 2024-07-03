@@ -1,9 +1,9 @@
 ---
 name: Feature request
-about: Suggest an idea to Brutal
+about: Suggest an idea to 2077Collective
 title: ''
 labels: enhancement
-assignees: ElianCodes
+assignees: 2077Dev
 
 ---
 

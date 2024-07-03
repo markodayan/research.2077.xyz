@@ -1,9 +1,9 @@
 ---
 name: Bug report
-about: Create a report to help improve Brutal
+about: Create a report to help improve 2077Collective
 title: ''
 labels: bug
-assignees: ElianCodes
+assignees: 2077Dev
 
 ---
 
