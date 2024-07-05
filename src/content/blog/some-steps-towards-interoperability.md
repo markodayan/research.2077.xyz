@@ -52,9 +52,9 @@ Shortly speaking, I was going to create an L1-based bridge that sends transactio
 
 > Why doesn't one just change the network on their wallet and use token bridges to move the needed funds to the needed network?
 
-I answered: This is absolutely an option if one uses an EOA wallet. EOA wallets act the same in all EVM networks and share the same address, so you can send transactions in all of them by just changing the network in your wallet settings.
+_*I answered*_: This is absolutely an option if one uses an EOA wallet. EOA wallets act the same in all EVM networks and share the same address, so you can send transactions in all of them by just changing the network in your wallet settings.
 
-However, the area is migrating to Account Abstraction-based smart accounts. These accounts allow us to add any functionality we want to our wallets programmatically. P256 signatures make it possible to [use secure chips in our phones](https://mirror.xyz/0x8958D0c419BCDFB8A86b8c0089552bE015fbe364/hvpY_houtY9gGDnT8-jthCmE963EawYnyITogyNP_ZU) to sign transactions. Through social recovery, we can add our relatives as guardians authorized to recover our wallets, eliminating unsafe seed phrases. Paymaster technology allows us to pay the gas fee in any token or even [make someone pay the fee for us](https://x.com/getclave/status/1779082777012670532). When quantum computers start breaking classic signature schemes, we can just change the scheme in our AA wallets to a quantum-safe one without creating a new wallet. This list can be continued endlessly, as Account Abstraction essentially allows us to use executable programs as full-fledged wallets.
+However, the area is migrating to Account Abstraction-based smart accounts. These accounts allow us to add any functionality we want to our wallets programmatically. P256 signatures make it possible to use [secure chips in our phones](https://mirror.xyz/0x8958D0c419BCDFB8A86b8c0089552bE015fbe364/hvpY_houtY9gGDnT8-jthCmE963EawYnyITogyNP_ZU) to sign transactions. Through social recovery, we can add our relatives as guardians authorized to recover our wallets, eliminating unsafe seed phrases. Paymaster technology allows us to pay the gas fee in any token or even [make someone pay the fee for us](https://x.com/getclave/status/1779082777012670532). When quantum computers start breaking classic signature schemes, we can just change the scheme in our AA wallets to a quantum-safe one without creating a new wallet. This list can be continued endlessly, as Account Abstraction essentially allows us to use executable programs as full-fledged wallets.
 
 All this comes at a cost: One can't easily migrate their wallets to another chain because, besides moving the funds through the bridge, it requires redeploying the entire account with all the keys, guardians, and settings. In some cases, this might be too complicated or even impossible—say, in rollups that don't support [the P256 precompile](https://getclave.notion.site/2295a4513abe46f5a49a41097b88def0?v=e430de5755d9436c8e1de2c9cc9932a1&pvs=4), this signature scheme might be too expensive to use.
 
@@ -65,7 +65,7 @@ This is why I made that protocol. Essentially, you have AA accounts on many L2s.
 
 Another interesting detail of such a protocol is that it allows for interoperability not only with L2s but with all L1s sidechains, as they have enshrined bridges with Ethereum—Polygon PoS, Ronin, Gnosis, and Avalanche are what I can think of. However, it was designed as a rollup-centric interoperability protocol, so this is just a fun technological fact.
 
-While the idea of the project was pretty clever, the practical implementation had a significant drawback: **speed**.
+While the idea of the project was pretty clever, the practical implementation had a significant drawback: **Speed**.
 
 The entire design relies on canonical rollup bridges connected to Ethereum L1. Rollup bridges are peculiar in that they prove their state to their smart contracts on Ethereum to inherit its security. As you may already know, optimistic and ZK verification are the two most popular ways to do this.
 
@@ -116,7 +116,7 @@ We create the same mini-accounts described earlier but allow one key to send tra
 > _Atomicity — the property of an action that doesn't allow it to fail during execution. Either it wasn't initiated, or it was done._
 _L1-based bridges are atomic because the message can't be lost if it's sent. Ordering, availability, and authenticity are guaranteed by the Ethereum L1._
 
-This is much better! Now, ordinary transactions only take time for token bridging. After the tokens are at the destination, sending transactions is as fast as if it's your main chain. If you lose the key, you'll have to wait from several hours to 7 days, depending on the chain of your parent wallet, but you won't use it very often, so the trade-off is acceptable for most use cases. Also, it's feasible to implement in wallets even today. [I even made my own implementation](https://github.com/alexhooketh/unclave), but it's not by any means secure or production-ready and is meant only for visualization purposes.
+This is much better! Now, ordinary transactions only take time for token bridging. After the tokens are at the destination, sending transactions is as fast as if it's your main chain. If you lose the key, you'll have to wait from several hours to 7 days, depending on the chain of your parent wallet, but you won't use it very often, so the trade-off is acceptable for most use cases. Also, it's feasible to implement in wallets even today. I even made [my own implementation](https://github.com/alexhooketh/unclave), but it's not by any means secure or production-ready and is meant only for visualization purposes.
 
 A similar technique is used in Web3 futures trading platforms: you approve the token in pair (usually USDC) to the smart contract and assign a temporary key for spending, which is stored on the platform's frontend. This allows users to perform fast actions without signing each action with their main wallet. If you change your device or clear the data in your browser, you can just re-assign the key using your main wallet.
 
@@ -144,7 +144,7 @@ Let's return for a little while to think of what can be improved with the previo
 
 If we rephrase it even more simply, the problems are proving costs and verifying costs. Let's look at each problem and ways to solve it.
 
-Essentially, our task is to make our smart wallet on a rollup quickly interoperate with other rollups without additional trust assumptions brought by external bridges. Smart wallets typically consist of a few usual AA features—paymasters, social recovery, secure enclaves, spending limits, etc.—and the main operation that allows us to send on-chain transactions from it.
+Essentially, our task is to make our smart wallet on a rollup quickly interoperate with other rollups without additional trust assumptions brought by external bridges. Smart wallets typically consist of a few usual AA features — paymasters, social recovery, secure enclaves, spending limits, etc., and the main operation that allows us to send on-chain transactions from it.
 
 Why do we need the main operation if we want to use the other rollups from our wallet? Because it is probably hosted on a multipurpose rollup—Arbitrum, Base, ZKsync Era—and we want to interact with users and smart contracts on this rollup, too.
 
@@ -191,6 +191,7 @@ We can expand this idea further by handling _not only the keys_ but also the **e
 * **Spending rules:** In case the wallet is stolen, spending rules controlled by guardians can greatly decrease potential losses before the user recovers the wallet. This feature is also helpful for saving funds or, for example, making wallets for children—parents can send an allowance and restrict how much of it can be spent so that the child can learn to save.
 
 * **Token balances:** This might seem unnecessary, but being able to store crypto _inside_ the keystore rollup dramatically increases the security of users' assets by not separating them into multiple mini-accounts. Also, it allows for many features that enhance user experience:
+
 * **Paymasters:** The rollup may offer free transactions to attract new users or allow them to pay the fee with any token rather than only ETH. More complicated paymaster logic can be implemented, too—for example, the sequencer can take a fee from the swap on another chain when it's bridged back to the keystore rollup.
 
 * **Internal token transfers:** Besides instantly sending funds between rollup users, direct transfers are also helpful for implementing intent-based bridges with other rollups that have too slow finality to use L1 to bridge from the mini-account to the parent account on the keystore rollup. This way, the keystore rollup can essentially act as a hub to transfer tokens between mini-accounts on dozens of various L2s cheaply.
@@ -225,14 +226,14 @@ ZK and rollup teams have recently started actively working on proof aggregation 
 
 ![image](./images/rollups11.webp)
 <span class="text-base italic text-center">
-Istanbul, L2DAYS, 14th November 2023. Myself staying at the food court to the side of the conference building. Mosyo Coffee, where zkCafe took place, is on the front.
+ZK Proof on-chain Verification.
 <span>
 
 Proof aggregation makes sense where verifying costs are higher than proving aggregating proofs. That is, aggregation becomes profitable if the cost of generating a proof for ten proofs and verifying it is less than verifying these ten proofs independently. This is even more helpful in Ethereum L1, which is heavily restricted by computational capacity. Depending on the proof system, the entire block can only contain [about 100 proof verifications](https://docs.alignedlayer.com/about-aligned/how_does_aligned_work#introduction), excluding all the other on-chain activities.
 
 Generally, there are two types of proof aggregation protocols:
 
-* **General purpose (Universal) aggregation:** Such projects usually support several of the most popular ZK protocols (Groth16, Halo2, Plonky), on top of which most ZK circuits are built and take a fee for processing. The dApps that need the proofs then reveal the data from the protocol and process it on their own. [Nebra's Universal Proof Aggregation system](https://www.nebra.one), currently in development, does exactly this. Aligned is also working on so-called ["slow mode" verification](https://docs.alignedlayer.com/about-aligned/how_does_aligned_work#aggregation-mode), which is, in fact, a proof aggregation system, too.
+* **General purpose (Universal) aggregation:** Such projects usually support several of the most popular ZK protocols (Groth16, Halo2, Plonky), on top of which most ZK circuits are built and take a fee for processing. The dApps that need the proofs then reveal the data from the protocol and process it on their own. [Nebra's Universal Proof Aggregation system](https://www.nebra.one), currently in development, does exactly this. Aligned is also working on so-called ["slow mode" verification](https://docs.alignedlayer.com/about-aligned/how_does_aligned_work#aggregation-mode), which is, in fact, a proof aggregation system too.
 
 * **Aggregating shared rollup bridges:** Similarly to shared sequencing in optimistic rollups, ZK rollups with their stacks are working on shared bridges with aggregated state proofs for every ZK rollup in the bridge. This not only allows synchronous composability inside the stack ala shared sequencing but also minimizes the costs for proof verification. You might have heard of Polygon's [AggLayer](https://polygon.technology/blog/aggregated-blockchains-a-new-thesis) or ZKsync's [Hyperbridge](https://docs.zksync.io/zk-stack/concepts/zk-chains), which are shared rollup bridges that work on proof aggregation inside the bridge.
 
@@ -244,7 +245,7 @@ However, these bridges are usually upgradable and controlled by its DAO or secur
 
 ![image](./images/rollups12.webp)
 <span class="text-base italic text-center">
-Istanbul, L2DAYS, 14th November 2023. Myself staying at the food court to the side of the conference building. Mosyo Coffee, where zkCafe took place, is on the front.
+
 <span>
 
 This way, keystore rollups, like any other ZK rollups, can minimize proof verification costs and even combine this with synchronous composability with an already existing rollup stack.
@@ -255,7 +256,7 @@ As previously discussed, bridging from L2 to L1 is not the only problem. Most ro
 
 ![image](./images/rollups13.webp)
 <span class="text-base italic text-center">
-Istanbul, L2DAYS, 14th November 2023. Myself staying at the food court to the side of the conference building. Mosyo Coffee, where zkCafe took place, is on the front.
+
 <span>
 
 If a team implementing this extended keystore rollup design isn't comfortable with such transaction latency, it can implement a palliative described earlier. Every mini-account has a key authorized to send transactions or utilizes a static key from the keystore (as per Vitalik's original design), but account management is still on the main keystore account. After SSF is implemented on L1, the rollup can remove the authorized spending keys, and users will get the entire AA customization functionality without significant speed degradation.
@@ -264,20 +265,20 @@ However, cross-rollup token transfers still present a problem. If we implement t
 
 As an alternative, we can integrate an intent-based bridge into the rollup and deploy it on all the other rollups or even reuse existing infrastructure, such as [ERC-7683](https://ethereum-magicians.org/t/erc-7683-cross-chain-intents-standard/19619)-compliant protocols.
 
-_— What's an intent-based bridge?_
+>_What's an intent-based bridge?_
 
 Most existing cross-chain bridges are based on messaging protocols. For example, [Stargate](https://stargate.finance/bridge) uses [LayerZero](https://layerzero.network) to pass messages about deposits to destination chains, relying on it as the source of trust. When you send tokens through such bridges, they lock your tokens on one side and send a message about your deposit on the other side, and the vault there unlocks the respective amount of tokens for you.
 
 ![image](./images/rollups14.webp)
 <span class="text-base italic text-center">
-Istanbul, L2DAYS, 14th November 2023. Myself staying at the food court to the side of the conference building. Mosyo Coffee, where zkCafe took place, is on the front.
+
 <span>
 
 Intent-based bridges, in turn, do not send messages between two chains. Instead, funds being sent are locked in the vault as a "cross-chain order," and then anyone can fill the order by sending the requested amount of tokens on the destination chain. Whoever fills the order can then claim the locked tokens from the source chain when the vault in it gets informed about the finalized state of the destination chain and can confirm the transfer. This can happen either by waiting for the destination chain's objective (bridge) finality or via some external oracle protocol. For example, [Across uses UMA's optimistic oracle](https://docs.across.to/reference/security-model-and-verification) to fetch the state of not yet finalized L2s.
 
 ![image](./images/rollups15.webp)
 <span class="text-base italic text-center">
-Istanbul, L2DAYS, 14th November 2023. Myself staying at the food court to the side of the conference building. Mosyo Coffee, where zkCafe took place, is on the front.
+
 <span>
 
 We can use the same design for these extended keystore rollups to implement trustless, fast, and cheap two-way bridging between the keystore and all other L2s. Fast bridge finality allows intent-based orders _from_ the other L2s to be nearly free because proving the fulfillment on the L2 takes just a few minutes. Orders from the keystore will probably be cheap as well, as liquidity on the L2 can be supplied relatively fast through the keystore. This way, such keystore rollup design can become a hub for intent-based bridging, allowing users to send transactions instantly rather than in a few minutes, paying nearly nothing for bridging. The rollup team can also supply liquidity for bridging through the keystore 1:1, and this would not cost them a lot.
@@ -298,16 +299,16 @@ While being very UX-friendly, this approach uses a lot of expensive computation 
 
 ![image](./images/rollups16.webp)
 <span class="text-base italic text-center">
-Istanbul, L2DAYS, 14th November 2023. Myself staying at the food court to the side of the conference building. Mosyo Coffee, where zkCafe took place, is on the front.
+
 <span>
 
-Every account on the keystore is registered and indexed by the namehash of its ENS name, registered under a single ENS name with a custom resolver. When its subdomain is resolved, the resolver contract checks if the account with such namehash exists in the rollup and uses the namehash to generate CREATE2-based mini-account addresses. When these are deployed, they will ask L1 for the keystore data _belonging to the namehash_ they were deployed with. It can be the transaction intent itself or just the current signing key, depending on keystore implementation.
+Every account on the keystore is registered and indexed by the namehash of its ENS name, registered under a single ENS name with a custom resolver. When its subdomain is resolved, the resolver contract checks if the account with such namehash exists in the rollup and uses the namehash to generate CREATE2 - based mini-account addresses. When these are deployed, they will ask L1 for the keystore data _belonging to the namehash_ they were deployed with. It can be the transaction intent itself or just the current signing key, depending on keystore implementation.
 
 This way, we get keystore accounts, each with an ENS name resolving to itself and its mini-accounts on each rollup. These mini-accounts, in turn, will also rely on this ENS name when validating the transaction using the keystore rollup.
 
 ![image](./images/rollups17.webp)
 <span class="text-base italic text-center">
-Istanbul, L2DAYS, 14th November 2023. Myself staying at the food court to the side of the conference building. Mosyo Coffee, where zkCafe took place, is on the front.
+
 <span>
 
 **Sequencing mechanisms on "Keystore+" rollups**
@@ -322,7 +323,7 @@ I wrote the entire article around ZK rollups and ZK technology. This is because 
 
 ![image](./images/rollups18.webp)
 <span class="text-base italic text-center">
-Istanbul, L2DAYS, 14th November 2023. Myself staying at the food court to the side of the conference building. Mosyo Coffee, where zkCafe took place, is on the front.
+
 <span>
 
 Optimistic design is fundamentally restrictive in that it will never handle interoperability with other rollups. However, interoperability _within_ the optimistic ecosystem is developing rapidly. The primary technology for making optimistic rollups interoperable with each other is **shared sequencing**. Simply put, this is a mechanism where a sequencer can build a batch for multiple rollups simultaneously. If any transaction in any of the rollups sequenced is invalid, the entire batch can be disputed and reverted.
@@ -367,10 +368,10 @@ I wrote this article to put together a complete picture of all these technologie
 
 ![image](./images/rollups19.webp)
 <span class="text-base italic text-center">
-Istanbul, L2DAYS, 14th November 2023. Myself staying at the food court to the side of the conference building. Mosyo Coffee, where zkCafe took place, is on the front.
+
 <span>
 
-This is perhaps the largest comparison table I've ever made. No wonder—in the last year, the Ethereum community has come up with many new ideas and technologies that can be flexibly combined and manipulated to create completely new solutions that solve the most pressing problems in the area, even with existing tech.
+This is perhaps the largest comparison table I've ever made. No wonder — in the last year, the Ethereum community has come up with many new ideas and technologies that can be flexibly combined and manipulated to create completely new solutions that solve the most pressing problems in the area, even with existing tech.
 
 Yes, I am still convinced that rollup interoperability is the most pressing problem that prevents us from onboarding the entire world to Web3. Scaling is no longer so urgent—4844 allows us to handle up to a thousand transactions per second, comparable to financial activity in the largest countries in the world; PeerDAS, coming in a year, will increase this even further. Fragmentation, however, still poses a severe threat to the Ethereum ecosystem. No matter how large it grows, the ecosystem should not feel like a dozen distinct empires but as one large mechanism. So different, but so identical.
 
