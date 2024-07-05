@@ -132,4 +132,4 @@ Let's take a look at the stablecoins offering the highest APYs. These yields are
 
 I hope you've found this report informative. I'm sure you realized that the quality of reports directly increased after the Ethereum 2077 collaboration. I promise it will increase more during this journey.
 
-In the meantime, you can read other posts on Ethereum2077. And if you've missed last week's report, you can read it [here](https://ethereum2077.substack.com/p/weekly-stable-report-2). Finally, keep enjoying stability!
+In the meantime, you can read other posts on Ethereum2077. And if you've missed last week's report, you can read it [here](https://research.2077.xyz/blog/weekly-stable-report-2/). Finally, keep enjoying stability!

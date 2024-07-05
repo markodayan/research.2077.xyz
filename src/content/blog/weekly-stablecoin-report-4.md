@@ -157,4 +157,4 @@ During a recent Bloomberg interview, former House Speaker Paul Ryan brought up s
 
 ## Last Words
 
-I hope you've found this report informative. See you in the next report. In the meantime, you can read other posts on Ethereum2077. And if you've missed last week's report, you can read it [here](https://ethereum2077.substack.com/p/weekly-stablecoin-report-3). Finally, keep enjoying stability!
+I hope you've found this report informative. See you in the next report. In the meantime, you can read other posts on Ethereum2077. And if you've missed last week's report, you can read it [here](https://research.2077.xyz/blog/weekly-stablecoin-report-3/). Finally, keep enjoying stability!
