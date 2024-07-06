@@ -12,6 +12,7 @@ layout: '../../layouts/BlogPost.astro'
 ---
 ![image](../../assets/EIPsForNerds5-EIP-7503(Zero-KnowledgeWormholes).webp)
 
+## Introduction
 [EIP-7503: Zero-Knowledge Wormholes](https://eips.ethereum.org/EIPS/eip-7503) is an Ethereum Improvement Proposal (EIP) that introduces a mechanism for making privacy-preserving transfers on Ethereum. While we've seen many efforts to make on-chain transfers private, including cryptocurrency mixers like Tornado Cash, EIP-7503 is a protocol-layer solution that makes Ethereum _private by default_.
 
 This is an important consideration: application-layer approaches to privacy like Tornado Cash are "opt-in", which often has negative implications for users. Privacy-focused applications are also more susceptible to censorship; for example, many users (especially US citizens) have been unable to interact with Tornado Cash after the Office of Foreign Assets Control (OFAC) [blacklisted the protocol's contract addresses in 2022](https://www.coindesk.com/policy/2022/08/08/crypto-mixing-service-tornado-cash-blacklisted-by-us-treasury/).
@@ -26,6 +27,7 @@ These are all legitimate questions, all of which we'll discuss in this article. 
 
 Let's dive in!
 
+## Setting the stage: Why should we care about on-chain privacy?
 When we talk about "private transactions" or "anonymous transactions" in the context of electronic peer-to-peer (P2P) payments, we're describing two qualities: **untraceability** and **unlinkability**. Both qualities are set out by Nicolas van Saberhagen in the [CryptoNote whitepaper](https://bytecoin.org/old/whitepaper.pdf):
 
 * **Untraceable**: A transaction is untraceable if the sender cannot be reliably identified by an external observer. Suppose Alice is friends with Bob and Carol and Alice receives two tokens via a transfer—untraceability means no one can tell who (Bob or Carol) sent tokens to Alice.
@@ -56,6 +58,7 @@ These examples provide practical use cases for financial privacy, but also highl
 
 > It is better to have, and not need, than to need, and not have. ― Franz Kafka
 
+## Solving Ethereum’s privacy problem with EIP-7503
 Contrary to early descriptions by proponents and critics alike, public blockchains like Ethereum and Bitcoin are far from anonymous or private. These two terms are often conflated, but they mean two different things:
 
 * Privacy means your **secret** actions are traceable to your public identity, but details of your actions are hidden. Suppose you send an encrypted email using a PGP ([Pretty Good Privacy](https://www.techtarget.com/searchsecurity/definition/Pretty-Good-Privacy)) tool: the mail servers know you sent an email to another (identifiable) party, but cannot read the email's contents. This is a secret action because no one else knows you sent an email, except the recipient.
@@ -63,6 +66,10 @@ Contrary to early descriptions by proponents and critics alike, public blockchai
 * Anonymity means your **public** actions are decoupled from your public identity. To use the previous example: an hypothetical, peer-to-peer anonymous email service could obfuscate the origin and destination of an encrypted email, while maintaining a public record of all emails routed through the network. This is a public action since the record of someone sending an email is visible to every participant on the network, but email addresses are hash strings (`0xdeadbeef`) and not names ([alice@gmail.com](mailto:alice@gmail.com)).
 
 Ethereum isn't private because the blockchain maintains a record for each transaction, including how much was transferred and what on-chain actions the transaction executed. Ethereum isn't anonymous, either, because information about accounts transacting on the blockchain (identified by **addresses**) is public. You may not use a real name like "Alice Hopkins" for your Ethereum account, but using the same address for every transaction allows blockchain forensics to correlate transactions to your real-world identity—using techniques like [IP address monitoring](https://beincrypto.com/eth-staking-privacy-concerns-ip-addresses/), [address clustering](https://coinpaper.com/2662/how-to-trace-ethereum-address-owner-a-clear-guide), and [graph analysis](https://arxiv.org/pdf/2203.09360.pdf).
+
+![bored apye yatch buz feed](./images/eip-7503-bored-ape-buzzfeed.webp)
+<span class="text-base italic text-center">Founders of the Bored Ape Yacht Club (BAYC) NFT project were doxxed by BuzzFeed in 2022. Read the <a href="https://www.buzzfeednews.com/article/katienotopoulos/bored-ape-nft-founder-identity" target="_blank">full story</a> and rebuttals from <a href="https://github.com/jpantunes/awesome-cryptoeconomics/blob/master/NFTnow.com" target="_blank">NFTnow.com</a> and <a href="https://decrypt.co/92223/bayc-bored-ape-founders-buzzfeed" target="_blank">Decrypt</a>..
+<span>
 
 Ethereum is thus accurately described as _pseudonymous_ and cannot guarantee anonymity or privacy. Which is bad for a platform expected to become the settlement layer for the future Internet of Value. For context, banks already provide some level of privacy to users by storing financial data in centralized databases with strict access control mechanisms in place to prevent unauthorized access.
 
@@ -84,8 +91,13 @@ EIP-7503 also borrows from other privacy-centric protocols like Zcash and Aztec 
 
 _**Caveat**: Despite distinguishing privacy from anonymity, I'll be using "private" and "anonymous" interchangeably throughout this article to keep things simple and avoid confusion for readers used to thinking of the two concepts as one and the same. Moreover, EIP-7503 includes elements of anonymity (breaking links between senders and recipients) and privacy (a proposed extension to the current proposal will allow users to conceal deposit and withdrawal amounts)._
 
-At a high level, EIP-7503 works as follows:
+## An overview of EIP-7503: Zero-Knowledge Wormholes
+![](./images/eip-7503-workflow-of-private-transfer.webp)
+<span class="text-base italic text-center">Workflow of private transfers defined by EIP-7503.<a href="https://github.com/okwme/eip-7503-chain" target="_blank"> (source)</a>
+<span>
 
+At a high level, EIP-7503 works as follows:
+### 1. Users “burn” ETH by sending it to an address whose balance is unspendable.
 An address is unspendable if no one has access to the private key required to sign a (valid) transaction that spends from the balance. This is similar to sending funds to the [zero address](https://etherscan.io/address/0x0000000000000000000000000000000000000000): the account has no private key, making any asset it receives irrevocable or "burned".
 
 The zero address is the wealthiest account in Ethereum with more than $280 million in token holdings. Except for a few unfortunate users that send funds to the zero address by accident, the vast majority of users that send tokens sent to the zero address are either [creating a contract](https://ethereum.stackexchange.com/questions/13523/what-is-the-zero-account-as-described-by-the-solidity-docs) (which requires setting the zero address as the recipient) or purposefully taking those tokens out of circulation.
@@ -94,10 +106,12 @@ The original [ERC-20 token standard](https://eips.ethereum.org/EIPS/eip-20) does
 
 EIP-7503 makes use of a similar mechanism to allow users to burn ETH and mint tokens to a different address on Ethereum with a small twist. Instead of asking users to send funds to a single burn address, EIP-7503 requires users to generate a unique burn address for every transaction before minting ETH to another address.
 
+### 2. Users create a private proof-of-burn or “burn receipt” that proves they burned some amount of ETH in a previous transaction by sending it to a burn address.
 Sending funds to a burn address (created according to the EIP-7503 specification) is the equivalent of chucking cash into a wormhole—it can never be recovered. But you _can_prove knowledge of something that was sent to the wormhole using a ZK-SNARK (**Z**ero- **K**nowledge **S**uccinct **A**rgument of **K**nowledge); hence the term "zero-knowledge wormholes".
 
 The proof-of-burn is private because a user only has to prove that it sent tokens to an unspendable address _**A**_ without revealing _**A**_ in plaintext. Generating a proof-of-burn requires proving that the burn address is really unspendable. Why? Asking users to burn native ETH before minting new ETH tokens to the recipient address ensures parity (in value and fungibility) of both types of assets, if users can later withdraw funds from the burn address, the 1:1 peg between native ETH and minted ETH tokens would cease to exist.
 
+### 3. Users mint ETH tokens by submitting a private proof-of-burn to a full node that credits a user an amount equivalent to the deposit transferred to the burn address.
 EIP-7503 introduces a new transaction type in the EVM (Ethereum Virtual Machine) that accepts a proof-of-burn and a recipient as inputs and mints new ETH tokens to the sending address if the proof is verified successfully. To prevent minting ETH twice for the same burn transaction, a special "nullifier" value is attached to every proof-of-burn to track the address's usage.
 
 If the ETH sent to an unspendable address is successfully re-minted, the nullifier prevents a dishonest user from generating a new valid proof-of-burn for funds sent previously to the address (i.e., double-minting attacks). Importantly, the nullifier identifies a used address without leaking information about the address in plaintext.
@@ -109,6 +123,7 @@ With that high-level introduction, we can now dive into the low-level details of
 * Verification of private proofs-of-burn
 * Minting of ETH for recipients of private transfers
 
+### Generating the unspendable address
 A regular Ethereum address is the first 20 bytes of the Keccak256 hash of the **public key** generated from the account's **private key** (the private key is an integer generated from a mnemonic or seed phrase). Both private keys and public keys are generated using the **Elliptic Curve Digital Signature Algorithm** (ECDSA). ECDSA is a complex topic ("complex" is my preferred euphemism for "has lot of math"), but here are a few resources—ranked from beginner to expert on the topic:
 
 The public key is derived by multiplying the private key (called a secret or _s_for short) by a special "generator" value _**G**_ to produce a new value of the form `pubKey = privKey * G`. **T**he address is generated by running the public key through the Keccak256 hash function and taking the first 20 bytes of the hash string. In pseudo-mathematical notation, the operation looks like: `A = K(s * G)`, where _**A**_ is the address, _**s**_ is the secret or private key, and _**G**_ is the generator point on the elliptic curve.
@@ -157,6 +172,7 @@ Our goal? We want to end up with `K(x) &#x2260; H(x)`, where _**K**_ represents 
 
 We cannot know the public key for _**B**_ because the address was generated randomly instead of computing the Keccak256 hash of `s * G` (private key multiplied by generator), which means the private key for _**B**_ is also unknowable. If we don't know the private key for _**B**_, we cannot produce valid signatures for a message that spends the balance of _**B**_. With a provably random process for generating unspendable addresses, we now have a way for users to burn ETH before re-minting assets.
 
+### Generating the private proof-of-burn
 How do we prove that a particular user sent ETH to an unspendable address _and_ the unspendable address was created by that user? The first check is necessary to avoid fraudulent minting of ETH (we don't mint new ETH tokens unless we have proof a user has burned ETH previously), but the second check is also important: we need to know an address was created by the user—otherwise, we would require a piece of information (e.g., the hash of the burn transaction) to confirm a user isn't trying to claim another person's deposit.
 
 Since we want to avoid leaking information about a user's participation in the privacy protocol, we allow users to instead create a zero-knowledge proof proving knowledge of _**s**_ (the secret value hashed to derive the burn address) without releasing _**s**_ publicly. The zero-knowledge proof asserts the user's knowledge of an address _**B**_ that is derived from the result of `H(s)`: since _**s**_ was chosen secretly, another person cannot compute a different value `H(x)` such that `H(s) = H(s)`. This is due to the collision resistance property of hash functions described earlier.
@@ -175,6 +191,7 @@ The Merkle proof consists of the leaves of the Merkle Patricia Trie (MPT) requir
 
 _**Note**: The EIP-7503 specification recommends deriving the Merkle proof required to prove inclusion of the burn address in the state trie and validate the address's balance via the [eth_getProof](https://docs.alchemy.com/reference/eth-getproof) JSON-RPC method introduced in [EIP-1186](https://eips.ethereum.org/EIPS/eip-1186)._
 
+### Generating nullifiers for addresses
 Another input to the ZK-SNARK circuit that generates a proof of deposit to an unspendable address is a **nullifier**. The nullifier is a value that prevents a user from using the same proof-of-burn to mint ETH _twice_. Without a nullifier, nothing stops a savvy user from reusing a proof-of-burn to withdraw ETH multiple times: from the perspective of a node processing EIP-7503 private transfers, these withdrawals are valid because the balance of the unspendable address never reduces (it can only increase).
 
 The nullifier is passed as input to the ZK-SNARK proving circuit so that a proof-of-burn becomes invalid once verified successfully. We achieve this property by extracting the (used) nullifier from a proof and storing it in a [Sparse Merkle Tree](https://medium.com/@kelvinfichter/whats-a-sparse-merkle-tree-acda70aeb837) (SMT). Unlike regular Merkle trees that can efficiently prove inclusion of elements, Sparse Merkle trees are efficient for proving _non-inclusion_ of elements. A discussion of SMTs is out of scope, but the previously linked article provides a great overview for interested readers.
@@ -191,6 +208,7 @@ We can solve this problem by finding a more secure mechanism for generating null
 
 The secret value _**s**_ is described as a [salt](https://en.m.wikipedia.org/wiki/Salt_(cryptography)) in this instance. This salt value essentially magnifies the difficulty of extracting information about burn addresses from nullifiers: if _s_ was known, an observer could perform a brute-force attack and run all possible combinations of `hash(burnaddress,secret)` that produce a nullifier `N` stored on-chain. But _**s**_ is kept secret by the user, effectively eliminating the possibility of finding the corresponding burn address for a used nullifier.
 
+### Verifying the private proof-of-burn
 Now that we know what statements the proof-of-burn is trying to prove, we have a fair idea of how proof verification works. For the first statement (`h(s) = A`), the verifier needs to "understand" the logic of the hash function used to generate the address _**A**_ —so it knows that `H(s)` indeed equals _**A**_. Encoding the logic of the hash function in the verifier circuit also enforces the requirement that _**A**_ cannot be generated with the Keccak256 hash function.
 
 For the second statement (_**A**_ has a positive balance _**b**_ of ETH), the verifier must verify a Merkle proof that proves the inclusion of _**A**_ in Ethereum's state and validates the account's data. The circuit verifier also checks that the block header _**B**_ is from the canonical chain—before extracting the state root—by calling the `BLOCKHASH` opcode with the input `block.blockHash(blockNumber)`, where `blockNumber` refers to the block header _**B**_. If _**B**_ is part of the canonical Ethereum chain, the `hash`returned by the `BLOCKHASH` opcode should match the hash of the block header _**B**_.
@@ -199,6 +217,7 @@ Additionally, the verifier circuit authenticates the nullifier included in the u
 
 To ensure proofs-of-burn can be verified by block proposers, EIP-7503 proposes a modification to the EVM to implement support verification of ZK-SNARK proofs. The authors of EIP-7503 have tested the viability of implementing in-EVM verification of burn proofs by creating an EIP7503-enabled version of the EVM using the [Polaris EVM](https://docs.berachain.com/learn/what-is-polaris-evm) framework. You can visit the [GitHub repository](https://github.com/okwme/eip-7503-chain) dedicated to the project for more details of the protocol's design.
 
+### Minting ETH to the recipient address
 EIP-7503 introduces a new transaction type that mints ETH for a user that successfully proves it deposited a specified amount to an unspendable address. The sender of the transaction submits a ZK-SNARK proof (alongside a nullifier), and the network performs a state transition that updates the balance of the withdrawal address (after verifying the proof-of-burn).
 
 Although EIP-7503 provides plausible deniability, users are encouraged to avoid paying for minting transactions with funds from the same address that sent ETH to the burn address. If Alice sends ETH to an unspendable address `0xm00la` and later submits a transaction paying for the same amount of ETH to be minted to a separate account, Bob doesn't need to be Jimmy Neutron to link Alice to the original burn transaction.
@@ -209,6 +228,8 @@ Recall that the verifier doesn't check the identity of the sending address and d
 
 Fortunately, we can require the proof-of-burn to reference the withdrawal address _**B**_ and enforce a rule of the form: "a minting transaction can only mint ETH to the address extracted from the proof-of-burn". The equivalence between the address passed as a public input to the ZK-SNARK circuit and the address specified in the minting transaction is checked by the verifier. That way, every user is certain that no one can pick up their proof-carrying transaction from the mempool and steal their withdrawal.
 
+## Why EIP-7503? The case for private transfers on Ethereum
+### 1. Private transfers and payments
 EIP-7503 provides a simple way for Ethereum users to move funds around without (inadvertently) creating a link between sending and receiving addresses. You can send ETH from one wallet to a newly generated unspendable address and withdraw to another wallet by providing the proof-of-burn and nullifier for verification purposes. To an external observer, there's exactly _zero_ correlation between the account burning ETH and the account minting ETH.
 
 An edge-case may appear if a user burns ETH in one transaction and immediately mints ETH to a new address: an expert in on-chain analysis may quickly figure the same person must control both addresses. However, EIP-7503 has a powerful feature for preventing deanonymization: **plausible deniability**. Here's a definition of plausible deniability from [Political Dictionary](https://politicaldictionary.com/):
@@ -238,7 +259,11 @@ We can see how EIP7503-style private transfers can be beneficial in other scenar
 * **Philanthropy**: Charities and political organizations can receive funds without the sender's identity being permanently recorded on-chain. Individuals can donate to certain causes without compromising their public reputations.
 
 EIP-7503 can also be used for _non-privacy_reasons:
+1. Currently, centralized exchanges (CEXes) must generate a unique address to receive a deposit from a user and need to send transactions that transfer balances of each address to one or more cold wallets as part of operational security processes. With EIP-7503, a CEX operator can create a single burn address that receives deposits from a set of users and generate a proof-of-burn that withdraws all deposits accumulated in the burn address to the cold wallet in a single transaction. A reduction in the number of transactions required to consolidate CEX deposits in a cold wallet benefits the CEX operator (reduced operational costs) and the network (lower number of on-chain transactions).
 
+2. Any entity that processes a significant amount of payments on-chain can leverage EIP-7503 to improve operational efficiency—so CEXes aren’t the only beneficiaries. Merchants, charity organizations, and crypto-native payment rails are some examples of organizations that use EIP-7503 to reduce operational overhead by aggregating deposits in burn addresses and spreading transaction costs across multiple deposits. This aspect of EIP-7503 has the desired side-effect of creating financial incentives to join the anonymity set and increases the overall privacy for accounts conducting private transfers.
+
+## 2. Balancing privacy with utility and regulatory compliance
 EIP-7503 provides a simple path toward enshrining transaction privacy on Ethereum without requiring extensive modifications to the protocol. In particular, EIP-7503 will allow Ethereum to offer transaction privacy without facing problems confronting other privacy-focused blockchains like Zcash and Monero.
 
 Although I have [written in defense of privacy coins previously](https://fullycrypto.com/the-case-for-privacy-coins), it doesn't take a lot to see that privacy coins like ZEC (Zcash) and MNR (Monero) cannot achieve the goal of introducing decentralized, private, and _usable_ money into the global economy. With regulatory pressures forcing exchanges to delist privacy coins, owners will find it increasingly harder to take advantage of the privacy offered by Zcash, Monero, and other protocols explicitly designed to conceal transaction information in real-world contexts. This excerpt from Haseeb Qureshi's _[Why Privacy Coins Haven't Taken Off](https://medium.com/dragonfly-research/why-privacy-coins-havent-taken-off-3a8beae37f14)_ provides a good introduction to the challenges facing "hardcore" privacy projects today:
@@ -251,11 +276,22 @@ EIP-7503 feels like it's come at _just_the right moment in Ethereum's evolution:
 
 Why do I say EIP-7503 arrived at the right time? There was a time in Ethereum's history where supporting privacy at the base layer was something everyone felt should be done _immediately_. But others in the community (rightly) pointed out the potential edge-cases associated with promoting Ethereum as a "privacy technology". Here are excerpts from an [old thread on the Ethereum Magicians forum](https://ethereum-magicians.org/t/meta-we-should-value-privacy-more/2475) discussing the need for increased privacy on Ethereum:
 
+![vitalik original forum](./images/eip-7503-vitalik-original-forum1.webp)
+<span class="text-base italic text-center">Vitalik’s original forum post calling for solutions to improve privacy for Ethereum users.<a href="https://ethereum-magicians.org/t/meta-we-should-value-privacy-more/2475/19" target="_blank"> (source)</a>
+<span>
+
+![vitalik reply](./images/eip-7503-vitalik-original-forum2.webp)
+<span class="text-base italic text-center">Virgil Griffith’s reply warning against Ethereum rushing into the privacy game.<a href="https://ethereum-magicians.org/t/meta-we-should-value-privacy-more/2475/22" target="_blank"> (source)</a>
+<span>
+
 Griffith's intuitions have been mostly correct in the following years, with many privacy-by-default cryptocurrencies facing the prospect of becoming fringe currencies used only by hardliner cypherpunks (a group that comprises less than 0.00001% of the world's population). In comparison, the value and ubiquity of Ether (ETH) has only increased to the point where "nudging toward privacy technology" by adopting EIP-7503 is less risky than it was five years ago.
 
 If implementing an upgrade to support private transfers—perhaps to avoid [reverse regulatory capture](https://blog.independent.org/2022/07/11/rethinking-regulatory-capture/) or minimize base-layer complexity. A suitable alternative is to pass the responsibility for implementing EIP-7503 to Ethereum L2s and L3s. Given Ethereum's rollup-centric roadmap, implementing EIP-7503 on a rollup makes sense and still preserves the goal of enshrining privacy in Ethereum (e.g., similar to rollups implementing ERC-4337 for native account abstraction).
 
 This approach to Implementing EIP-7503 is easier because each L2 chain already has a bridge contract that mints ETH for users on L2. With a mechanism for minting ETH tokens in place, rollups only need to add components for storing nullifiers on-chain and generating/verifying proofs-of-burn to support EIP7503-style private transfers. An example of a Layer 2 (L2) chain with plans to integrate EIP-7503 into its infrastructure is [Taiko](https://taiko.xyz/) as described in this Request for Comment (RFC).
+
+![](./images/eip-7503-RFP.webp)
+<span class="text-base italic text-center"><a href="https://app.charmverse.io/taiko/request-for-proposal-rfp-track-8186138497093947" target="_blank"> (source)</a><span>
 
 Here, we see that a protocol like Taiko can offer transaction privacy—without making extensive exchanges to its infrastructure—by adopting EIP-7503. This has a key benefit for protocol teams that don't want to build out a full-scale privacy-focused L2 (a là [Aztec v2](https://aztec.network/)) but wish to provide basic untraceability and unlinkability to users. The Nethermind team's [proposal to implement EIP-7503 on Taiko](https://app.charmverse.io/taiko/page-4749893061296133) is worth reading to get an idea of how EIP-7503 can be implemented by an Ethereum L2.
 
@@ -265,6 +301,7 @@ To achieve this property, we require users to pass a list of blacklisted address
 
 Maintaining a registry of blacklisted addresses introduces a degree of centralization and potential censorship vectors. But if we accept that community-driven, ground-up self-regulation is better than centralized, top-down regulation, such gadgets to ensure compliance with regulations may be necessary.
 
+## 3. Private payroll management for on-chain organizations
 Transparency is one of the cornerstones of DAOs (Decentralized Autonomous Organizations): unlike traditional organizations where details of financial remuneration are concealed from investors and stakeholders, contributor payments in DAOs are publicly recorded on-chain. This on-chain audit trail provides a significant amount of accountability and greatly reduces the information asymmetry that may result in financial mismanagement by DAO administrators.
 
 However, DAOs will inevitably mature and start to operate like corporations (for better or worse)—at which point things like keeping details of contributor compensation private may become desirable. EIP-7503 provides the infrastructure DAOs need to start making private payments to core contributors, developers, and independent contractors. In all cases, the recipient only needs to generate a burn address to receive payments and withdraw to its choice address.
@@ -273,19 +310,37 @@ How will DAO members keep administrators accountable if private contributor/cont
 
 For example, Alice may reveal the private key _**s**_ used to create the unspendable address. Since the unspendable address is nullified after the minting operation, Alice can reveal _**s**_ without incurring any risk. A third-party verifier will derive the unspendable address by hashing _**s**_ using the same cryptographic hash function Alice used initially and compare both addresses. If they match, the verifier knows Alice had access to the burn address at the time the transaction was sent. It doesn't, however, know what address Alice used to receive the minted ETH tokens (preserving Alice's privacy to some extent).
 
+## 4. Reducing dependency on cryptocurrency mixers
 Using a mixer like Tornado Cash to break links between wallet addresses is problematic because it creates a form of _guilt-by-association_. Remember that mixers provide anonymity by mixing up funds deposited by different users into a single fund that anyone can withdraw from—without having to provide any other information than evidence to authenticate a historical deposit.
 
 The more funds are deployed into a privacy pool, the harder it is for an external observer to deduce who owns what; if bad actors join the pool, honest participants may be unwittingly assisting criminals to launder money by contributing to the protocol's anonymity set. This is probably why the OFAC sanctions extended (and still extends) to addresses that interacted with Tornado Cash, even if those addresses aren't associated with known bad actors (e.g., phishing gangs, nation state-sponsored hackers, and blackhat exploiters).
 
 Mixers like Tornado Cash also create a problem with fungibility: tokens withdrawn from a mixing pool can become "tainted" and impossible to use or exchange 1:1 with "clean" tokens that haven't passed through a mixer. There's a [great thread on Reddit](https://www.reddit.com/r/ethereum/comments/1av0jex/how_effective_have_the_tornado_cash_ban_been/) that discusses the problem of tainted funds in more detail, which I recommend reading. Here are some of the more enlightening comments from that thread:
 
+![tonado cash ban thread](./images/eip-7503-tonado-cash-ban1.webp)
+<span class="text-base italic text-center">Original post<a href="https://www.reddit.com/r/ethereum/comments/1av0jex/how_effective_have_the_tornado_cash_ban_been/" target="_blank"> (source)</a><span>
+
+![tonado cash ban thread](./images/eip-7503-tonado-cash-ban2.webp)
+<span class="text-base italic text-center"><a href="https://www.reddit.com/r/ethereum/comments/1av0jex/comment/kr7loc6/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button" target="_blank"> (source)</a><span>
+
+![tonado cash ban thread](./images/eip-7503-tonado-cash-ban3.webp)
+<span class="text-base italic text-center"><a href="https://www.reddit.com/r/ethereum/comments/1av0jex/comment/kr8fx1a/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button" target="_blank"> (source)</a><span>
+
 This can have real-world consequences: for example, many high-profile individuals in the Ethereum community [found themselves unable to interact with some dapp frontends](https://cryptoslate.com/defi-protocols-aave-uniswap-balancer-ban-users-following-ofac-sanctions-on-tornado-cash/) after their wallets were sent unsolicited amounts of ETH from the Tornado Cash pool. EIP-7503 is described as a "contractless mixer" and sidesteps the aforementioned problems by using regular EOA-to-EOA transfers to burn ETH and introducing direct minting to facilitate withdrawals from the anonymity pool (vs. using a smart contract).
 
 Another benefit of a contractless mixer is the size of the anonymity set. With Tornado Cash (and similar protocols like [Railgun](https://www.railgun.org/)), the anonymity set is smaller—correlated with the number of participants—and shrinks over time. In contrast, EIP-7503 turns the entire set of _spendable_ and _unspendable_ addresses on Ethereum into an anonymity set. Given the large address-space, it's safe to say on-chain sleuths intent on knowing where the ETH sent to the recipient of a private transfer came from have a tough job ahead of them.
 
+![mem](./images/eip-7503-finding-address-meme.webp)
+<span class="text-base italic text-center">Finding Waldo > playing on-chain sleuth.<span>
+
+## Are there drawbacks to implementing EIP-7503?
 Some potential drawbacks of implementing EIP-7503:
 
+### 1. Regulatory compliance issues
 While previous analyses suggest Ethereum is unlikely to suffer the same fate as Monero and Zcash if it starts supporting private transfers, it's impossible to actually _predict_ what will happen if EIP-7503 is activated. Here's a comment from a participant on the Ethereum Magicians thread discussing the implications for regulators:
+
+![magician thread](./images/eip-7503-tmagician-thread.webp)
+<span class="text-base italic text-center"><a href="https://ethereum-magicians.org/t/eip-7503-zero-knowledge-wormholes-private-proof-of-burn-ppob/15456/17" target="_blank"> (source)</a><span>
 
 While a native privacy solution for Ethereum, the community is starting to acknowledge the importance of walking the tightrope between privacy/anonymity and regulatory compliance after the fallout from sanctions targeting Tornado Cash. This idea is particularly influencing the design of a new generation of privacy protocols like [Privacy Pools](https://github.com/ameensol/privacy-pools) and [Nocturne](https://nocturne.xyz/):
 
@@ -306,6 +361,7 @@ These are just a few questions that will need to be answered before Ethereum (or
 
 > Misfortune weighs most heavily on those who expect nothing but good fortune. — Seneca
 
+## 2. Potential centralization associated with ERC-20 tokens
 Implementing EIP-7503 requires an upgrade to the EVM to support a new transaction type that accepts a burn receipt and credits the recipient's balance with ETH burned in the previous transaction. Execution clients will also need to upgrade to support a Sparse Merkle Tree (SMT) for storing nullifiers and implement off-chain circuits for generating and verifying proofs-of-burns on behalf of users.
 
 Recognizing that an upgrade may be infeasible, EIP-7503's authors have [an alternative proposal to implement EIP-7503 using an ERC-20 token contract](https://ethresear.ch/t/burnth-wormcash-a-practical-implementation-of-eip-7503-on-ethereum/18875). Users keep the same workflow described in previous sections (sending funds to an unspendable address and generating a nullifier), but mint ERC-20 tokens after submitting a proof-of-burn instead of receiving ETH tokens. The ERC-20 contract integrates with a special EIP-7503 verifier contract that verifies burn proofs on-chain (the ERC-20 contract can implement the verification circuit as well).
@@ -316,6 +372,9 @@ Also, we should note that it's easier for on-chain forensics to identify account
 
 On the flipside, an ERC-20 token will make it easier to implement a transfer screening feature that blocks transfers to blacklisted addresses. A developer could simply store the `blacklist[]` in the contract and modify the `transfer()` to include a check on the identity of the address receiving tokens in the transaction. This is, however, a feature we cannot implement at the protocol level without introducing some very strong trust assumptions.
 
+![implementers meme](./images/eip-7503-implementers-meme.webp)
+
+## 3. Increased R&D overhead
 EIP-7503 comes with a requirement to build, test, audit, and maintain complex, cutting-edge cryptographic infrastructure required to support anonymous and private transactions. At least, Nethermind's [description of an L2 implementation of EIP-7503](https://app.charmverse.io/taiko/page-4749893061296133) and Nobitex Labs' [EIP-7503 Chain proof-of-concept](https://github.com/okwme/eip-7503-chain) both suggest a decent amount of engineering effort will go towards creating ZK-SNARK circuits for generating and verifying EIP-7503 proofs.
 
 It's also important to note that cryptographic primitives like ZK-SNARKs are yet to be battle-tested enough for protocol developers to implement them with absolute confidence. To illustrate, Zcash patched a bug that would've permitted a dishonest user to provide fake proofs of asset ownership and [mint an infinite amount of tokens](https://www.coindesk.com/markets/2019/02/05/zcash-team-reveals-it-fixed-a-catastrophic-coin-counterfeiting-bug/amp/) in 2018. I've also discussed the Tornado Cash team's [narrow escape from a potential exploit](https://tornado-cash.medium.com/tornado-cash-got-hacked-by-us-b1e012a3c9a8)in 2019.
@@ -330,6 +389,7 @@ EIP-210 isn't strictly necessary since users have at least one hour (`14 seconds
 
 An alternative is to integrate an oracle contract that requires (incentivized) actors to submit historical block headers to an on-chain contract. This is easier to implement than creating a system-level smart contract and refactoring an opcode, but requires trusting oracle operators to (a) publish correct block headers (b) submit block headers promptly. If both of these assumptions fail to hold, honest users may be unable to redeem deposits and bad actors could publish incorrect block headers to verify Merkle proofs for non-existent burn transactions.
 
+## 4. Reduction in anonymity sets
 At the time EIP-7503 is activated, the anonymity set for a user that mints ETH at block #11000 will include all Ethereum EOAs with a positive ETH balance and zero outgoing transactions. This is crucial to the untraceability property of anonymous transactions: if a transaction burns ETH, it is impossible to recognize it as a burn transaction because an unspendable address looks like a regular Ethereum address.
 
 However, the number of addresses where the account balance remains static and no transactions are sent will reduce to a point where only burn addresses will make up the anonymity set. Thus the anonymity set starts to look like the anonymity sets of contract-based mixers like Tornado Cash and new-generation privacy tools like Privacy Pools and Railgun (implying a gradual reduction in EIP-7503's privacy guarantees).
@@ -354,8 +414,9 @@ The only time a user can be conclusively connected to an EIP-7503 private transf
 
 * Instead of withdrawing the full amount, Alice splits the withdrawal into two or more transactions. Delaying or randomizing withdrawals generates "noise" that encumbers analysis of transaction activity and makes it difficult to link burning and minting transactions to the same user.
 
-**Note**: The second technique is a proposed extension to EIP-7503 and doesn't seem to be feasible with the current design. For users to split withdrawals, a feature for splitting nullifiers such that `nullifier 1` grants the right to mint a fraction of the burn address's balance, `nullifier 2 grants the right to mint another fraction of the balance, etc., is necessary.
+**Note**: The second technique is a proposed extension to EIP-7503 and doesn't seem to be feasible with the current design. For users to split withdrawals, a feature for splitting nullifiers such that `nullifier 1` grants the right to mint a fraction of the burn address's balance, `nullifier 2` grants the right to mint another fraction of the balance, etc., is necessary.
 
+## Conclusion
 EIP-7503 is a solution to one of Ethereum's most understated problems: a lack of financial privacy. If Ethereum will replace banks one day, it needs to provide a level of privacy equal to what users currently enjoy in the status quo. Anything less, and Ethereum doesn't achieve mass adoption because giving up privacy—even for the benefits of avoiding censorship—is a sacrifice most individuals cannot make.
 
 EIP-7503 is still in the review stage, and will likely undergo changes and performance improvements. Besides future support for withdrawing partial amounts, a useful feature is enabling users to recursively combine multiple proofs of burn into a single SNARK that verifies deposits to different burn addresses in one verification transaction. This feature further enhances the appeal of EIP-7503 for CEXes and merchants that wish to maintain a single address per user deposit without having to submit a proof-of-burn individually for (potentially hundreds or thousands of) burn addresses.
