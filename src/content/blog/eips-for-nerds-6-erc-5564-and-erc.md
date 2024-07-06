@@ -1,5 +1,5 @@
 ---
-title: "EIPs for Nerds #6: ERC-5564 and ERC-6538(Stealth Addresses)"
+title: "EIPs for Nerds #6: ERC-5564 and ERC-6538 (Stealth Addresses)"
 pubDate: 05/16/2024
 author: Koray Akpinar
 authorTwitterHandle: korayakpinarr
@@ -12,28 +12,28 @@ layout: '../../layouts/BlogPost.astro'
 ---
 ![image](../../assets/EIPsForNerds6-ERC-5564-ERC-6538-StealthAddresses.webp)
 
-In response to the growing demand for transaction privacy on public ledgers, Ethereum has seen the proposal of ERC-5564 and ERC-6538, which aim to introduce _stealth addresses_to enhance user privacy.
+In response to the growing demand for transaction privacy on public ledgers, Ethereum has seen the proposal of ERC-5564 and ERC-6538, which aim to introduce _stealth addresses_ to enhance user privacy.
 
-Officially proposed on August 13, 2022, for ERC-5564, and January 24, 2023, for ERC-6538, these enhancements represent pivotal steps toward securing private transactions without altering Ethereum's core protocol. ERC-5564, known as the Stealth Address Protocol (SAP), and ERC-6538, titled Stealth Meta-Address Registry, can be explored in detail through their respective proposals, available at [ERC-5564](https://eips.ethereum.org/EIPS/eip-5564#motivation)and [ERC-6538](https://eips.ethereum.org/EIPS/eip-6538).
+Officially proposed on August 13, 2022, for ERC-5564, and January 24, 2023, for ERC-6538, these enhancements represent pivotal steps toward securing private transactions without altering Ethereum's core protocol. ERC-5564, known as the Stealth Address Protocol (SAP), and ERC-6538, titled Stealth Meta-Address Registry, can be explored in detail through their respective proposals, available at [ERC-5564](https://eips.ethereum.org/EIPS/eip-5564#motivation) and [ERC-6538](https://eips.ethereum.org/EIPS/eip-6538).
 
-Many users naively expect to maintain anonymity by relying on the permissionless nature of cryptographic addresses. But at their core, blockchains are designed to operate openly—the entire history of transactions is publicly available for anyone to see. This means, for example, that anyone sufficiently advanced can scan through the history of an address and make informed guesses about the owner of said address. In addition, the amounts being transferred and the destination of all transactions are also publicly accessible.
+Many users naively expect to maintain anonymity by relying on the permissionless nature of cryptographic addresses. But at their core, blockchains are designed to operate openly, the entire history of transactions is publicly available for anyone to see. This means, for example, that anyone sufficiently advanced can scan through the history of an address and make informed guesses about the owner of said address. In addition, the amounts being transferred and the destination of all transactions are also publicly accessible.
 
-It is this problem that led to the birth of Monero (_circa_. April 2014) and ZCash (_circa_2016). Unlike Ethereum and Bitcoin, Monero and Zcash offer privacy at the protocol level through various methods like stealth addresses, ring signatures, and zero-knowledge proofs (ZKPs).
+It is this problem that led to the birth of Monero (_circa_ April 2014) and ZCash (_circa_ 2016). Unlike Ethereum and Bitcoin, Monero and Zcash offer privacy at the protocol level through various methods like stealth addresses, ring signatures, and zero-knowledge proofs (ZKPs).
 
-Ethereum (and Bitcoin) still do not provide such privacy features at the protocol level today. Instead, users seeking financial privacy must use protocols like [TornadoCash](https://ipfs.io/ipns/tornadocash.eth/)that enable private transfers on Ethereum.
+Ethereum (and Bitcoin) still do not provide such privacy features at the protocol level today. Instead, users seeking financial privacy must use protocols like [TornadoCash](https://ipfs.io/ipns/tornadocash.eth/) that enable private transfers on Ethereum.
 
 While these privacy protocols work well for native ETH and well-known ERC20 tokens, they often lack support for NFTs and lesser known ERC20 tokens. In addition, on TornadoCash, you cannot freely adjust the number of tokens you wish to transfer. Instead you have to choose one of 4 numbers: 0.1, 1, 10, 100. Plus, it is important to note that the anonymity offered by each value is different.
 
-Enshrining _stealth addresses_offers a much better user experience for individuals that want to transact privately on Ethereum.
+Enshrining _stealth addresses_ offers a much better user experience for individuals that want to transact privately on Ethereum.
 
-ERC-5564 is a new proposal that brings stealth addresses to Ethereum and unlocks new opportunities to build privacy-preserving financial infrastructure and payment rails on Ethereum. Unlike other proposals like [EIP-7503](https://eips.ethereum.org/EIPS/eip-7503)(which we covered in [EIPs for Nerds #5: EIP-7503](https://ethereum2077.substack.com/p/eip-7503-zero-knowledge-wormholes)), ERC-5564 doesn't require changes to the core Ethereum protocol and can be implemented at the application layer.
+ERC-5564 is a new proposal that brings stealth addresses to Ethereum and unlocks new opportunities to build privacy-preserving financial infrastructure and payment rails on Ethereum. Unlike other proposals like [EIP-7503](https://eips.ethereum.org/EIPS/eip-7503) (which we covered in [EIPs for Nerds #5: EIP-7503](https://ethereum2077.substack.com/p/eip-7503-zero-knowledge-wormholes)), ERC-5564 doesn't require changes to the core Ethereum protocol and can be implemented at the application layer.
 
-ERC-5564 proposes a modular stealth address protocol (SAP) that notably improves on previous approaches to stealth addresses and offers implementers more flexibility—all of which make it the ideal solution for improving financial privacy on Ethereum. This article will provide an in-depth overview of ERC-5564 (Stealth Addresses) and ERC-6358 (Stealth Meta-Address Registry).
+ERC-5564 proposes a modular stealth address protocol (SAP) that notably improves on previous approaches to stealth addresses and offers implementers more flexibility. All of which make it the ideal solution for improving financial privacy on Ethereum. This article will provide an in-depth overview of ERC-5564 (Stealth Addresses) and ERC-6358 (Stealth Meta-Address Registry).
 
 Specifically, we'll:
 
 * Explore the history of stealth address protocols,
-* Trace the evolution of stealth addresses—to see how previous designs influenced ERC-5564,
+* Trace the evolution of stealth addresses to see how previous designs influenced ERC-5564,
 * And analyze the advantages and (potential) limitations of ERC-5564 and ERC-6358.
 
 The simplest and perhaps the first instance of stealth addresses appears in a BitcoinTalk forum post from 2011:
@@ -44,34 +44,34 @@ This adaptation would allow for the creation of stealth addresses. These address
 
 Before delving into the specifics of the Basic Stealth Address Protocol (BSAP), the world's first stealth address protocol originally proposed by ByteCoin, it's crucial to understand the foundational keypair generation process. Here's a brief refresher to ensure a smooth transition into the mechanics and significance of BSAP:
 
-Bitcoin (and Ethereum) use the _**Secp256k1**_curve and _ [Elliptic Curve Cryptography](https://medium.com/@apfikunmi/are-crypto-wallets-really-secure-675d5d26e720)_to create [keypairs](https://www.ibm.com/docs/en/i/7.3?topic=concepts-public-private-key-pair). This curve's parameters (a, b, and p) and the generator point (G) are public information(as you can see in [here](https://en.bitcoin.it/wiki/Secp256k1)).
+Bitcoin (and Ethereum) use the _**Secp256k1**_ curve and _[Elliptic Curve Cryptography](https://medium.com/@apfikunmi/are-crypto-wallets-really-secure-675d5d26e720)_ to create [keypairs](https://www.ibm.com/docs/en/i/7.3?topic=concepts-public-private-key-pair). This curve's parameters (a, b, and p) and the generator point (G) are public information(as you can see in [here](https://en.bitcoin.it/wiki/Secp256k1)).
 
 Anyone can generate a valid keypair with this information.
 
-* First, the user selects a 256-bit private key, _k_from the generator sub-group. It is advisable to use a Cryptographically Secure Pseudorandom Number Generator (CSPRNG) to obtain this key. However, any 256-bit number in the subgroup will suffice.
+* First, the user selects a 256-bit private key, _k_ from the generator sub-group. It is advisable to use a Cryptographically Secure Pseudorandom Number Generator (CSPRNG) to obtain this key. However, any 256-bit number in the subgroup will suffice.
 
-* Next, the user derives the public key _(K)_by _**elliptic curve multiplication**_(ecMUL) of the generator point G, k number of times.
+* Next, the user derives the public key _(K)_ by _**elliptic curve multiplication**_ (ecMUL) of the generator point G, k number of times.
 
-Mathematically, the private key _k_, the public key _K,_and the generator point _G,_are related by the expression:
+Mathematically, the private key _k_, the public key _K,_ and the generator point _G,_ are related by the expression:
 
 With this understanding in place, we can look at the implementation of ByteCoin's proposal.
 
 Suppose Bob wants to transfer tokens to Alice, but they wish to do so anonymously. Both Bob and Alice have their key pairs:
 
-* **Alice:**(a, A) where _**A = a . G**_and,
+* **Alice:**(a, A) where _**A = a . G**_ and,
 * **Bob:**(b, B) where _**B = b . G**_
 
 BSAP proposes accomplishing the anonymous transfer by:
 
-First, having Bob and Alice _independently_create a **shared secret**. They achieve this by multiplying their private keys with the other's public key and hashing the result.
+First, having Bob and Alice _independently_ create a **shared secret**. They achieve this by multiplying their private keys with the other's public key and hashing the result.
 
 **For Alice:**
 
 **For Bob:**
 
-Since _ecMULs_are _commutativ_e, meaning the order of multiplication does not change the result (i.e., A × B = B × A), Alice and Bob will always arrive at the same _shared secret_, even though they are independently computed. Importantly, only Alice and Bob can compute this _shared secret_by each using their private key with the other's public key, thereby ensuring the privacy and security of their interaction.
+Since _ecMULs_ are _commutative_, meaning the order of multiplication does not change the result (i.e., A × B = B × A), Alice and Bob will always arrive at the same _shared secret_, even though they are independently computed. Importantly, only Alice and Bob can compute this _shared secret_ by each using their private key with the other's public key, thereby ensuring the privacy and security of their interaction.
 
-This _shared secret_becomes the private key for the stealth address. The corresponding public key is derived as usual.
+This _shared secret_ becomes the private key for the stealth address. The corresponding public key is derived as usual.
 
 Bob now sends his payment to this stealth address.
 
@@ -81,23 +81,23 @@ Alice, on her end, does the following:
 * Hashes the result to find the _shared secret_
 * and multiplies the result by the base point (G) to generate the same stealth address between them.
 
-After completing the previous steps, Alice can check if the payment has arrived and, if desired, use the _shared secre_t (which doubles as the private key) to transfer the funds to her own wallet or elsewhere.
+After completing the previous steps, Alice can check if the payment has arrived and, if desired, use the _shared secret_ (which doubles as the private key) to transfer the funds to her own wallet or elsewhere.
 
 The BSAP is extremely effective but it comes with it's own set of challenges, the primary of which are:
 
-Displeased with the deficiencies of BSAP, Nicolas Van Saberhagen (pseudonym), creator of Monero ([and potential candidate for ByteCoin](https://www.reddit.com/r/Monero/comments/lz2e5v/going_deep_in_the_cryptonote_rabbit_hole_who_was/)), proposed a solution in his 2013 [CryptoNote Whitepaper](https://bytecoin.org/old/whitepaper.pdf). Nicolas essentially uses the same algorithm as BSAP but introduces one key difference: a new keypair called an _ephemeral keypair_is included to prevent the stealth address from remaining constant and to shift control away from the sender. We examine this approach to creating stealth addresses in the next section.
+Displeased with the deficiencies of BSAP, Nicolas Van Saberhagen (pseudonym), creator of Monero ([and potential candidate for ByteCoin](https://www.reddit.com/r/Monero/comments/lz2e5v/going_deep_in_the_cryptonote_rabbit_hole_who_was/)), proposed a solution in his 2013 [CryptoNote Whitepaper](https://bytecoin.org/old/whitepaper.pdf). Nicolas essentially uses the same algorithm as BSAP but introduces one key difference: a new keypair called an _ephemeral keypair_ is included to prevent the stealth address from remaining constant and to shift control away from the sender. We examine this approach to creating stealth addresses in the next section.
 
 We'll keep with the same example where Bob needs to transfer some tokens to Alice to explain how the Improved Stealth Address Protocol (ISAP) works. As mentioned, the ISAP bears similarity to BSAP—except for the addition of an ephemeral keypair to the stealth address creation process. The protocol is described below:
 
 Alice has a keypair (_a_, _A_) and Bob has a keypair (_b_, _B_). Unlike the previous method:
 
-* Bob (the sender) first creates an ephemeral keypair **(r,R ∋ R = r . G**) and then performs an _ecMUL_of Alice's public key and the ephemeral private key to generate a _shared secret_.
+* Bob (the sender) first creates an ephemeral keypair **(r,R ∋ R = r . G**) and then performs an _ecMUL_ of Alice's public key and the ephemeral private key to generate a _shared secret_.
 
-* Alice (who knows the ephemeral public key) can also compute the same _shared secret_by multiplying her private key with the _ephemeral keypair's_public key.
+* Alice (who knows the ephemeral public key) can also compute the same _shared secret_ by multiplying her private key with the _ephemeral keypair's_ public key.
 
-The use of the _ephemeral keypair_for creation of the _shared secret_permits the creation of a different stealth address for every transfer. To derive the public key of the stealth address, Bob incorporates Alice's public key into the equation when deriving the stealth address:
+The use of the _ephemeral keypair_ for creation of the _shared secret_ permits the creation of a different stealth address for every transfer. To derive the public key of the stealth address, Bob incorporates Alice's public key into the equation when deriving the stealth address:
 
-This way, Bob effectively generates a new stealth address for the next transfer between himself and Alice. You may notice the subtle beauty here: multiplying the _shared secret_by G (base point) through elliptic curve multiplication gives you a point on the Curve, which essentially is the Public Key of the _shared secret_. On the other hand, thanks to mathematics and Elliptic Curve Cryptography, after encapsulating the expression within the G (base point) parentheses and simplifying, we find the Private Key:
+This way, Bob effectively generates a new stealth address for the next transfer between himself and Alice. You may notice the subtle beauty here: multiplying the _shared secret_ by G (base point) through elliptic curve multiplication gives you a point on the Curve, which essentially is the Public Key of the _shared secret_. On the other hand, thanks to mathematics and Elliptic Curve Cryptography, after encapsulating the expression within the G (base point) parentheses and simplifying, we find the Private Key:
 
 Note that:
 
@@ -115,22 +115,22 @@ The Dual-Key Stealth Address Protocol (DKSAP) doesn't fundamentally alter or add
 
 As mentioned earlier, the significant change it introduces is the division of responsibilities into two distinct keypairs: one for viewing the stealth address (view keypair, V = v . G) and another for spending the assets transferred to the stealth address (spend keypair, S = s . G), instead of managing everything with a single keypair.
 
-This not only addresses the private key overuse issue, thereby reducing the risk of exposure—but it also allows you to delegate the tracking of the stealth address without relinquishing control of your funds. Let's continue with the example of Alice and Bob to illustrate how DKSAP works (remember, Bob is trying to send money to Alice without compromising her identity).
+This not only addresses the private key overuse issue, thereby reducing the risk of exposure but it also allows you to delegate the tracking of the stealth address without relinquishing control of your funds. Let's continue with the example of Alice and Bob to illustrate how DKSAP works (remember, Bob is trying to send money to Alice without compromising her identity).
 
 The stealth address generation process remains the same. However, Alice now has two keypairs: a view key and a spend key; both keys can be represented in mathematical notation as described below:
 
-* **View key** _**V = v . G**_, where _v_is view private key
-* **Spend key** _**S = s . G**_, where _s_is spend private key
+* **View key** _**V = v . G**_, where _v_ is view private key
+* **Spend key** _**S = s . G**_, where _s_ is spend private key
 
 Below is a brief description of how Bob makes stealth payments to Alice using DKSAP:
 
 * To send funds to Alice's wallet, Bob first generates an ephemeral keypair (**E = e . G**). He then uses Alice's view public key and his randomly generated ephemeral private key to create a _shared secret_:
 
-* Next, he multiplies this _shared secret_by the base point (G) to derive a public key. To ensure that only Alice can access the corresponding private key, he adds the _shared secret_public key to Alice's spend public key:
+* Next, he multiplies this _shared secret_ by the base point (G) to derive a public key. To ensure that only Alice can access the corresponding private key, he adds the _shared secret_ public key to Alice's spend public key:
 
 By applying the same mathematical trick as before, we ensure that only Alice can control these funds. Bob can then use this address to send assets to Alice without revealing her identity.
 
-The significant distinction between DKSAP and the previous protocol (ISAP) is the use of the view public key to generate the _shared secret_and the spend public key to compute the stealth address. This setup allows one key to generate and control the _shared secret_, while the other enables possession and management of the funds—essentially, your view keypair maintains privacy, while your spend keypair controls ownership.
+The significant distinction between DKSAP and the previous protocol (ISAP) is the use of the view public key to generate the _shared secret_ and the spend public key to compute the stealth address. This setup allows one key to generate and control the _shared secret_, while the other enables possession and management of the funds, essentially, your view keypair maintains privacy, while your spend keypair controls ownership.
 
 To track stealth address transfers, you would need to monitor on-chain transfers for at least a certain period and check all their _shared secrets_. As you can imagine, this can be cumbersome and not very user-friendly. Hence, this protocol allows you to delegate the tracking of transfers made to you, thus eliminating the risk of losing control of your funds. However, care must be taken because the entity performing this task can clearly see to whom each transfer is made, potentially putting your anonymity at risk.
 
@@ -150,19 +150,19 @@ In the next section, we'll explore the ERC-5564 specification in more detail
 
 ERC-5564 is a contract standard that utilizes the Dual-Key Stealth Address Protocol (DKSAP) and, optionally, the Improved Stealth Address Protocol (ISAP). This standard allows addresses to store their stealth meta-addresses—comprising both spend and view public keys—on the contract, enabling others to make transfers to them without deciphering their identity. Interestingly, under ERC-5564, you are not necessarily required to split your stealth meta-address into spend and view components; the contract can manage everything with just one key if desired. However, the future use of stealth addresses will likely involve Dual-Key configurations.
 
-A major methodological difference in ERC-5564 from previous standards is the use of a variable called the _view tag_when trying to determine which transfer was made to you. This _view tag_is obtained by selecting the most significant byte after generating the shared secret and is included in the _announcement_event when a transfer is made. For a regular user attempting to decipher which transfer is theirs by manually testing _announcements_, there are typically five operations required:
+A major methodological difference in ERC-5564 from previous standards is the use of a variable called the _view tag_ when trying to determine which transfer was made to you. This _view tag_ is obtained by selecting the most significant byte after generating the shared secret and is included in the _announcement_ event when a transfer is made. For a regular user attempting to decipher which transfer is theirs by manually testing _announcements_, there are typically five operations required:
 
 * 2x ecMUL (Elliptic Curve Multiplication)
 * 2x HASH
 * 1x ecADD (Elliptic Curve Addition)
 
-With the _view tag_, users only need to perform 1 ecMUL and 1 hash operation to identify the correct transfer, speeding up the parsing (or transfer identification) phase by six times. Even though the use of the _view tag_reveals 1 byte of the _shared secret_, reducing a 128-bit security level to 124 bits, it spares users from having to perform the remaining three operations (ecMUL, HASH, and ecADD) in 255 out of 256 cases. The trade-off of 4 bits only slightly impacts privacy and does not affect the generation of _stealth addresses_.
+With the _view tag_, users only need to perform 1 ecMUL and 1 hash operation to identify the correct transfer, speeding up the parsing (or transfer identification) phase by six times. Even though the use of the _view tag_ reveals 1 byte of the _shared secret_, reducing a 128-bit security level to 124 bits, it spares users from having to perform the remaining three operations (ecMUL, HASH, and ecADD) in 255 out of 256 cases. The trade-off of 4 bits only slightly impacts privacy and does not affect the generation of _stealth addresses_.
 
-The implementation of the contract standard is not overly complex, especially compared to other standards, as it primarily consists of a mapping to hold keys, a function to create a stealth address, and an _announcement_event. Let's look at each component:
+The implementation of the contract standard is not overly complex, especially compared to other standards, as it primarily consists of a mapping to hold keys, a function to create a stealth address, and an _announcement_ event. Let's look at each component:
 
 The creation function, as the name suggests, simply executes the steps of the Dual-Key and Improved Stealth Address Protocols on behalf of Bob, generating a stealth address for him to transfer to Alice.
 
-The _announcement_event in the contract is triggered when a transfer is made to a stealth address. This enables off-chain actors to monitor these _announcements_to check if a transfer has been made to them.
+The _announcement_ event in the contract is triggered when a transfer is made to a stealth address. This enables off-chain actors to monitor these _announcements_ to check if a transfer has been made to them.
 
 Besides these implementation details, ERC-5564 also introduces a new address format to distinguish stealth addresses from regular addresses:
 
@@ -196,7 +196,7 @@ To simplify the monitoring process, users might rely on a centralized entity to 
 
 This centralization not only contradicts the principle of decentralization inherent in blockchain technology but also compromises the privacy of stealth addresses, as the entity could observe all transfers between users under its purview.
 
-On the other hand, if you choose not to delegate the responsibility of the View Key, you must personally verify all transfers, a task likely unappealing to most end-users. Moreover, due to the dependency of tests on the number of _announcements_, there's a risk that an adversary could flood the system with thousands of on-chain _announcement_events just to slow you down.
+On the other hand, if you choose not to delegate the responsibility of the View Key, you must personally verify all transfers, a task likely unappealing to most end-users. Moreover, due to the dependency of tests on the number of _announcements_, there's a risk that an adversary could flood the system with thousands of on-chain _announcement_ events just to slow you down.
 
 While this might not be a significant issue for digital-only transfers, it could be impractical when making physical purchases using stealth addresses—no one wants to wait 10 minutes at the checkout. As suggested in ERC-5564, implementing various Toll and Staking methods could potentially mitigate such attack vectors.
 
