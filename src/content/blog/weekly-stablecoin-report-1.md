@@ -9,7 +9,7 @@ imgUrl: '../../assets/WeeklyStablecoinReport1.webp'
 description: 'This week’s stablecoin report'
 layout: '../../layouts/BlogPost.astro'
 ---
-![image](../../assets/WeeklyStablecoinReport2-09.webp)
+![image](../../assets/WeeklyStablecoinReport1.webp)
 
 Dear stablenjoyers, welcome to the very first post of our weekly stablecoin reports! Weekly stable reports will not only be prepared to keep you up to date about stablecoin news but also to inform you about all the competitions on stablecoins. Stablecoin projects compete with each other to grow, and chains and dapps also compete with each other to get more stablecoin activity because stablecoin activity is one of the most effective signals that a chain or dapp is used by real users.
 
