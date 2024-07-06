@@ -5,7 +5,7 @@ author: Arbnom
 authorTwitterHandle: arbnom
 tags:
   - DeFi
-imgUrl: '../../assets/WeeklyStablecoinReport2-09.webp'
+imgUrl: '../../assets/WeeklyStablecoinReport1.webp'
 description: 'This week’s stablecoin report'
 layout: '../../layouts/BlogPost.astro'
 ---
