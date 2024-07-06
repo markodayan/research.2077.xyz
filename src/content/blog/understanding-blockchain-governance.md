@@ -17,12 +17,14 @@ Most blockchain governance happens on Twitter in the form of never-ending waves 
 
 I start by explaining why you should care about governance at all, then I explain what it is, how you can participate in it and finish off with identifying key elements of blockchain governance that'll help shape your understanding of politics. Let's get to it.
 
+## First, why should you care about governance?
 It's easy to be apathetic about blockchain governance; it seems like the only way to participate/debating EIPs, might be better left to _egghead-gigabrains_ like Vitalik or Tim Roughgarden. Whether that be because you don't feel smart enough to contribute (which we'll address later) or because you feel OK delegating the decision making, there are two reasons why **you** should care and participate in blockchain governance:
 
 These two reasons are why I participate in governance and why you should too. It's also important to keep in mind that it won't always be this way; the space will expand and like it or not, there'll be a need for more and more formalization and "permissioning." In essence, as an individual, you currently have the most power you'll ever have over this ecosystem and not doing anything now is missing out on your chance to secure your future and impress your ideals on the world at the same time.
 
 I hope I've managed to light a fire in you on why you should care about blockchain governance. Next, we'll look at what the term "blockchain governance" means.
 
+## What exactly is blockchain governance?
 There are many definitions but Vlad Zamfir did a good job of succinctly encapsulating what governance is. I'm paraphrasing here but Vlad basically says, "_governance is **everything** about decisions that affect stakeholders"_. I have "everything" in bold because it's very important to keep in mind. More from Vlad:
 
 > It's also about how they coordinate around decisions and decision-making processes. It includes the establishment, maintenance, and revocation of the _**legitimacy**_ of decisions, decision making processes, norms, and other mechanisms for coordination.
@@ -53,9 +55,20 @@ These examples show that informal governance is not only real but that it often 
 
 And that's the most important understanding I want you to leave with today. In blockchain governance, informal governance is real and it's the most impactful form of governance. The good news is that it also has a lower barrier to entry and if done intentionally, you can make an impact.
 
+## How you can participate in governance
 There is no formal guidebook and each chain/community has its nuances but in general, the most efficient way to participate in governance is to play politics, signal your preferences and coordinate with other like-minded stakeholders to impress your views on everyone else. That could be via Twitter, In-person meetups, articles encouraging participation in governance, anything! But in general, it boils down to three major things:
 
 While that would be a great place to stop, I want to help you build a mental framework for thinking about governance.
+
+## Elements of blockchain governance
+1. Vision/Ethos:
+The social, cultural, or political values shared by the blockchain stakeholders form the ethos of a blockchain. The finer details are different for every blockchain but in general, most blockchains want to create immortal, decentralized, permissionless, and censorship-resistant, global computing platforms. All acts of governance affect the vision. They either serve to move towards it or redefine it.
+
+2. Proposals:
+Proposals are ideas/courses of action that interact with the vision. A proposal either seeks to move the blockchain closer to it’s vision or redefine that vision. Proposals can be direct i.e. full formal documents, and sometimes they can be subtle. “ETH is not ultrasound money” is an example of a silent proposal that’s gaining steam.
+
+3. Stakeholders:
+All blockchains have six classes of stakeholders:
 
 * Core Devs: They're just the developers that develop and maintain an actively used client; they have very little power over the actual chain; think the developers of geth.
 
@@ -82,7 +95,7 @@ If you approach governance with these four elements in mind, it's easy to unders
 
 All acts of governance start with the vision. A stakeholder proposes an idea that they feel moves the blockchain closer to its vision or they redefine that vision entirely. Proposals usually have some incentive for the proposer and the reaction of other stakeholders is also largely driven by incentive.
 
-Take for example the outrage at the [Minimum Viable Issuance](https://x.com/weboftrees/status/1710704461750944190)(MVI) proposal. This proposal aims to improve Ethereum's security (vision), yet it was staunchly rejected by token holders (stakeholders) because it seemed like an attack on their yield (incentives.).
+Take for example the outrage at the [Minimum Viable Issuance](https://x.com/weboftrees/status/1710704461750944190) (MVI) proposal. This proposal aims to improve Ethereum's security (vision), yet it was staunchly rejected by token holders (stakeholders) because it seemed like an attack on their yield (incentives.).
 
 Proposals are usually debated until rough consensus is reached and then moves are made to formalize the proposal and eventually it's implemented.
 
@@ -91,3 +104,19 @@ Proposals are usually debated until rough consensus is reached and then moves ar
 If you approach governance like this i.e. identifying the vision, how the proposal interacts with it, who the stakeholders are, and their incentives, you have everything you need to effectively participate in governance. So go out and be mercilessly loud about what you think should be legitimized or otherwise:
 
 > **Do your best to delegitimize governance decisions, processes, and norms that lead to governance outcomes you want to avoid.** Do your best to prevent the legitimization of decisions, processes, and mechanisms for coordination that lead to the outcomes you want to avoid. **Do your best to legitimize and maintain the legitimacy of decisions, processes, and norms that lead to governance outcomes that you want to bring about.** You can do this from your laptop or your phone. Express your interests! **It's early enough that your committed individual participation can and will have a big impact on the future of the blockchain space.**
+
+## References
+* <a href="https://blog.goodaudience.com/blockchain-governance-101-eea5201d7992">Blockchain Governance 101<a>
+* <a href="https://medium.com/@Vlad_Zamfir/against-on-chain-governance-a4ceacd040ca">Against on-chain governance<a>
+* <a href="https://x.com/decentrek/status/1790392343293764015">Derek Chiang on Twitter / X<a>
+* <a href="https://x.com/decentrek/status/1790392200121225577">Derek Chiang on Twitter / X<a>
+* <a href="https://www.coindesk.com/consensus-magazine/2024/02/07/absolute-essentials-of-ethereum-by-paul-dylan-ennis-an-excerpt/amp/">'Absolute Essentials of Ethereum' by Paul Dylan-Ennis: An Excerpt<a>
+* <a href="https://www.coindesk.com/consensus-magazine/2022/12/27/the-psychological-differences-between-bitcoin-and-ethereum-governance/amp/">The Psychological Differences Between Bitcoin and Ethereum Governance<a>
+* <a href="https://www.coindesk.com/podcasts/mapping-out-eth-2-0/ethereums-hard-governance-process-is-a-feature-not-a-bug-says-tim-beiko">Ethereum’s ‘Hard’ Governance Process Is a Feature, Not a Bug, Says Tim Beiko<a>
+* <a href="https://www.coindesk.com/consensus-magazine/2024/04/05/what-the-ethereum-communitys-staking-argument-is-really-about/amp/">What the Ethereum Community's Staking Argument Is Really About<a>
+* <a href="https://docs.zerodev.app/blog/3074-governance">docs.zerodev.app<a>
+* <a href="https://medium.com/@VitalikButerin/the-meaning-of-decentralization-a0c92b76a274">The Meaning of Decentralization<a>
+* <a href="https://medium.com/@lkngtn/why-autonomy-matters-dec90480f3cf">Why Autonomy Matters<a>
+* <a href="https://x.com/weboftrees/status/1710704461750944190">Anders Elowsson 🌻 on Twitter / X<a>
+* <a href="https://www.ig.com/en/bitcoin-btc/bitcoin-cash-vs-bitcoin">Bitcoin cash vs bitcoin<a>
+* <a href="https://x.com/lightclients/status/1787913527782420929">on Twitter / X<a>
