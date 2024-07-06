@@ -71,16 +71,17 @@ The entire design relies on canonical rollup bridges connected to Ethereum L1. R
 
 Optimistic verification works by opening a "challenge window," usually about seven days, in which the challengers can send a fraud proof that points to any invalid part of the transaction batch. If this proof is valid, the rollup reorgs its blockchain to delete this batch. After seven days with no fraud proofs, the batch is automatically considered valid, and all messages and withdrawals are finalized on Ethereum.
 
+![optimism.io](./images/optimism-io.webp)
+
 You probably already figured it out. Due to a 7-day delay in messaging to L1, sending cross-chain transactions from an optimistic rollup is a **terrible** idea. Why? Well, will you wait for your DEX swap for a week? What's going to happen with the price by this time?..
 
 Sending cross-chain transactions _to_ the optimistic rollup is much better. Even though the OP Stack sequencer waits a few blocks before processing the message to minimize the possibility of reorgs, waiting a few minutes for your transaction is already somewhat acceptable for some tasks. Moreover, the Ethereum community is currently working on [single-slot finality](https://ethereum.org/en/roadmap/single-slot-finality/), which will make every block finalize separately, making them irreversible by their next block. After it's implemented, messaging from L1 to L2 will take about 12 seconds.
 
 Hosting such accounts on ZK rollups would be better, but still not very usable. As we can see from the stats below, ZKsync Era finalizes in 21 hours, Linea in 5 hours, Starknet in 9 hours, etc.
 
-
 ![image](./images/rollups4.webp)
 <span class="text-base italic text-center">
-Screenshot from docs.optimism.io
+Screenshot from l2beat.com/scaling/finality
 <span>
 
 But why is it like this? Isn't ZK proof generation fast on powerful clusters? In short, there are two problems:
@@ -94,9 +95,9 @@ Waiting an hour or two for a transaction is still too long. What can we do about
 First of all, let's forget my eight-month-old hackathon project and try to eliminate the mental model that every transaction needs to be initiated from our main smart wallet. Why do we even need to share our smart wallet logic in every rollup? Why don't we just generate temporary EOAs, bridge the funds from our main smart wallet there, do some work we want to do, and bridge what's left back?
 
 
-![image](./images/rollups4.webp)
+![image](./images/rollups5.webp)
 <span class="text-base italic text-center">
-Screenshot from l2beat.com/scaling/finality
+I came up with this thought while looking at Clave's UI
 <span>
 
 My [Clave](https://getclave.io) (or whatever smart wallet you're using) has Secure Enclave signing and social recovery, so I can always be safe about my funds there, even if I lose my phone. And who cares what happens with those temporary accounts? I've already done my stuff with them; all funds are on my Clave now.
@@ -106,10 +107,7 @@ However, this approach has a fundamental problem: the assumption that you can't 
 Thus, to make these wallets useful, we have to access them using the same rules we use on our main smart wallets—secure enclaves, social recovery, etc. So, we get back to the idea above and its infeasibility. There is, however, a _feasible palliative_ that can give these mini-accounts only _recovery_ properties of our main wallet:
 
 
-![image](./images/rollups5.webp)
-<span class="text-base italic text-center">
-I came up with this thought while looking at Clave's UI
-<span>
+![image](./images/rollups6.webp)
 
 We create the same mini-accounts described earlier but allow one key to send transactions from them directly. Our parent wallet can now change this key through the L1-based bridge or make the mini-account read it from the parent L2's state. This way, if the temporary key is lost, the parent wallet can initiate a key change through the slow but atomic L1-based bridge.
 
@@ -126,6 +124,8 @@ But, just as with everything in crypto, this approach is not perfect either. It 
 
 * Token bridging must be accomplished using external bridges. With cross-chain transaction initiation, we can carry our tokens with the message, receiving them practically 1:1 in an atomic way. However, with this solution, this is no longer an option, so external bridging is the only fast option left.
 
+Even though modern bridges <a href="https://x.com/therollupco/status/1757236188132352436">can transfer funds in a few seconds</a>, they a) take a fee that can get <a href="https://x.com/alexhooketh/status/1800612772809425223">awfully high on large transfers</a>, b) are not atomic, and don’t inherit Ethereum’s security properties.
+
 At this point, it's worth taking a note about security properties. Using external bridges to transfer tokens is somewhat acceptable, unlike using them to pass messages to operate mini-accounts. The reason is their worst cases, likely due to an attack on them:
 
 * _In token bridging,_ the worst that can happen is that you won't receive the tokens you sent. In such case, you lose X tokens you wanted to bridge and switch to another bridge.
@@ -140,7 +140,9 @@ Let's return for a little while to think of what can be improved with the previo
 
 * ZK proof systems for full-fledged VM environments are complicated, especially if the environment is not ZK-friendly (EVM). Therefore, there is a high chance that they will contain bugs. Multiple proof systems can prevent this, but such are very complicated to implement, and generating multiple proofs for a single batch may be too slow and expensive. As a workaround, rollup teams enable execution delays, which allow them to roll back the chain in an emergency. This is what slows the bridge finality in some rollups (e.g., ZKsync Era).
 
-* Proposing the new state and ZK proving it to L1 are pretty expensive tasks, so to minimize costs, the rollup sequencers do it every few hours rather than every block. There is an exception, however; [Scroll proposes the state about every minute](https://l2beat.com/scaling/liveness), but a) proof verifying is still done every few hours, so it stays unverified, and b) Scroll is one of [the most expensive rollups](https://l2beat.com/scaling/costs?sort-by=total-cost&sort-order=desc) to use today.
+* Proposing the new state and ZK proving it to L1 are pretty expensive tasks, so to minimize costs, the rollup sequencers do it every few hours rather than every block. 
+  
+There is an exception, however; [Scroll proposes the state about every minute](https://l2beat.com/scaling/liveness), but a) proof verifying is still done every few hours, so it stays unverified, and b) Scroll is one of [the most expensive rollups](https://l2beat.com/scaling/costs?sort-by=total-cost&sort-order=desc) to use today.
 
 If we rephrase it even more simply, the problems are proving costs and verifying costs. Let's look at each problem and ways to solve it.
 
@@ -254,12 +256,14 @@ This way, keystore rollups, like any other ZK rollups, can minimize proof verifi
 
 As previously discussed, bridging from L2 to L1 is not the only problem. Most rollup sequencers also apply delays to passing messages from L1 to L2. This is because when an Ethereum block is created, it's not yet final and can be reversed within the following ~64 blocks (two epochs, about 13 minutes). These reorgs happen because of network latencies, causing some proposals to appear in the network too late when some nodes already consider them missed.
 
-![image](./images/rollups13.webp)
-<span class="text-base italic text-center">
+Even though <a href="https://etherscan.io/blocks_forked">most reorgs are no deeper</a> than two blocks <a href="https://cointelegraph.com/news/ethereum-beacon-chain-experiences-7-block-reorg-what-s-going-on">(a seven-block reorg even appeared in the news two years ago)</a>, rollup teams still don’t want to take risks related to missed messages and apply delays to bridging from L1. These delays are just about 1 minute on some rollups (<a href="https://docs.optimism.io/builders/app-developers/bridging/messaging#for-l1-to-l2-transactions">OP Stack</a>, <a href="https://www.rollup.codes/zksync-era">ZK Stack</a>) but can be up to 6 minutes, as in <a href="https://www.rollup.codes/arbitrum-one">Arbitrum</a>, or even ask for L1 finality, as in <a href="https://www.rollup.codes/linea">Linea</a>.
 
-<span>
+Ethereum community is <a href="https://ethresear.ch/t/sticking-to-8192-signatures-per-slot-post-ssf-how-and-why/17989">actively working on Single-Slot Finality</a>, which will make each block finalize independently instead of once in an epoch. But we can say for sure that <a href="https://ethereum-magicians.org/t/pectra-network-upgrade-meta-thread/16809">it isn’t planned for the next Pectra upgrade</a> coming in Q1 2025, so it’ll be at least a year before SSF gets implemented.
 
 If a team implementing this extended keystore rollup design isn't comfortable with such transaction latency, it can implement a palliative described earlier. Every mini-account has a key authorized to send transactions or utilizes a static key from the keystore (as per Vitalik's original design), but account management is still on the main keystore account. After SSF is implemented on L1, the rollup can remove the authorized spending keys, and users will get the entire AA customization functionality without significant speed degradation.
+
+![image](./images/rollups13.webp)
+<span class="text-base italic text-center">I agree with Alex here; 15 seconds of latency is absolutely acceptable, especially since the operation is atomic after the keystore rollup transaction is finalized on L1. If we talk about token transfers, recipient wallets can even implement a "Pending" status on the UI level.<span>
 
 However, cross-rollup token transfers still present a problem. If we implement token vaults inside the keystore rollup, transferring tokens from it will take 1 to 15 minutes, depending on the recipient rollup. If we do not, splitting users' balances into mini-accounts on multiple L2s can pose security risks and even lock some assets into illiquid L2s, bridging from which may cost too much or take too long.
 
@@ -278,7 +282,7 @@ Intent-based bridges, in turn, do not send messages between two chains. Instead,
 
 ![image](./images/rollups15.webp)
 <span class="text-base italic text-center">
-
+In this scenario, Ethereum L1 is used as the source of trust. Some protocols, such as Across, use external oracles instead. The actual design may differ in existing projects; only the general idea is displayed
 <span>
 
 We can use the same design for these extended keystore rollups to implement trustless, fast, and cheap two-way bridging between the keystore and all other L2s. Fast bridge finality allows intent-based orders _from_ the other L2s to be nearly free because proving the fulfillment on the L2 takes just a few minutes. Orders from the keystore will probably be cheap as well, as liquidity on the L2 can be supplied relatively fast through the keystore. This way, such keystore rollup design can become a hub for intent-based bridging, allowing users to send transactions instantly rather than in a few minutes, paying nearly nothing for bridging. The rollup team can also supply liquidity for bridging through the keystore 1:1, and this would not cost them a lot.
@@ -321,12 +325,12 @@ It's worth considering that with based sequencing, internal transactions will ta
 
 I wrote the entire article around ZK rollups and ZK technology. This is because optimistic rollups cannot fundamentally have fast objective finality, and such a property is only reachable using ZK. Today's optimistic rollups understand their sealed position and are actively researching the feasibility of integrating validity-centric designs in their stacks, hence, for example, [the recent partnership of Optimism and RISC Zero](https://x.com/RiscZero/status/1793633136636530816).
 
+Optimistic design is fundamentally restrictive in that it will never handle interoperability with other rollups. However, interoperability _within_ the optimistic ecosystem is developing rapidly. The primary technology for making optimistic rollups interoperable with each other is **shared sequencing**. Simply put, this is a mechanism where a sequencer can build a batch for multiple rollups simultaneously. If any transaction in any of the rollups sequenced is invalid, the entire batch can be disputed and reverted.
+
 ![image](./images/rollups18.webp)
 <span class="text-base italic text-center">
 
 <span>
-
-Optimistic design is fundamentally restrictive in that it will never handle interoperability with other rollups. However, interoperability _within_ the optimistic ecosystem is developing rapidly. The primary technology for making optimistic rollups interoperable with each other is **shared sequencing**. Simply put, this is a mechanism where a sequencer can build a batch for multiple rollups simultaneously. If any transaction in any of the rollups sequenced is invalid, the entire batch can be disputed and reverted.
 
 This gives all batches in this "mega-batch" the atomic property—either all batches are valid or none. This, in turn, allows for atomic synchronous composability inside the batch. Atomic—because nothing in the batch can be invalid if it is valid, synchronous—because all messaging is inside the batch, which is processed simultaneously by all its rollups' nodes.
 
