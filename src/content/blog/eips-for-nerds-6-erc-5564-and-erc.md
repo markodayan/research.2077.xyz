@@ -16,6 +16,7 @@ In response to the growing demand for transaction privacy on public ledgers, Eth
 
 Officially proposed on August 13, 2022, for ERC-5564, and January 24, 2023, for ERC-6538, these enhancements represent pivotal steps toward securing private transactions without altering Ethereum's core protocol. ERC-5564, known as the Stealth Address Protocol (SAP), and ERC-6538, titled Stealth Meta-Address Registry, can be explored in detail through their respective proposals, available at [ERC-5564](https://eips.ethereum.org/EIPS/eip-5564#motivation) and [ERC-6538](https://eips.ethereum.org/EIPS/eip-6538).
 
+## Why ERC-5564 & ERC-6538
 Many users naively expect to maintain anonymity by relying on the permissionless nature of cryptographic addresses. But at their core, blockchains are designed to operate openly, the entire history of transactions is publicly available for anyone to see. This means, for example, that anyone sufficiently advanced can scan through the history of an address and make informed guesses about the owner of said address. In addition, the amounts being transferred and the destination of all transactions are also publicly accessible.
 
 It is this problem that led to the birth of Monero (_circa_ April 2014) and ZCash (_circa_ 2016). Unlike Ethereum and Bitcoin, Monero and Zcash offer privacy at the protocol level through various methods like stealth addresses, ring signatures, and zero-knowledge proofs (ZKPs).
@@ -36,7 +37,10 @@ Specifically, we'll:
 * Trace the evolution of stealth addresses to see how previous designs influenced ERC-5564,
 * And analyze the advantages and (potential) limitations of ERC-5564 and ERC-6358.
 
+## A brief history of stealth addresses
 The simplest and perhaps the first instance of stealth addresses appears in a BitcoinTalk forum post from 2011:
+
+![bitcointalk forum](./images/eip-5564-bitcoin-talk-forum.webp)
 
 In this post, a user under the username ByteCoin voices his dissatisfaction with the traceability of Bitcoin transactions. To address this, he proposes an innovative adaptation of the [Diffie-Hellman Key Exchange](https://apfikunmi.medium.com/are-crypto-wallets-really-secure-675d5d26e720), a method traditionally used to securely exchange cryptographic keys over a public channel.
 
@@ -56,6 +60,7 @@ Mathematically, the private key _k_, the public key _K,_ and the generator point
 
 With this understanding in place, we can look at the implementation of ByteCoin's proposal.
 
+## Basic Stealth Address Protocol (BSAP)
 Suppose Bob wants to transfer tokens to Alice, but they wish to do so anonymously. Both Bob and Alice have their key pairs:
 
 * **Alice:**(a, A) where _**A = a . G**_ and,
@@ -63,17 +68,175 @@ Suppose Bob wants to transfer tokens to Alice, but they wish to do so anonymousl
 
 BSAP proposes accomplishing the anonymous transfer by:
 
+![BSAP](./images/eip-5564-BSAP.webp)
+
 First, having Bob and Alice _independently_ create a **shared secret**. They achieve this by multiplying their private keys with the other's public key and hashing the result.
 
 **For Alice:**
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>S</mi>
+  <mi>h</mi>
+  <mi>a</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>d</mi>
+  <mi>S</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>t</mi>
+  <mo stretchy="false">(</mo>
+  <mi>S</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>H</mi>
+  <mi>a</mi>
+  <mi>s</mi>
+  <mi>h</mi>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>.</mo>
+  <mi>B</mi>
+  <mo stretchy="false">)</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>.</mo>
+  <mi>b</mi>
+  <mo>.</mo>
+  <mi>G</mi>
+  <mo stretchy="false">)</mo>
+</math>
 
 **For Bob:**
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>S</mi>
+  <mi>h</mi>
+  <mi>a</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>d</mi>
+  <mi>S</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>t</mi>
+  <mo stretchy="false">(</mo>
+  <mi>S</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>H</mi>
+  <mi>a</mi>
+  <mi>s</mi>
+  <mi>h</mi>
+  <mo stretchy="false">(</mo>
+  <mi>b</mi>
+  <mo>.</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>b</mi>
+  <mo>.</mo>
+  <mi>a</mi>
+  <mo>.</mo>
+  <mi>G</mi>
+  <mo stretchy="false">)</mo>
+</math>
 
 Since _ecMULs_ are _commutative_, meaning the order of multiplication does not change the result (i.e., A × B = B × A), Alice and Bob will always arrive at the same _shared secret_, even though they are independently computed. Importantly, only Alice and Bob can compute this _shared secret_ by each using their private key with the other's public key, thereby ensuring the privacy and security of their interaction.
 
 This _shared secret_ becomes the private key for the stealth address. The corresponding public key is derived as usual.
 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>S</mi>
+  <mi>h</mi>
+  <mi>a</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>d</mi>
+  <mi>S</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>t</mi>
+  <mo stretchy="false">(</mo>
+  <mi>S</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">[</mo>
+  <mi>H</mi>
+  <mi>a</mi>
+  <mi>s</mi>
+  <mi>h</mi>
+  <mo stretchy="false">(</mo>
+  <mi>b</mi>
+  <mo>.</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">]</mo>
+</math>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>S</mi>
+  <mi>t</mi>
+  <mi>e</mi>
+  <mi>a</mi>
+  <mi>l</mi>
+  <mi>t</mi>
+  <mi>h</mi>
+  <mi>A</mi>
+  <mi>d</mi>
+  <mi>d</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>s</mi>
+  <mi>s</mi>
+  <mo>=</mo>
+  <mi>S</mi>
+  <mo>.</mo>
+  <mi>G</mi>
+</math>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>S</mi>
+  <mi>t</mi>
+  <mi>e</mi>
+  <mi>a</mi>
+  <mi>l</mi>
+  <mi>t</mi>
+  <mi>h</mi>
+  <mi>A</mi>
+  <mi>d</mi>
+  <mi>d</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>s</mi>
+  <mi>s</mi>
+  <mo>=</mo>
+  <mo stretchy="false">[</mo>
+  <mi>H</mi>
+  <mi>a</mi>
+  <mi>s</mi>
+  <mi>h</mi>
+  <mo stretchy="false">(</mo>
+  <mi>b</mi>
+  <mo>.</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">]</mo>
+  <mo>.</mo>
+  <mi>G</mi>
+</math>
+
+
 Bob now sends his payment to this stealth address.
+
+![BSAP2](./images/eip-5564-BSAP2.webp)
+
 
 Alice, on her end, does the following:
 
@@ -87,21 +250,262 @@ The BSAP is extremely effective but it comes with it's own set of challenges, th
 
 Displeased with the deficiencies of BSAP, Nicolas Van Saberhagen (pseudonym), creator of Monero ([and potential candidate for ByteCoin](https://www.reddit.com/r/Monero/comments/lz2e5v/going_deep_in_the_cryptonote_rabbit_hole_who_was/)), proposed a solution in his 2013 [CryptoNote Whitepaper](https://bytecoin.org/old/whitepaper.pdf). Nicolas essentially uses the same algorithm as BSAP but introduces one key difference: a new keypair called an _ephemeral keypair_ is included to prevent the stealth address from remaining constant and to shift control away from the sender. We examine this approach to creating stealth addresses in the next section.
 
+## Improved Stealth Address Protocol (ISAP)
 We'll keep with the same example where Bob needs to transfer some tokens to Alice to explain how the Improved Stealth Address Protocol (ISAP) works. As mentioned, the ISAP bears similarity to BSAP—except for the addition of an ephemeral keypair to the stealth address creation process. The protocol is described below:
 
 Alice has a keypair (_a_, _A_) and Bob has a keypair (_b_, _B_). Unlike the previous method:
 
 * Bob (the sender) first creates an ephemeral keypair **(r,R ∋ R = r . G**) and then performs an _ecMUL_ of Alice's public key and the ephemeral private key to generate a _shared secret_.
 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>S</mi>
+  <mi>h</mi>
+  <mi>a</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>d</mi>
+  <mi>S</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>t</mi>
+  <mo stretchy="false">(</mo>
+  <mi>S</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>r</mi>
+  <mo>.</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo>&#x2261;</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>r</mi>
+  <mo>.</mo>
+  <mi>a</mi>
+  <mo>.</mo>
+  <mi>G</mi>
+  <mo stretchy="false">)</mo>
+</math>
+
+
 * Alice (who knows the ephemeral public key) can also compute the same _shared secret_ by multiplying her private key with the _ephemeral keypair's_ public key.
 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>S</mi>
+  <mi>h</mi>
+  <mi>a</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>d</mi>
+  <mi>S</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>t</mi>
+  <mo stretchy="false">(</mo>
+  <mi>S</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>.</mo>
+  <mi>R</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>.</mo>
+  <mi>r</mi>
+  <mo>.</mo>
+  <mi>G</mi>
+  <mo stretchy="false">)</mo>
+</math>
+
+
 The use of the _ephemeral keypair_ for creation of the _shared secret_ permits the creation of a different stealth address for every transfer. To derive the public key of the stealth address, Bob incorporates Alice's public key into the equation when deriving the stealth address:
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>P</mi>
+  <mi>u</mi>
+  <mi>b</mi>
+  <mi>l</mi>
+  <mi>i</mi>
+  <mi>c</mi>
+  <mi>K</mi>
+  <mi>e</mi>
+  <mi>y</mi>
+  <mo stretchy="false">(</mo>
+  <mi>S</mi>
+  <mi>t</mi>
+  <mi>e</mi>
+  <mi>a</mi>
+  <mi>l</mi>
+  <mi>t</mi>
+  <mi>h</mi>
+  <mi>A</mi>
+  <mi>d</mi>
+  <mi>d</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>s</mi>
+  <mi>s</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">[</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>r</mi>
+  <mo>.</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo>.</mo>
+  <mi>G</mi>
+  <mo stretchy="false">]</mo>
+  <mo>+</mo>
+  <mi>A</mi>
+</math>
+
 
 This way, Bob effectively generates a new stealth address for the next transfer between himself and Alice. You may notice the subtle beauty here: multiplying the _shared secret_ by G (base point) through elliptic curve multiplication gives you a point on the Curve, which essentially is the Public Key of the _shared secret_. On the other hand, thanks to mathematics and Elliptic Curve Cryptography, after encapsulating the expression within the G (base point) parentheses and simplifying, we find the Private Key:
 
 Note that:
 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>S</mi>
+  <mi>h</mi>
+  <mi>a</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>d</mi>
+  <mi>S</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>t</mi>
+  <mo>=</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>r</mi>
+  <mo>.</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>.</mo>
+  <mi>R</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>.</mo>
+  <mi>r</mi>
+  <mo>.</mo>
+  <mi>G</mi>
+  <mo stretchy="false">)</mo>
+</math>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+  <mo>=</mo>
+  <mi>a</mi>
+  <mo>.</mo>
+  <mi>G</mi>
+</math>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+  <mo stretchy="false">(</mo>
+  <mi>P</mi>
+  <mi>r</mi>
+  <mi>i</mi>
+  <mi>v</mi>
+  <mi>a</mi>
+  <mi>t</mi>
+  <mi>e</mi>
+  <mi>K</mi>
+  <mi>e</mi>
+  <mi>y</mi>
+  <mo stretchy="false">)</mo>
+  <mo>.</mo>
+  <mi>G</mi>
+  <mo stretchy="false">(</mo>
+  <mi>B</mi>
+  <mi>a</mi>
+  <mi>s</mi>
+  <mi>e</mi>
+  <mi>P</mi>
+  <mi>o</mi>
+  <mi>i</mi>
+  <mi>n</mi>
+  <mi>t</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>G</mi>
+  <mo>.</mo>
+  <mo stretchy="false">(</mo>
+  <mi>S</mi>
+  <mi>h</mi>
+  <mi>a</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>d</mi>
+  <mi>S</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>t</mi>
+  <mo>+</mo>
+  <mi>a</mi>
+  <mo stretchy="false">)</mo>
+</math>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+  <mo stretchy="false">(</mo>
+  <mi>P</mi>
+  <mi>r</mi>
+  <mi>i</mi>
+  <mi>v</mi>
+  <mi>a</mi>
+  <mi>t</mi>
+  <mi>e</mi>
+  <mi>K</mi>
+  <mi>e</mi>
+  <mi>y</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>S</mi>
+  <mi>h</mi>
+  <mi>a</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>d</mi>
+  <mi>S</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>t</mi>
+  <mo>+</mo>
+  <mi>a</mi>
+</math>
+
+
 As the final operation shows, the only way to find the Private Key corresponding to the address Bob sent is by knowing Alice's Private Key. This eliminates the control Bob had over the sent assets in previous methods, meaning that now only Alice can control the sent assets.
+
+![ISAP](./images/eip-5564-ISAP-1.webp)
 
 With ISAP, Nicolas Van Saberhagen improved on the design of BSAP and offered a more usable protocol. However, this new method of generating and using stealth addresses has drawbacks:
 
@@ -111,6 +515,7 @@ With ISAP, Nicolas Van Saberhagen improved on the design of BSAP and offered a m
 
 The aforementioned issues significantly limited the practical usability of this method. To resolve the problem, a pseudonymous developer known as rynomster/sdcoin developed a new protocol called ShadowSend. ShadowSend closely resembles ISAP,but uses multiple keypairs and was thus named the "Dual-Key Stealth Address Protocol."
 
+## Dual-Key Stealth Address Protocol (DKSAP)
 The Dual-Key Stealth Address Protocol (DKSAP) doesn't fundamentally alter or add much to Nicolas's Improved Stealth Address Protocol (ISAP).
 
 As mentioned earlier, the significant change it introduces is the division of responsibilities into two distinct keypairs: one for viewing the stealth address (view keypair, V = v . G) and another for spending the assets transferred to the stealth address (spend keypair, S = s . G), instead of managing everything with a single keypair.
@@ -126,9 +531,132 @@ Below is a brief description of how Bob makes stealth payments to Alice using DK
 
 * To send funds to Alice's wallet, Bob first generates an ephemeral keypair (**E = e . G**). He then uses Alice's view public key and his randomly generated ephemeral private key to create a _shared secret_:
 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>S</mi>
+  <mi>h</mi>
+  <mi>a</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>d</mi>
+  <mi>S</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>t</mi>
+  <mo>=</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>e</mi>
+  <mo>.</mo>
+  <mi>V</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>e</mi>
+  <mo>.</mo>
+  <mi>G</mi>
+  <mo>.</mo>
+  <mi>v</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>H</mi>
+  <mo stretchy="false">(</mo>
+  <mi>E</mi>
+  <mo>.</mo>
+  <mi>v</mi>
+  <mo stretchy="false">)</mo>
+</math>
+
 * Next, he multiplies this _shared secret_ by the base point (G) to derive a public key. To ensure that only Alice can access the corresponding private key, he adds the _shared secret_ public key to Alice's spend public key:
 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>R</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mi>i</mi>
+  <mi>p</mi>
+  <mi>i</mi>
+  <mi>e</mi>
+  <mi>n</mi>
+  <msup>
+    <mi>t</mi>
+    <mo data-mjx-alternate="1">&#x2032;</mo>
+  </msup>
+  <mi>s</mi>
+  <mi>S</mi>
+  <mi>t</mi>
+  <mi>e</mi>
+  <mi>a</mi>
+  <mi>l</mi>
+  <mi>t</mi>
+  <mi>h</mi>
+  <mi>A</mi>
+  <mi>d</mi>
+  <mi>d</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>s</mi>
+  <mi>s</mi>
+  <mo>=</mo>
+  <mi>S</mi>
+  <mi>h</mi>
+  <mi>a</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>d</mi>
+  <mi>S</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mi>r</mi>
+  <mi>e</mi>
+  <mi>t</mi>
+  <mo stretchy="false">(</mo>
+  <mi>P</mi>
+  <mi>r</mi>
+  <mi>i</mi>
+  <mi>v</mi>
+  <mi>a</mi>
+  <mi>t</mi>
+  <mi>e</mi>
+  <mo stretchy="false">)</mo>
+  <mo>.</mo>
+  <mi>G</mi>
+  <mo stretchy="false">(</mo>
+  <mi>B</mi>
+  <mi>a</mi>
+  <mi>s</mi>
+  <mi>e</mi>
+  <mi>P</mi>
+  <mi>o</mi>
+  <mi>i</mi>
+  <mi>n</mi>
+  <mi>t</mi>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mi>S</mi>
+  <mo stretchy="false">(</mo>
+  <mi>S</mi>
+  <mi>p</mi>
+  <mi>e</mi>
+  <mi>n</mi>
+  <mi>d</mi>
+  <mi>P</mi>
+  <mi>u</mi>
+  <mi>b</mi>
+  <mi>l</mi>
+  <mi>i</mi>
+  <mi>c</mi>
+  <mi>K</mi>
+  <mi>e</mi>
+  <mi>y</mi>
+  <mo stretchy="false">)</mo>
+</math>
+
 By applying the same mathematical trick as before, we ensure that only Alice can control these funds. Bob can then use this address to send assets to Alice without revealing her identity.
+
+![DKSAP](./images/eip-5564-DKSAP.webp)
 
 The significant distinction between DKSAP and the previous protocol (ISAP) is the use of the view public key to generate the _shared secret_ and the spend public key to compute the stealth address. This setup allows one key to generate and control the _shared secret_, while the other enables possession and management of the funds, essentially, your view keypair maintains privacy, while your spend keypair controls ownership.
 
@@ -148,6 +676,7 @@ ERC-5564 introduces the following features:
 
 In the next section, we'll explore the ERC-5564 specification in more detail
 
+## An overview of ERC-5564: Stealth Address Messenger
 ERC-5564 is a contract standard that utilizes the Dual-Key Stealth Address Protocol (DKSAP) and, optionally, the Improved Stealth Address Protocol (ISAP). This standard allows addresses to store their stealth meta-addresses—comprising both spend and view public keys—on the contract, enabling others to make transfers to them without deciphering their identity. Interestingly, under ERC-5564, you are not necessarily required to split your stealth meta-address into spend and view components; the contract can manage everything with just one key if desired. However, the future use of stealth addresses will likely involve Dual-Key configurations.
 
 A major methodological difference in ERC-5564 from previous standards is the use of a variable called the _view tag_ when trying to determine which transfer was made to you. This _view tag_ is obtained by selecting the most significant byte after generating the shared secret and is included in the _announcement_ event when a transfer is made. For a regular user attempting to decipher which transfer is theirs by manually testing _announcements_, there are typically five operations required:
@@ -160,22 +689,76 @@ With the _view tag_, users only need to perform 1 ecMUL and 1 hash operation to 
 
 The implementation of the contract standard is not overly complex, especially compared to other standards, as it primarily consists of a mapping to hold keys, a function to create a stealth address, and an _announcement_ event. Let's look at each component:
 
+![stealth address](./images/eip-5564-stealth-address.webp)
+
 The creation function, as the name suggests, simply executes the steps of the Dual-Key and Improved Stealth Address Protocols on behalf of Bob, generating a stealth address for him to transfer to Alice.
+
+![](./images/eip-5564-announcement.webp)
 
 The _announcement_ event in the contract is triggered when a transfer is made to a stealth address. This enables off-chain actors to monitor these _announcements_ to check if a transfer has been made to them.
 
 Besides these implementation details, ERC-5564 also introduces a new address format to distinguish stealth addresses from regular addresses:
 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+  <mi>t</mi>
+  <mo>:&lt;</mo>
+  <mi>s</mi>
+  <mi>h</mi>
+  <mi>o</mi>
+  <mi>r</mi>
+  <mi>t</mi>
+  <mi>N</mi>
+  <mi>a</mi>
+  <mi>m</mi>
+  <mi>e</mi>
+  <mo>&gt;:</mo>
+  <mn>0</mn>
+  <mi>x</mi>
+  <mo>&lt;</mo>
+  <mi>s</mi>
+  <mi>p</mi>
+  <mi>e</mi>
+  <mi>n</mi>
+  <mi>d</mi>
+  <mi>i</mi>
+  <mi>n</mi>
+  <mi>g</mi>
+  <mi>P</mi>
+  <mi>u</mi>
+  <mi>b</mi>
+  <mi>K</mi>
+  <mi>e</mi>
+  <mi>y</mi>
+  <mo>&gt;:&lt;</mo>
+  <mi>v</mi>
+  <mi>i</mi>
+  <mi>e</mi>
+  <mi>w</mi>
+  <mi>i</mi>
+  <mi>n</mi>
+  <mi>g</mi>
+  <mi>P</mi>
+  <mi>u</mi>
+  <mi>b</mi>
+  <mi>K</mi>
+  <mi>e</mi>
+  <mi>y</mi>
+  <mo>&gt;</mo>
+</math>
+
 Here, "shortName" specifies the network on which the stealth address is generated, indicating where the transfer will occur. Even though the cryptographic rules and equations do not change across networks, the possibility for users to arbitrarily change their Stealth Meta-Address based on the network makes it essential to include the network variable in the format. The remaining fields represent the Public Keys, with the first n bytes managing the funds and the subsequent bytes used to verify that you are the intended recipient of the transfer.
 
 Another notable feature of ERC-5564 is its support for multiple Elliptic Curves through schemeIDs. While ERC-5564 primarily supports the popular Secp256k1 Curve, the flexibility to support multiple curves ensures the protocol is future-proof, offering users a choice that enhances the usability and adoption of the protocol.
 
+## ERC-6538: Stealth Address Registry
 [ERC-6538](https://eips.ethereum.org/EIPS/eip-6538), while related to stealth addresses, doesn't introduce any logic for creating them; instead, it acts primarily as a registry. This means it facilitates the storage of Stealth Meta-Addresses.
 
 This registry is crucial as it enables senders to access these meta-addresses, allowing them to generate correct stealth addresses for their recipients, ensuring transactions remain both private and correctly directed. Although ERC-5564 already includes a mapping to store keys, ERC-6538 differs by enabling entities to register Stealth Meta-Addresses on behalf of users without on-chain interaction, using only the users' signatures.
 
 In an era where on-chain interactions are often delegated to actors like Bundlers (as in ERC-4337), it's likely not preferable for users to directly register their Stealth Meta-Addresses themselves due to user experience considerations. Thus, the ability to register Stealth Meta-Addresses through signatures is a valuable feature. Clearly, ERC-6538 is not a standalone EIP but rather an extension to ERC-5564, enhancing its functionality.
 
+## Practical Benefits of ERC-5564 & ERC-6538
 The adoption of stealth address protocols like ERC-5564 and ERC-6538 is exemplified through real-world implementations such as Nocturne, Railgun, Umbra Cash, and Fluidkey. These applications provide substantial enhancements in privacy, security, and usability on the Ethereum blockchain:
 
 * [Nocturne](https://nocturne.xyz/): This platform leverages stealth addresses to facilitate anonymous transactions, ensuring that user identities remain confidential on public ledgers. By masking the sender and recipient addresses, Nocturne provides robust privacy for its users.
@@ -190,6 +773,7 @@ These implementations highlight the practical benefits of stealth address protoc
 
 Additionally, they address critical user concerns such as the ability to recover addresses if a service goes offline, minimizing transaction fees when dealing with multiple addresses, and ensuring seamless interaction with decentralized applications. By incorporating these features, these platforms demonstrate the potential of ERC-5564 and ERC-6538 to significantly improve the privacy and usability of blockchain transactions.
 
+## Drawbacks of ERC-5564
 As outlined, ERC-5564 facilitates private transfers through stealth addresses. These addresses utilize a system where transactions are announced in contracts, and each announcement contains a unique identifier known as a "view tag." Observers can monitor these announcements to detect when a transfer occurs. While this ensures transaction privacy to some extent, it also introduces potential vulnerabilities.
 
 To simplify the monitoring process, users might rely on a centralized entity to manage the "View Keys," which are used to decipher the details of transactions from the view tags. However, this centralization poses significant risks. If such an entity—potentially a major wallet provider like Metamask or Rabby—gains monopolistic control over the View Keys, it could effectively track and index every transaction.
@@ -202,6 +786,7 @@ While this might not be a significant issue for digital-only transfers, it could
 
 Another important consideration is that if stealth addresses are used for NFTs or other ERC-20 tokens, these addresses cannot hold native ETH, meaning they cannot conduct transactions. Sending a small amount of ETH to the stealth address from the recipient's own address would completely undermine their anonymity. Thus, the most sensible solution, as stated in ERC-5564, seems to be for the sender to sponsor the transaction by sending a small amount of ETH.
 
+## Summary
 In summary, ERC-5564 and ERC-6538, through the use of DKSAP and ISAP, offer a valuable contribution to Ethereum by enabling transfers to recipients without revealing their identity to third-party observers and without restrictions on the amount or type of assets.
 
 These protocols attempt to bring a level of privacy akin to Monero and Zcash to Ethereum through contract-based solutions for stealth addresses, which are not natively supported at the protocol level. While there are some notable drawbacks, these are expected to be resolved over time.
