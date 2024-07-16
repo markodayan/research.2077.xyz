@@ -37,43 +37,22 @@ const _ogImage = new URL(
         const lightIcon = document.querySelector("#light-icon");
 
         const theme = () => {
-          const darkMode =
-            document.documentElement.classList.contains("dark-mode");
+          const darkMode = document.documentElement.classList.contains("dark");
 
-          if (darkMode) {
-            darkIcon.classList.remove("block");
-            darkIcon.classList.add("hidden");
-            lightIcon.classList.remove("hidden");
-            lightIcon.classList.add("block");
-          } else {
-            darkIcon.classList.add("block");
-            darkIcon.classList.remove("hidden");
-            lightIcon.classList.add("hidden");
-            lightIcon.classList.remove("block");
+          const toggleDarkMode = () => {
+            document.documentElement.classList.toggle("dark");
+            const isDarkMode =
+              document.documentElement.classList.contains("dark");
+            localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+          };
+
+          if (btn) {
+            btn.addEventListener("click", toggleDarkMode);
           }
         };
-
-        const toggleDarkMode = () => {
-          document.documentElement.classList.toggle("dark-mode");
-          const isDarkMode =
-            document.documentElement.classList.contains("dark-mode");
-          localStorage.setItem("theme", isDarkMode ? "dark-mode" : "light");
-          theme();
-        };
-
-        if (btn) {
-          btn.addEventListener("click", toggleDarkMode);
-        }
-
-        const savedTheme = localStorage.getItem("theme");
-        if (savedTheme) {
-          document.documentElement.classList.toggle(
-            "dark-mode",
-            savedTheme === "dark-mode"
-          );
-        }
-
         theme();
+
+        document.addEventListener("astro:after-swap", theme);
       });
     </script>
   </body>
