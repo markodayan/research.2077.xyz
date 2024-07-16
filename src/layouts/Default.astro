@@ -31,29 +31,20 @@ const _ogImage = new URL(
       @import "../styles/_reset.scss";
     </style>
     <script is:inline>
-      document.addEventListener("DOMContentLoaded", () => {
-        const btn = document.querySelector("#btn");
-        const darkIcon = document.querySelector("#dark-icon");
-        const lightIcon = document.querySelector("#light-icon");
-
-        const theme = () => {
-          const darkMode = document.documentElement.classList.contains("dark");
-
-          const toggleDarkMode = () => {
-            document.documentElement.classList.toggle("dark");
-            const isDarkMode =
-              document.documentElement.classList.contains("dark");
-            localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-          };
-
-          if (btn) {
-            btn.addEventListener("click", toggleDarkMode);
-          }
+      const theme = () => {
+        let btn = document.querySelector("#btn");
+        const toggleDarkMode = () => {
+          document.documentElement.classList.toggle("dark");
+          const isDarkMode =
+            document.documentElement.classList.contains("dark");
+          localStorage.setItem("theme", isDarkMode ? "dark" : "light");
         };
-        theme();
+        btn.addEventListener("click", toggleDarkMode);
+      };
 
-        document.addEventListener("astro:after-swap", theme);
-      });
+      theme();
+
+      document.addEventListener("astro:after-swap", theme);
     </script>
   </body>
 </html>
