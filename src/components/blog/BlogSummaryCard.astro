@@ -35,7 +35,9 @@ const { post } = Astro.props;
           })
         }
       </ul>
-      <Button id="button" href={`/blog/${post.slug}/`}>Read post &rarr;</Button>
+      <Button class={`brutal-btn`} href={`/blog/${post.slug}/`}>
+        Read post &rarr;
+      </Button>
 
       {
         post.data.draft && (
