@@ -1,15 +1,13 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import SummaryCard from '../generic/SummaryCard.astro';
-import { Button } from '@eliancodes/brutal-ui';
+import type { CollectionEntry } from "astro:content";
+import SummaryCard from "../generic/SummaryCard.astro";
+import { Button } from "@eliancodes/brutal-ui";
 
 interface Props {
-  post: CollectionEntry<'blog'>;
+  post: CollectionEntry<"blog">;
 }
 
 const { post } = Astro.props;
-
-
 ---
 
 <SummaryCard
@@ -19,16 +17,17 @@ const { post } = Astro.props;
   imgSrc={post.data.imgUrl}
   description={post.data.description}
 >
-
-  <div class='sm:inline-block'>
-
-    <div class='sm:gap-2 md:gap-4 mt-8'>
-      <ul class='flex gap-4 mt-2 mb-4'>
+  <div class="sm:inline-block">
+    <div class="sm:gap-2 md:gap-4 mt-8">
+      <ul class="flex gap-4 mt-2 mb-4">
         {
           post.data.tags.map((tag) => {
             return (
               <li>
-                <a class="text-green-500" href={`/blog/tags/${tag.toLowerCase()}/`}>
+                <a
+                  class="text-green-500"
+                  href={`/blog/tags/${tag.toLowerCase()}/`}
+                >
                   {tag}
                 </a>
               </li>
@@ -36,11 +35,11 @@ const { post } = Astro.props;
           })
         }
       </ul>
-      <Button href={`/blog/${post.slug}/`}>Read post &rarr;</Button>
-      
+      <Button id="button" href={`/blog/${post.slug}/`}>Read post &rarr;</Button>
+
       {
         post.data.draft && (
-          <span class='bg-green rounded-full border-2 py-1 px-4 text-sm border-black card-shadow'>
+          <span class="bg-green rounded-full border-2 py-1 px-4 text-sm border-black card-shadow">
             Draft
           </span>
         )

@@ -1,8 +1,8 @@
 ---
-import BaseNavigation from '@components/layout/BaseNavigation.astro';
-import BaseHead from '../components/layout/BaseHead.astro';
-import Header from '../components/layout/Header.astro'
-import '../styles/global.css';
+import BaseNavigation from "@components/layout/BaseNavigation.astro";
+import BaseHead from "../components/layout/BaseHead.astro";
+import Header from "../components/layout/Header.astro";
+import "../styles/global.css";
 
 interface Props {
   title: string;
@@ -14,22 +14,67 @@ interface Props {
 
 const { title, description, classList, pageTitle, ogImage } = Astro.props;
 
-const _ogImage = new URL("https://res.cloudinary.com/dltdrlzdg/image/upload/v1720021067/ShMk1Iw_vrsqmi.webp")
+const _ogImage = new URL(
+  "https://res.cloudinary.com/dltdrlzdg/image/upload/v1720021067/ShMk1Iw_vrsqmi.webp"
+);
 ---
 
-<html lang='en' class='h-full'>
+<html lang="en" class="h-full">
   <BaseHead ogImage={_ogImage} title={title} description={description} />
 
   <body class:list={[classList]}>
     <Header />
     <slot />
-    
+    <style lang="scss" is:global>
+      @import "../styles/_fonts.scss";
+      @import "../styles/_global.scss";
+      @import "../styles/_reset.scss";
+    </style>
+    <script is:inline>
+      document.addEventListener("DOMContentLoaded", () => {
+        const btn = document.querySelector("#btn");
+        const darkIcon = document.querySelector("#dark-icon");
+        const lightIcon = document.querySelector("#light-icon");
+
+        const theme = () => {
+          const darkMode =
+            document.documentElement.classList.contains("dark-mode");
+
+          if (darkMode) {
+            darkIcon.classList.remove("block");
+            darkIcon.classList.add("hidden");
+            lightIcon.classList.remove("hidden");
+            lightIcon.classList.add("block");
+          } else {
+            darkIcon.classList.add("block");
+            darkIcon.classList.remove("hidden");
+            lightIcon.classList.add("hidden");
+            lightIcon.classList.remove("block");
+          }
+        };
+
+        const toggleDarkMode = () => {
+          document.documentElement.classList.toggle("dark-mode");
+          const isDarkMode =
+            document.documentElement.classList.contains("dark-mode");
+          localStorage.setItem("theme", isDarkMode ? "dark-mode" : "light");
+          theme();
+        };
+
+        if (btn) {
+          btn.addEventListener("click", toggleDarkMode);
+        }
+
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.documentElement.classList.toggle(
+            "dark-mode",
+            savedTheme === "dark-mode"
+          );
+        }
+
+        theme();
+      });
+    </script>
   </body>
 </html>
-
-
-<style lang="scss" is:global>
-	@import "../styles/_fonts.scss";
-	@import "../styles/_global.scss";
-	@import "../styles/_reset.scss";
-</style>
