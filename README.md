@@ -42,7 +42,7 @@ If you have an idea for an enhancement, please open an issue to discuss it. Prov
 2. Clone the fork: `git clone <https://github.com/><your-github-username>/2077`
 3. Add the original repo as an upstream to your fork: 
 `git remote add upstream <https://github.com/2077-Collective/2077.git>`
-4. Install dependencies `bun install`.
+4. Install dependencies `npm install`.
 5. Ensure your code follows the project's contributing guides.
 6. Create a pull request with a detailed description of your changes and the problem they solve.
 
