@@ -1,7 +1,7 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { Card } from '@eliancodes/brutal-ui';
-import { Image } from 'astro:assets';
+import type { CollectionEntry } from "astro:content";
+import { Card } from "@eliancodes/brutal-ui";
+import { Image } from "astro:assets";
 
 interface Props {
   title: string;
@@ -20,25 +20,31 @@ const formattedDate = new Intl.DateTimeFormat("en-GB", {
 }).format(new Date(pubDate));
 ---
 
-<Card color='white'>
-  <div class='rounded-lg border-3 my-2'>
+<Card color="white">
+  <div class="rounded-lg border-3 my-2">
     <Image
       src={imgSrc}
       alt={imgAlt}
       width={800}
       height={400}
-      class='rounded h-full w-full object-cover'
+      class="rounded h-full w-full object-cover"
     />
   </div>
-  <h3 class='  text-lg md:text-xl mb-4'>{title}</h3>
-  <p class='date'>{formattedDate}</p>
-  <p class='line-clamp-2'>{description}</p>
+  <div class="h-16">
+    <h3 class="text-lg md:text-xl mb-4">{title}</h3>
+  </div>
+  <div class="h-16">
+    <p class="date">{formattedDate}</p>
+    <p class="line-clamp-2">{description}</p>
+  </div>
   <slot />
-</Card>
+    </div>
 
-<style>
-  .date {
-    font-size: 1rem;
-    color: rgb(152, 150, 150);
-  }
-</style>
+    <style>
+      .date {
+        font-size: 1rem;
+        color: rgb(152, 150, 150);
+      }
+    </style>
+  </div>
+</Card>
