@@ -53,6 +53,23 @@
       font-size: var(--size-step-0);
       line-height: 1.7;
   }
+
+  .dark {
+  body {
+    background: var(--color-dark);
+    color: var(--color-light);
+
+    header {
+      a.button-primary {
+        color: var(--color-dark);
+      }
+    }
+
+    .brutal-btn {
+        color: var(--color-dark);
+    }
+  }
+}
   
   h1,
   h2,

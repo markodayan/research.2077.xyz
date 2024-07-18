@@ -1,8 +1,8 @@
 ---
-import BaseNavigation from '@components/layout/BaseNavigation.astro';
-import BaseHead from '../components/layout/BaseHead.astro';
-import Header from '../components/layout/Header.astro'
-import '../styles/global.css';
+import BaseNavigation from "@components/layout/BaseNavigation.astro";
+import BaseHead from "../components/layout/BaseHead.astro";
+import Header from "../components/layout/Header.astro";
+import "../styles/global.css";
 
 interface Props {
   title: string;
@@ -14,22 +14,37 @@ interface Props {
 
 const { title, description, classList, pageTitle, ogImage } = Astro.props;
 
-const _ogImage = new URL("https://res.cloudinary.com/dltdrlzdg/image/upload/v1720021067/ShMk1Iw_vrsqmi.webp")
+const _ogImage = new URL(
+  "https://res.cloudinary.com/dltdrlzdg/image/upload/v1720021067/ShMk1Iw_vrsqmi.webp"
+);
 ---
 
-<html lang='en' class='h-full'>
+<html lang="en" class="h-full">
   <BaseHead ogImage={_ogImage} title={title} description={description} />
 
   <body class:list={[classList]}>
     <Header />
     <slot />
-    
+    <style lang="scss" is:global>
+      @import "../styles/_fonts.scss";
+      @import "../styles/_global.scss";
+      @import "../styles/_reset.scss";
+    </style>
+    <script is:inline>
+      const theme = () => {
+        let btn = document.querySelector("#btn");
+        const toggleDarkMode = () => {
+          document.documentElement.classList.toggle("dark");
+          const isDarkMode =
+            document.documentElement.classList.contains("dark");
+          localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+        };
+        btn.addEventListener("click", toggleDarkMode);
+      };
+
+      theme();
+
+      document.addEventListener("astro:after-swap", theme);
+    </script>
   </body>
 </html>
-
-
-<style lang="scss" is:global>
-	@import "../styles/_fonts.scss";
-	@import "../styles/_global.scss";
-	@import "../styles/_reset.scss";
-</style>
