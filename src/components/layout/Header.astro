@@ -14,7 +14,7 @@ import MobileNav from "../layout/MobileNav.astro";
         </a>
       </div>
     </div>
-    <div class="navigation_links">
+    <div class="navigation_links navigation_links--mode">
       <div class="menu">
         <MobileNav />
       </div>
@@ -71,7 +71,8 @@ import MobileNav from "../layout/MobileNav.astro";
     }
 
     .navigation {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       column-gap: 1.2rem;
       align-items: center;
       justify-content: center;
@@ -82,6 +83,10 @@ import MobileNav from "../layout/MobileNav.astro";
         align-items: center;
         column-gap: 2.4rem;
         padding-block: 1.2rem;
+
+        &--mode {
+        justify-content: flex-end;
+        }
       }
       &_list {
         display: none;
