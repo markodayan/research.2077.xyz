@@ -33,6 +33,7 @@ const _ogImage = new URL(
     <script is:inline>
       const theme = () => {
         let btn = document.querySelector("#btn");
+        let btn_mobile = document.querySelector("#btn-mobile");
         const toggleDarkMode = () => {
           document.documentElement.classList.toggle("dark");
           const isDarkMode =
@@ -40,6 +41,7 @@ const _ogImage = new URL(
           localStorage.setItem("theme", isDarkMode ? "dark" : "light");
         };
         btn.addEventListener("click", toggleDarkMode);
+        btn_mobile.addEventListener("click", toggleDarkMode);
       };
 
       theme();
