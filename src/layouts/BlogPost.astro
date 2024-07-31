@@ -22,7 +22,7 @@ const relatedPosts = allPosts.map(post => ({
   description={description as string}
   ogImage={ogImage.href}
 >
-  <main class='pt-8 px-6 lg:px-48'>
+  <main class='pt-8 px-6 lg:px-32'>
     <BlogSideBar headings={headings} />
     <BlogContent content={content} relatedPosts={relatedPosts}>
       <slot />
