@@ -44,11 +44,11 @@ const { content, relatedPosts } = Astro.props;
   <p class="description mb-4">{content.description}</p>
   
   <div class="grid lg:flex justify-between items-center">
-    <p class="grid md:flex gap-x-2 mb-4 lg:mb-0 text-slate text-md md:text-base">
+    <p class="flex gap-x-2 mb-2 lg:mb-0 text-slate text-base">
       <a class="mb-2" href={`https://twitter.com/${content.authorTwitterHandle}`} target="_blank">
         By {content.author} 
       </a>
-      <span class="hidden md:inline-block mt-2 w-2 h-2 rounded-full bg-[#C6FF50]"></span>
+      <span class="inline-block mt-2 w-1 h-1 rounded-full bg-[#C6FF50]"></span>
       {content.pubDate}
     </p>
   
