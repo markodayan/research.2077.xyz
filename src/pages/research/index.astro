@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@layouts/Default.astro';
+import BlogList from '@components/research/ArticleList.astro';
+
+const posts = await getCollection('research').then((collection) =>
+  collection.reverse()
+);
+---
+
+<Layout
+  title='Research | 2077 Collective'
+  description='Deep Dive into Ethereum Ecosystem and Blockchain infrastructure'
+  pageTitle='Research'
+>
+  <main class=' p-6'>
+    <BlogList posts={posts} />
+  </main>
+</Layout>
