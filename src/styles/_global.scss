@@ -1,7 +1,7 @@
 :root {
-    --color-dark: #252525;
+    --color-dark: #020302;
     --color-light: #efefef;
-    --color-primary: rgb(97, 172, 27);
+    --color-primary: #C6FF50;
 
   /*COLORS*/
 
@@ -13,7 +13,7 @@
   --leather-light-hover: #fafafa;
   --leather-light-active: #f5f5f5;
   --leather-dark-normal: #8c8c8c;
-  --leather-dark-hover: #595959;
+  --leather-dark-hover: #1B1B1B;
   --leather-dark-active: #262626;
 
   /* neutral-ink */
@@ -232,4 +232,17 @@
   
   img {
     height: min-content;
+  }
+
+
+  .sidebar {
+    clip-path: polygon(20px 0, 100% 0, 100% 100%, 80% 100%, 0 100%, 0 20px);
+  }
+
+  blockquote {
+    border-left: 4px solid #c6f550 !important;
+    border-top-right-radius: 0.4rem !important;
+  border-bottom-right-radius: 0.4rem !important;
+    background-color: #1b1b1b !important;
+    padding: .6rem 1.2rem !important;
   }

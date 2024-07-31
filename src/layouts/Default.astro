@@ -2,6 +2,7 @@
 import BaseNavigation from "@components/layout/BaseNavigation.astro";
 import BaseHead from "../components/layout/BaseHead.astro";
 import Header from "../components/layout/Header.astro";
+import Footer from "../components/layout/Footer.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -22,9 +23,11 @@ const _ogImage = new URL(
 <html lang="en" class="h-full">
   <BaseHead ogImage={_ogImage} title={title} description={description} />
 
-  <body class:list={[classList]}>
+  <body class:list={[classList]} class="">
     <Header />
     <slot />
+
+    <Footer />
     <style lang="scss" is:global>
       @import "../styles/_fonts.scss";
       @import "../styles/_global.scss";
@@ -48,5 +51,6 @@ const _ogImage = new URL(
 
       document.addEventListener("astro:after-swap", theme);
     </script>
+
   </body>
 </html>

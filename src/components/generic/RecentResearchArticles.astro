@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import ArticleList from "../research/ArticleList.astro";
+import ResearchNav from "../layout/ResearchNav.astro";
+import Search from "../layout/Search.astro";
+
+interface Props {
+  count?: number;
+}
+
+const { count } = Astro.props;
+
+const posts = await getCollection("research").then((posts) =>
+  posts.reverse().slice(0, count ?? 2000)
+);
+---
+
+<section class="mt-8 lg:mt-16 mb-8">
+  <div class="flex justify-between items-start">
+    <div class="w-full">
+      <h2 class="text-4xl md:text-6xl mb-4 uppercase">Research</h2>
+      <p class="mb-16 text-xl">
+        Deep dives and technical analyses on Ethereum infrastructure, protocols,
+        and applications
+      </p>
+
+      <Search />
+
+      <div class="reasearchNav">
+        <ResearchNav />
+      </div>
+    </div>
+
+    <div class="hidden">
+      <!--<Button href='/research/'>view all research &rarr;</Button> -->
+    </div>
+  </div>
+  <ArticleList posts={posts} />
+</section>

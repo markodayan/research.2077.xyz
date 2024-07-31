@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Layout from '@layouts/Default.astro';
+import ArticleList from '@components/research/ArticleList.astro';
+import { Button } from '@eliancodes/brutal-ui';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('research').then((collection) =>
+    collection.reverse()
+  );
+
+  const tags: string[] = [];
+
+  allPosts.forEach((post) => {
+    post.data.tags.forEach((tag) => {
+      tags.push(tag.toLowerCase());
+    });
+  });
+
+  return Array.from(new Set(tags)).map((tag) => {
+    return {
+      params: { tag },
+      props: {
+        tag,
+        researcharticles: allPosts.filter((post) =>
+          post.data.tags.map((tag) => tag.toLowerCase()).includes(tag)
+        ),
+      },
+    };
+  });
+}
+
+interface Props {
+  tag: string;
+  researcharticles: CollectionEntry<'research'>[];
+}
+
+const { tag, researcharticles } = Astro.props;
+---
+
+<Layout
+  title={`research: ${tag}`}
+  description={`2077 Research | All posts tagged with ${tag}`}
+  pageTitle={`2077 Research | Blogposts tagged with ${tag}`}
+>
+  <main class='grid gap-4 '>
+    <div class="mt-12 mb-4">
+      <Button class="bg-transparent" href='/'>&larr; Back</Button>
+    </div>
+    <ArticleList posts={researcharticles} />
+  </main>
+</Layout>
+
+<style is:global>
+  .brutal-card {
+    border: 1px solid gray !important;
+    border: none !important;
+    border-radius: none !important;
+    filter: none !important;
+    padding: 0 !important;
+  }
+</style>

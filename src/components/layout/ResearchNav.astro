@@ -3,11 +3,11 @@ const tags = ['DeFi', 'Governance', 'Infrastructure','Layer1', 'Layer2', 'Protoc
 ---
 
 
-<nav class="researchNav">
+<nav class="researchNav flex flex-wrap gap-2 lg:hidden">
   {
     tags.map((tag) => {
       return (
-        <a class="nav-link carousel-cell" href={`/blog/tags/${tag.toLowerCase()}/`}>
+        <a class="nav-link carousel-cell" href={`/research/tags/${tag.toLowerCase()}/`}>
           {tag}
         </a>
       );
@@ -22,31 +22,23 @@ const tags = ['DeFi', 'Governance', 'Infrastructure','Layer1', 'Layer2', 'Protoc
     margin-block-end: 4rem;
     padding-top: 1.2rem;
     padding-bottom: 1.2rem;
-    border-top: 1.2px solid var(--semantic-green-default-normal);
-    border-bottom: 1.2px solid var(--semantic-green-default-normal);
-    display: flex;
-    column-gap: 2rem;
-    align-items: center;
     overflow-x: auto;
-    width: 100%;
-    white-space: nowrap;
-    scrollbar-width: none;
 
     a {
       display: flex;
       align-items: center;
       column-gap: 0.2rem;
-      font-size: 1rem;
+      font-size: .8rem;
       font-weight: 700;
-      background-color: var(--semantic-green-light-hover);
-      color: var(--leather-dark-hover);
-      min-width: fit-content;
-      padding-inline: 0.4rem;
-      padding-block: 0.2rem;
-      border-radius: 0.5rem;
+      background-color: var(--leather-dark-hover);
+      color: var(--leather-default-active);
+      max-width: fit-content;
+      padding-inline: 0.8rem;
+      padding-block: 0.6rem;
+      border-radius: 0.2rem;
 
       &:hover {
-        background-color: var(--semantic-green-dark-active);
+        color: var(--leather-light-hover);
       }
     }
 

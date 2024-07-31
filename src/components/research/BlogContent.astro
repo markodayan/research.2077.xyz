@@ -1,0 +1,135 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from "astro:content";
+import {
+  FacebookShareButton,
+  RedditShareButton,
+  TwitterShareButton,
+} from "astro-social-share";
+
+interface Props {
+  content: any;
+  relatedPosts: CollectionEntry<"research">[];
+}
+
+const BUTTONS = [TwitterShareButton, RedditShareButton]
+const { content, relatedPosts } = Astro.props;
+---
+
+<div class="my-16 ">
+
+  <a class="mb-4" href='/' class="text-lg no-underline" title='Back to research'>&larr; Back</a>
+
+  <ul class='flex gap-4 mb-4 tags'>
+    {
+      content.tags.map((tag: string) => {
+        return (
+          <li class="">
+            <a class="no-underline flex items-center gap-0.5
+    text-0.8rem font-semibold
+    bg-[#1B1B1B] text-[#C6FF50]
+    max-w-fit-content
+    px-2 py-1.5
+    rounded-0.5" href={`/research/tags/${tag.toLowerCase()}/`}>
+              {tag}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+
+  <h2 class="mb-8">{content.title}</h2>
+
+  <p class="description mb-4">{content.description}</p>
+  
+  <div class="grid lg:flex justify-between items-center">
+    <p class="grid md:flex gap-x-2 mb-4 lg:mb-0 text-slate text-md md:text-base">
+      <a class="mb-2" href={`https://twitter.com/${content.authorTwitterHandle}`} target="_blank">
+        By {content.author} 
+      </a>
+      <span class="hidden md:inline-block mt-2 w-2 h-2 rounded-full bg-[#C6FF50]"></span>
+      {content.pubDate}
+    </p>
+  
+    <div>
+  
+  <div class="flex items-center gap-x-1">
+
+    <p class="text-xl pr-2">Share:</p>
+  
+    <TwitterShareButton>
+      <svg class="hover:scale-110 transition-transform duration-300" width="35" height="40" viewBox="0 0 35 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M34.9341 29.871V9.95699L17.7 0L0.467041 9.95699V29.871L17.7 39.8279L34.9341 29.871Z" fill="white" class="hover:fill-[#C6FF50]"/>
+        <path d="M19.8009 18.7913L25.4425 11.7993H22.9245L18.6185 17.1394L14.7985 11.7993H9.31665L15.7129 20.739L9.70177 28.1874H12.2206L16.8953 22.3942L21.0423 28.1874H26.5242L19.8009 18.7913ZM17.8508 21.2085L16.6667 19.5542L12.0699 13.1325H13.9627L17.6729 18.3087L18.8553 19.9639L23.7865 26.8542H21.8937L17.8508 21.2085Z" fill="#2B2D2D"/>
+        </svg>           
+    </TwitterShareButton>
+    
+  <FacebookShareButton>
+    <svg class="hover:scale-110 transition-transform duration-300" width="36" height="40" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M35.4012 29.871V9.95699L18.1671 0L0.934082 9.95699V29.871L18.1671 39.8279L35.4012 29.871Z" fill="white" class="hover:fill-[#C6FF50]"/>
+      <path d="M18.0835 11C13.1215 11 9.0835 15.038 9.0835 20C9.0835 24.962 13.1215 29 18.0835 29C23.0455 29 27.0835 24.962 27.0835 20C27.0835 15.038 23.0455 11 18.0835 11ZM18.0835 12.5C22.2347 12.5 25.5835 15.8488 25.5835 20C25.5853 21.7955 24.9415 23.5317 23.7695 24.892C22.5975 26.2522 20.9755 27.1456 19.1995 27.4093V22.187H21.3355L21.6707 20.0173H19.1995V18.8322C19.1995 17.9323 19.4957 17.132 20.338 17.132H21.6917V15.239C21.454 15.2068 20.9507 15.137 19.9997 15.137C18.0137 15.137 16.8497 16.1855 16.8497 18.575V20.0173H14.8082V22.187H16.8497V27.3905C15.0983 27.1022 13.5064 26.2006 12.3585 24.8468C11.2106 23.4929 10.5815 21.775 10.5835 20C10.5835 15.8488 13.9322 12.5 18.0835 12.5Z" fill="black"/>
+      </svg>      
+  </FacebookShareButton>
+  
+  </div>
+    </div>
+  </div>
+</div>
+<article class='md:w-full md:prose body'>
+
+  
+  <div id="article">
+
+  <slot />
+  </div>
+</article>
+
+<style is:global>
+  .body {
+    margin-block-end: 8rem;
+    max-width: 88ch !important;
+    font-size: clamp(1rem, 0.913rem + 0.4348vi, 1.25rem) !important;
+
+    .hr {
+      margin-block: 2rem;
+      border-bottom: 1px solid rgb(206, 206, 206);
+    }
+  }
+  p {
+    font-size: 1.2rem;
+  }
+
+  .line {
+    border-bottom: 1px solid #000;
+  }
+  .context-heading {
+    border-top: 1px solid rgb(188, 187, 187);
+    border-bottom: 1px solid rgb(188, 187, 187);
+    padding-bottom: 1.2rem;
+  }
+
+  #article {
+    margin-block-end: 8rem;
+  }
+
+  .tags {
+      margin-block-start: 1rem;
+      padding: 0;
+    li {
+      list-style-type: none;
+    }
+
+  article {
+
+  }
+  .description {
+    font-size: 1.4rem;
+    font-family: "avenir-medium";
+    color: rgb(94, 93, 93);
+  }
+
+  h2 {
+    font-size: clamp(1.75rem, 1.4022rem + 1.7391vi, 2.75rem);
+  }
+</style>

@@ -2,169 +2,108 @@
 import MobileNav from "../layout/MobileNav.astro";
 ---
 
-<header>
-  <nav class="navigation">
-    <div class="navigation_links">
+<header class="pt-8 px-6 lg:px-48">
+  <nav class="flex justify-between items-center">
+    <div class="">
       <div>
         <a href="/" class="logo block light dark:hidden">
-          <img src="/logo-black.webp" alt="" width="591" height="176" />
+          <img src="/logo-black.webp" alt="" width="197" height="58" />
         </a>
         <a href="/" class="logo hidden dark dark:block">
-          <img src="/logo-white.webp" alt="" width="591" height="176" />
+          <img src="/logo-white.webp" alt="" width="197" height="58" />
         </a>
       </div>
     </div>
-    <div class="navigation_links navigation_links--mode">
-      <div class="menu">
-        <MobileNav />
-      </div>
-      <a class="linkText" href="/blog">All Research</a>
-      <ul class="navigation_social">
-        <li>
-          <a href="/community" class="button-primary">Join Community</a>
-        </li>
-      </ul>
 
+    <!-- dark mode button functionality -->
+    <!--
     <button
-    id="btn"
-    class="h-12 w-12 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-  >
-    <svg
-      id="dark-icon"
-      class="fill-slate-700 block dark:hidden dark"
-      fill="currentColor"
-      viewBox="0 0 20 20"
+      id="btn"
+      class="h-12 w-12 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
     >
-      <path
-        d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-      ></path>
-    </svg>
-    <svg
-      id="light-icon"
-      class="fill-yellow-500 hidden dark:block light"
-      fill="currentColor"
-      viewBox="0 0 20 20"
-    >
-      <path
-        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-        fill-rule="evenodd"
-        clip-rule="evenodd"></path>
-    </svg>
-  </button>
+      <svg
+        id="dark-icon"
+        class="fill-slate-700 block dark:hidden dark"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+        ></path>
+      </svg>
+      <svg
+        id="light-icon"
+        class="fill-yellow-500 hidden dark:block light"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+          fill-rule="evenodd"
+          clip-rule="evenodd"></path>
+      </svg>
+    </button>
+    -->
+
+    <div class="">
+      <MobileNav />
+
+      <div class="hidden lg:flex gap-x-16">
+        <div class="relative">
+          <a href="#" class="flex gap-x-2 items-center hover:text-[#C6FF50]">
+            Resources 
+            <span class="resources-button">
+              <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="svg-path" fill-rule="evenodd" clip-rule="evenodd" d="M2.19526 5.77046C2.45561 5.51011 2.87772 5.51011 3.13807 5.77046L7.52861 10.161C7.78896 10.4213 8.21107 10.4213 8.47142 10.161L12.8619 5.77046C13.1223 5.51011 13.5444 5.51011 13.8047 5.77046C14.0651 6.03081 14.0651 6.45292 13.8047 6.71327L9.41423 11.1038C8.63318 11.8848 7.36685 11.8848 6.5858 11.1038L2.19526 6.71327C1.93491 6.45292 1.93491 6.03081 2.19526 5.77046Z" fill="#D4D4D4"/>
+              </svg>
+            </span>
+          </a>
+          <div class="sidebar absolute left-0 mt-4 p-4 pe-6 rounded-xl hidden bg-[#1b1b1b] grid gap-y-4">
+            <a href="https://eip2077.info" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] hover:text-gray-700 hover:rounded">EIP-2077</a>
+            <a href="https://eips.wiki" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] hover:text-gray-700 hover:rounded">EIP Wiki</a>
+            <a href="https://research.2077.xyz" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] hover:text-gray-700 hover:rounded">2077 Labs</a>
+            <a href="https://etherpedia.2077.xyz" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] hover:text-gray-700 hover:rounded">Etherpedia</a>
+          </div>
+        </div>
+        
+        <a href="https://2077.xyz/support" class="hover:text-[#C6FF50]">Support us</a>
+      </div>
     </div>
   </nav>
 </header>
 
-<style lang="scss" is:global>
-  header {
-    border-bottom: 0.5px solid rgb(229, 227, 227);
-    padding-inline: 1.5rem;
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const dropdownButton = document.querySelector('.resources-button') as HTMLSpanElement;
+    const dropdownMenu = document.querySelector('.sidebar') as HTMLDivElement;
+    let isOpen = false;
 
-    ul,
-    li {
-      list-style-type: none;
-    }
+    if (dropdownButton && dropdownMenu) {
+      dropdownButton.addEventListener('click', (event: MouseEvent) => {
+        event.preventDefault(); // Prevent default anchor behavior
+        isOpen = !isOpen;
+        dropdownMenu.classList.toggle('show', isOpen);
+      });
 
-    a {
-      font-family: "avenir-heavy", sans-serif;
-      font-size: 1.2rem;
-    }
-
-    .navigation {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 1.2rem;
-      align-items: center;
-      justify-content: center;
-      margin-inline: var(--space-body);
-
-      &_links {
-        display: flex;
-        align-items: center;
-        column-gap: 2.4rem;
-        padding-block: 1.2rem;
-
-        &--mode {
-        justify-content: flex-end;
+      document.addEventListener('click', (event: MouseEvent) => {
+        if (!dropdownButton.contains(event.target as Node) && !dropdownMenu.contains(event.target as Node)) {
+          isOpen = false;
+          dropdownMenu.classList.remove('show');
         }
-      }
-      &_list {
-        display: none;
-        align-items: center;
-        column-gap: 1.6rem;
-
-        a {
-          font-size: 1.4rem;
-          font-weight: 800;
-        }
-      }
-      &_social {
-        display: none;
-        align-items: center;
-        column-gap: 1.2rem;
-
-        a {
-          filter: drop-shadow(5px 5px 0 rgb(0 0 0 / 1));
-          background-color: #8bf797;
-          display: inline-block;
-          padding: 0.5rem;
-          border: 2px solid black;
-          transition: all;
-          transition-duration: 0.5s;
-          animation: ease-in-out;
-
-          &:hover {
-            background-color: #45734a;
-            color: #fff;
-          }
-        }
-      }
-      .menu {
-        span {
-          text-transform: uppercase;
-          font-size: 1.2rem;
-          font-family: "avenir-black";
-          letter-spacing: -1.2px;
-          cursor: pointer;
-        }
-      }
+      });
     }
+  });
+</script>
 
-    .logo {
-      img {
-        max-width: 50%;
-      }
-    }
+<style>
+  .sidebar {
+    display: none;
+  }
+  .sidebar.show {
+    display: block;
+  }
 
-    @media only screen and (width < 640px) and (-webkit-min-device-pixel-ratio: 1) {
-      .linkText {
-        display: none;
-      }
-
-      #btn {
-        display: none;
-      }
-    }
-
-    @media only screen and (min-width: 640px) and (-webkit-min-device-pixel-ratio: 1) {
-      .navigation {
-        justify-content: space-between;
-      }
-    }
-
-    @media only screen and (min-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
-      .navigation {
-        &_social {
-          display: flex;
-        }
-        &_list {
-          display: flex;
-        }
-      }
-    }
-
-    .community {
-      border-radius: 70px;
-    }
+  .resources-button:hover .svg-path {
+    fill: #C6FF50;
   }
 </style>

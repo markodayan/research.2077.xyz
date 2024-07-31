@@ -1,26 +1,6 @@
 ---
 import Layout from '@layouts/Default.astro';
-import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
-import MobileSocials from '@components/home/MobileSocials.astro';
-import { Pill } from '@eliancodes/brutal-ui';
-import { Button } from '@eliancodes/brutal-ui';
-import { Card } from '@eliancodes/brutal-ui';
-
-const builtWith = [
-  { name: 'Astro', url: 'https://astro.build/' },
-  { name: 'UnoCSS', url: 'https://uno.antfu.me/' },
-  {
-    name: 'Content Collections',
-    url: 'https://docs.astro.build/en/guides/content-collections/',
-  },
-  { name: 'RSS', url: 'https://docs.astro.build/en/guides/rss/' },
-  {
-    name: 'Sitemap',
-    url: 'https://docs.astro.build/en/guides/integrations-guide/sitemap/',
-  },
-  { name: 'Vercel', url: 'https://vercel.com' },
-  { name: 'TypeScript', url: 'https://www.typescriptlang.org/' },
-];
+import RecentResearchArticles from '@components/generic/RecentResearchArticles.astro';
 ---
 
 
@@ -30,18 +10,8 @@ const builtWith = [
   description='Crypto research and technical analysis on Ethereum infrastructure, governance, protocols, and applications.'
   ogImage="https://res.cloudinary.com/dugn6guhe/image/upload/v1719842403/HbIdWKH_oj2tpe.webp"
 >
-  <main class='p-6'>
-    <RecentBlogPosts />
+  <main class='px-6 lg:px-48'>
+    <RecentResearchArticles />
+    
   </main>
 </Layout>
-
-<style is:global>
-  .brutal-card {
-    border: 1px solid gray !important;
-    background-color: transparent !important;
-    border: none !important;
-    border-radius: none !important;
-    filter: none !important;
-    padding: 0 !important;
-  }
-</style>

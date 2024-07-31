@@ -1,0 +1,66 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BlogSummaryCard from "./BlogSummaryCard.astro";
+
+interface Props {
+  posts: CollectionEntry<"research">[];
+}
+
+const { posts } = Astro.props;
+
+// Sort posts in descending order by pubDate
+const sortedPosts = posts.sort((a, b) => {
+  return new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime();
+});
+
+// Extract unique categories from posts
+const categories = Array.from(
+  new Set(
+    posts.flatMap(post => post.data.tags || [])
+  )
+).sort();
+
+// Add "All" category
+categories.unshift("All");
+---
+
+<div class="flex gap-12">
+  <div class="sidebar rounded-xl group hidden lg:flex bg-[#1b1b1b] px-4 pt-4 flex-col lg:w-1/6 gap-y-4 h-[520px]">
+    {categories.map((category) => (
+      <a 
+        href={category === "All" ? "/" : `/research/tags/${category.toLowerCase()}/`} 
+        class="categories-link rounded p-4 hover:bg-[#C6FF50] hover:text-[#1b1b1b]"
+      >
+        {category}
+      </a>
+    ))}
+  </div>
+  
+  <ul class="mb-32 grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12 lg:w-5/6">
+    {sortedPosts.map((post) => (
+      <li>
+        <BlogSummaryCard post={post} />
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style lang="scss" is:global>
+  .brutal-card {
+    border: 1px solid gray !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: none !important;
+    filter: none !important;
+    padding: 0 !important;
+  }
+  .sidebar {
+    clip-path: polygon(20px 0, 100% 0, 100% 100%, 80% 100%, 0 100%, 0 20px);
+  }
+
+  .categories-link {
+    &:hover {
+      clip-path: polygon(20px 0, 100% 0, 100% 100%, 100% 100%, 0 100%, 0 20px);
+    }
+  }
+</style>
