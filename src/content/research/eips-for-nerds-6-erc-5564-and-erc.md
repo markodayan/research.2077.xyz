@@ -5,7 +5,7 @@ author: Koray Akpinar
 authorTwitterHandle: korayakpinarr
 tags:
   - Infrastructure
-  - Layer 1
+  - Layer1
 imgUrl: '../../assets/EIPsForNerds6-ERC-5564-ERC-6538-StealthAddresses.webp'
 description: 'Introducing stealth addresses to enhance user privacy'
 layout: '../../layouts/BlogPost.astro'

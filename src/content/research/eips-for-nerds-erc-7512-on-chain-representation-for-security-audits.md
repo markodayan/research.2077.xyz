@@ -5,7 +5,7 @@ author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - Infrastructure
-  - Layer 1
+  - Layer1
 imgUrl: '../../assets/EIPsForNerds1-ERC-7512(On-ChainRepresentationForSecurityAudits).webp'
 description: '"Decentralize X and put it on the blockchain" has never sounded so good.'
 layout: '../../layouts/BlogPost.astro'

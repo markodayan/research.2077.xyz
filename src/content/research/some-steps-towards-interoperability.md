@@ -5,7 +5,7 @@ author: "Alex Hook"
 authorTwitterHandle: alexhooketh
 tags:
   - Infrastructure
-  - Layer 2
+  - Layer2
 imgUrl: '../../assets/Some_steps_toward_rollup_interoperability.webp'
 description: How can we fix L2 fragmentation and save Ethereum's rollup-centric roadmap?
 layout: '../../layouts/BlogPost.astro'

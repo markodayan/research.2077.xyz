@@ -5,7 +5,7 @@ author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - Governance
-  - Layer 1
+  - Layer1
 imgUrl: '../../assets/EIPsForNerds5-EIP-7503(Zero-KnowledgeWormholes).webp'
 description: 'Making privacy-preserving transfers on Ethereum'
 layout: '../../layouts/BlogPost.astro'

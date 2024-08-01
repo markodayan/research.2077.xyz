@@ -5,7 +5,7 @@ author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - Infrastructure
-  - Layer 1
+  - Layer1
 imgUrl: '../../assets/EIPsForNerds3-EIP-7251(IncreaseMAX_EFFECTIVE_BALANCE).webp'
 description: 'Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away. — Antoine de Saint-Exupéry'
 layout: '../../layouts/BlogPost.astro'
