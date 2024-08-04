@@ -15,59 +15,62 @@ import MobileNav from "../layout/MobileNav.astro";
       </div>
     </div>
 
-    <!-- dark mode button functionality -->
-    <!--
-    <button
+    <div class="flex gap-x-3 lg:gap-x-8 items-center">
+      <button
       id="btn"
       class="h-12 w-12 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
     >
-      <svg
-        id="dark-icon"
-        class="fill-slate-700 block dark:hidden dark"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-      >
-        <path
-          d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-        ></path>
-      </svg>
-      <svg
-        id="light-icon"
-        class="fill-yellow-500 hidden dark:block light"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-      >
-        <path
-          d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-          fill-rule="evenodd"
-          clip-rule="evenodd"></path>
-      </svg>
+    <svg id="dark-icon" class="fill-slate-700 block dark:hidden dark" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_535_72)">
+        <path d="M9.27 4.49001C7.64 12.03 13.02 16.9 16.93 18.29C15.54 19.38 13.81 20 12 20C7.59 20 4 16.41 4 12C4 8.55001 6.2 5.60001 9.27 4.49001ZM11.99 2.01001C6.4 2.01001 2 6.54001 2 12C2 17.52 6.48 22 12 22C15.71 22 18.93 19.98 20.66 16.98C13.15 16.73 8.57 8.55001 12.34 2.01001C12.22 2.01001 12.11 2.01001 11.99 2.01001Z" fill="black"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_535_72">
+        <rect width="24" height="24" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
+        
+      <svg id="light-icon" class="fill-yellow-500 hidden dark:block light" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_535_75)">
+        <path d="M6.76 4.84005L4.96 3.05005L3.55 4.46005L5.34 6.25005L6.76 4.84005ZM1 10.5H4V12.5H1V10.5ZM11 0.550049H13V3.50005H11V0.550049ZM19.04 3.04505L20.448 4.45205L18.658 6.24205L17.251 4.83405L19.04 3.04505ZM17.24 18.16L19.03 19.96L20.44 18.55L18.64 16.76L17.24 18.16ZM20 10.5H23V12.5H20V10.5ZM12 5.50005C8.69 5.50005 6 8.19005 6 11.5C6 14.81 8.69 17.5 12 17.5C15.31 17.5 18 14.81 18 11.5C18 8.19005 15.31 5.50005 12 5.50005ZM12 15.5C9.79 15.5 8 13.71 8 11.5C8 9.29005 9.79 7.50005 12 7.50005C14.21 7.50005 16 9.29005 16 11.5C16 13.71 14.21 15.5 12 15.5ZM11 19.5H13V22.4501H11V19.5ZM3.55 18.5401L4.96 19.9501L6.75 18.15L5.34 16.74L3.55 18.5401Z" fill="#C6FF50"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_535_75">
+        <rect width="24" height="24" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
+        
     </button>
-    -->
 
-    <div class="">
       <MobileNav />
 
-      <div class="hidden lg:flex gap-x-16">
+      <div class="hidden lg:flex gap-x-8">
         <div class="relative">
           <p class="resources-button cursor-pointer flex gap-x-2 items-center hover:text-[#C6FF50]">
             Resources 
-            <span class="resources-button">
-              <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <span class="">
+              <svg class="hidden dark:block" width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path class="svg-path" fill-rule="evenodd" clip-rule="evenodd" d="M2.19526 5.77046C2.45561 5.51011 2.87772 5.51011 3.13807 5.77046L7.52861 10.161C7.78896 10.4213 8.21107 10.4213 8.47142 10.161L12.8619 5.77046C13.1223 5.51011 13.5444 5.51011 13.8047 5.77046C14.0651 6.03081 14.0651 6.45292 13.8047 6.71327L9.41423 11.1038C8.63318 11.8848 7.36685 11.8848 6.5858 11.1038L2.19526 6.71327C1.93491 6.45292 1.93491 6.03081 2.19526 5.77046Z" fill="#D4D4D4"/>
+              </svg>
+              <svg class="dark:hidden" width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="svg-path" fill-rule="evenodd" clip-rule="evenodd" d="M2.19526 5.77046C2.45561 5.51011 2.87772 5.51011 3.13807 5.77046L7.52861 10.161C7.78896 10.4213 8.21107 10.4213 8.47142 10.161L12.8619 5.77046C13.1223 5.51011 13.5444 5.51011 13.8047 5.77046C14.0651 6.03081 14.0651 6.45292 13.8047 6.71327L9.41423 11.1038C8.63318 11.8848 7.36685 11.8848 6.5858 11.1038L2.19526 6.71327C1.93491 6.45292 1.93491 6.03081 2.19526 5.77046Z" fill="#1B1B1B"/>
               </svg>
             </span>
           </p>
           <div class="sidebar absolute left-0 mt-4 p-4 pe-6 rounded-xl hidden bg-[#1b1b1b] grid gap-y-4">
-            <a href="https://eip2077.info" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] hover:text-gray-700 hover:rounded">EIP-2077</a>
-            <a href="https://eips.wiki" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] hover:text-gray-700 hover:rounded">EIP Wiki</a>
-            <a href="https://research.2077.xyz" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] hover:text-gray-700 hover:rounded">2077 Labs</a>
-            <a href="https://etherpedia.2077.xyz" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] hover:text-gray-700 hover:rounded">Etherpedia</a>
+            <a href="https://eip2077.info" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] text-white hover:text-gray-700 hover:rounded">EIP-2077</a>
+            <a href="https://eips.wiki" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] text-white hover:text-gray-700 hover:rounded">EIP Wiki</a>
+            <a href="https://research.2077.xyz" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] text-white hover:text-gray-700 hover:rounded">2077 Labs</a>
+            <a href="https://etherpedia.2077.xyz" target="_blank" class="block px-4 py-2 hover:bg-[#C6FF50] text-white hover:text-gray-700 hover:rounded">Etherpedia</a>
           </div>
         </div>
         
         <a href="https://2077.xyz/support" class="hover:text-[#C6FF50]">Support us</a>
       </div>
+      <!-- dark mode button functionality -->
+      
     </div>
   </nav>
 </header>

@@ -10,14 +10,14 @@ const { posts } = Astro.props;
 
 // Sort posts in descending order by pubDate
 const sortedPosts = posts.sort((a, b) => {
-  return new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime();
+  return (
+    new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+  );
 });
 
 // Extract unique categories from posts
 const categories = Array.from(
-  new Set(
-    posts.flatMap(post => post.data.tags || [])
-  )
+  new Set(posts.flatMap((post) => post.data.tags || []))
 ).sort();
 
 // Add "All" category
@@ -25,23 +25,39 @@ categories.unshift("All");
 ---
 
 <div class="flex gap-12">
-  <div class="sidebar rounded-xl group hidden lg:flex bg-[#1b1b1b] px-4 pt-4 flex-col lg:w-1/6 gap-y-4 h-[520px]">
-    {categories.map((category) => (
-      <a 
-        href={category === "All" ? "/" : `/research/tags/${category.toLowerCase()}/`} 
-        class="categories-link rounded p-4 hover:bg-[#C6FF50] hover:text-[#1b1b1b]"
-      >
-        {category}
-      </a>
-    ))}
+  <div
+    class="sidebar rounded-xl group hidden lg:flex bg-[#1b1b1b] px-4 pt-4 flex-col xl:w-1/6 gap-y-4 h-[520px]"
+  >
+    {
+      categories.map((category) => (
+      <a
+  href={
+    category === "All"
+      ? "/"
+      : `/research/tags/${category.toLowerCase()}/`
+  }
+  class={`categories-link rounded p-4 ${Astro.request.url === "/" && category === "All" ? "active" : Astro.request.url.includes(category.toLowerCase()) && category !== "All" ? "active" : ""} ${category === "All" ? "all-link" : ""}`}
+  style={{
+    backgroundColor: Astro.request.url === "/" && category === "All" ? "#c6ff50" : Astro.request.url.includes(category.toLowerCase()) && category !== "All" ? "#c6ff50" : "transparent",
+    color: Astro.request.url === "/" && category === "All" ? "#1b1b1b" : Astro.request.url.includes(category.toLowerCase()) && category !== "All" ? "#1b1b1b" : "#fff"
+  }}
+>
+  {category}
+</a>
+      ))
+    }
   </div>
-  
-  <ul class="mb-32 grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12 lg:w-5/6">
-    {sortedPosts.map((post) => (
-      <li>
-        <BlogSummaryCard post={post} />
-      </li>
-    ))}
+
+  <ul
+    class="mb-32 grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12 xl:w-5/6"
+  >
+    {
+      sortedPosts.map((post) => (
+        <li>
+          <BlogSummaryCard post={post} />
+        </li>
+      ))
+    }
   </ul>
 </div>
 
@@ -55,12 +71,14 @@ categories.unshift("All");
     padding: 0 !important;
   }
   .sidebar {
-    clip-path: polygon(20px 0, 100% 0, 100% 100%, 80% 100%, 0 100%, 0 20px);
+    clip-path: polygon(20px 0, 100% 0, 290% 20px, 85% 100%, 0 100%, 0 20px);
   }
 
-  .categories-link {
-    &:hover {
-      clip-path: polygon(20px 0, 100% 0, 100% 100%, 100% 100%, 0 100%, 0 20px);
-    }
-  }
+  .categories-link.active, .categories-link.all-link, .categories-link:hover {
+  clip-path: polygon(20px 0, 100% 0, 110% 20px, 85% 100%, 0 100%, 0 20px);
+}
+/*.all-link {
+  background-color: #c6ff50 !important;
+  color: #1b1b1b !important;
+}*/
 </style>
