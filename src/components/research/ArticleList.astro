@@ -36,7 +36,7 @@ categories.unshift("All");
       ? "/"
       : `/research/tags/${category.toLowerCase()}/`
   }
-  class={`categories-link rounded p-4 ${Astro.request.url === "/" && category === "All" ? "active" : Astro.request.url.includes(category.toLowerCase()) && category !== "All" ? "active" : ""} ${category === "All" ? "all-link" : ""}`}
+  class={`categories-link hover:text-[#C6FF50] rounded p-4 ${Astro.request.url === "/" && category === "All" ? "active" : Astro.request.url.includes(category.toLowerCase()) && category !== "All" ? "active" : ""} ${category === "All" ? "all-link" : ""}`}
   style={{
     backgroundColor: Astro.request.url === "/" && category === "All" ? "#c6ff50" : Astro.request.url.includes(category.toLowerCase()) && category !== "All" ? "#c6ff50" : "transparent",
     color: Astro.request.url === "/" && category === "All" ? "#1b1b1b" : Astro.request.url.includes(category.toLowerCase()) && category !== "All" ? "#1b1b1b" : "#fff"
