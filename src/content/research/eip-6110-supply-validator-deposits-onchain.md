@@ -5,7 +5,7 @@ author: Emmanuel Awosika
 authorTwitterHandle: eawosikaa
 tags:
   - Infrastructure
-  - Layer1
+  - Layer 1
 imgUrl: '../../assets/EIPsForNerds4-EIP-6110(SupplyValidatorDepositsOn-Chain).webp'
 description: "EIP-6110 deprecates the Eth1-Eth2 bridge and reforms the Beacon Chain's validator deposit processing mechanism for better staking UX and improved network security."
 layout: '../../layouts/BlogPost.astro'
