@@ -45,7 +45,7 @@ const { content, relatedPosts } = Astro.props;
   
   <div class="grid lg:flex justify-between items-center">
     <p class="flex gap-x-2 mb-2 lg:mb-0 text-slate text-base">
-      <a class="mb-2" href={`https://twitter.com/${content.authorTwitterHandle}`} target="_blank">
+      <a class="transition duration-300 hover:text-[#c6ff50] mb-2" href={`https://twitter.com/${content.authorTwitterHandle}`} target="_blank">
         By {content.author} 
       </a>
       <span class="inline-block mt-2 w-1 h-1 rounded-full bg-[#C6FF50]"></span>
@@ -111,6 +111,15 @@ const { content, relatedPosts } = Astro.props;
 
   #article {
     margin-block-end: 8rem;
+    
+    a {
+      color: #C6FF50;
+      transition: opacity 0.3s ease-in-out;
+
+      &:hover{
+        opacity: 0.9;
+      }
+    }
   }
 
   .tags {
