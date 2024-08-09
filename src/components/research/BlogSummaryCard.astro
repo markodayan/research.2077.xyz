@@ -9,7 +9,7 @@ interface Props {
 
 const { post } = Astro.props;
 ---
-
+<a href={`/research/${post.slug}/`} class="article-link">
 <SummaryCard
   title={post.data.title}
   pubDate={post.data.pubDate.toISOString()}
@@ -37,3 +37,4 @@ const { post } = Astro.props;
     </div>
   </div>
 </SummaryCard>
+</a>
