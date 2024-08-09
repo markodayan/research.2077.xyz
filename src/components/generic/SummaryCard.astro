@@ -59,7 +59,9 @@ const formattedDate = new Intl.DateTimeFormat("en-GB", {
     }
   </div>
   <div class="mb-4">
-    <h3 class="text-lg md:text-xl mb-4">{title}</h3>
+    <a href={imageLink}>
+      <h3 class="text-lg md:text-xl mb-4">{title}</h3>
+    </a>
   </div>
   <div class="mb-4">
     <p class="line-clamp-2">{description}</p>
